@@ -9,7 +9,15 @@ const ICON_CHECK =
 const PROJECTS = [
   {
     id: "lunfa",
+    featured: true,
+    featuredOrder: 2,
     name: "Lunfa — AI Chinese writing tutor",
+    context:
+      "A university research group needed a production web app that helps Chinese learners self-correct without the AI simply giving away the answer.",
+    role: "Freelance full-stack developer · team of 2 · requirements through deployment",
+    evidenceLabel: "Verified delivery",
+    evidence:
+      "Live at lunfa.net · actively used by the research team · delivered on time and paid in full.",
     tagline:
       "A chatbot that finds grammar mistakes in a learner's Chinese sentence, highlights them, and coaches the learner to fix it themselves — instead of handing over the answer.",
     tags: ["ai", "backend", "ba"],
@@ -24,9 +32,25 @@ const PROJECTS = [
       "Vertex AI · Gemini 2.5",
       "JWT",
     ],
+    media: [
+      {
+        src: "./assets/photo_prod/lunfa-chat.png",
+        alt: "Lunfa chatbot highlighting a Chinese grammar error and coaching the learner to rewrite the sentence",
+        caption: "Guided correction — highlight the error, explain the rule, then ask the learner to try again.",
+      },
+      {
+        src: "./assets/photo_prod/lunfa-login.png",
+        alt: "Lunfa sign-in screen with email and Google authentication options",
+        caption: "Production authentication flow with email and Google sign-in.",
+      },
+    ],
     links: [
       { label: "Live site →", href: "https://lunfa.net" },
-      { label: "Code", href: "https://github.com/giabaocode", ghost: true },
+      {
+        label: "GitHub profile →",
+        href: "https://github.com/giabaocode",
+        ghost: true,
+      },
     ],
     flow: [
       {
@@ -61,8 +85,104 @@ const PROJECTS = [
     ],
   },
   {
+    id: "sstc",
+    featured: true,
+    featuredOrder: 1,
+    openDetails: true,
+    detailsLabel: "Warranty intake workflow",
+    name: "AI-powered warranty intake system",
+    context:
+      "At the R&D and Service Center (Vietnam) of SSTC Technology JSC, built an independent 'Bot Brain' to automate electronics warranty intake (RAM, SSD, VGA, Motherboard) from unstructured customer chat into verified, audit-logged tickets.",
+    role: "Backend Developer Intern · Sole backend owner of Bot Brain warranty system from requirements to delivery",
+    evidenceLabel: "Internship delivery & proof",
+    evidence:
+      "24-state bot engine · 57 automated test methods (Testcontainers PostgreSQL) · 10 Flyway migrations · 1,000 real component seed records · handed over to SSTC R&D Center.",
+    tagline:
+      "A channel-ready chatbot backend that collects product evidence, verifies serial and warranty data, creates a pickup-ready ticket, and gives customers a privacy-safe tracking link — while keeping AI away from business-critical decisions.",
+    tags: ["ai", "backend", "ba"],
+    badge: "R&D Internship",
+    badgeType: "badge-green",
+    date: "Jun – Aug 2026",
+    stack: [
+      "Java 21",
+      "Spring Boot 3",
+      "PostgreSQL 16",
+      "Flyway",
+      "Claude API",
+      "Resilience4j",
+      "Testcontainers",
+      "Docker",
+    ],
+    links: [],
+    accessNote: "Engineered during internship at SSTC Technology JSC (Vietnam R&D and Service Center)",
+    architecture: {
+      label: "Backend system map",
+      status: "MVP · verified in source",
+      nodes: [
+        { kicker: "CHANNEL", title: "Web Chat", note: "normalized request contract" },
+        { kicker: "ORCHESTRATOR", title: "Message Processor", note: "AI outside transaction" },
+        { kicker: "BUSINESS CORE", title: "Bot Engine", note: "backend owns 24 states" },
+        { kicker: "DATA", title: "PostgreSQL", note: "warranty + ticket truth" },
+        { kicker: "OUTPUT", title: "Ticket & Pickup", note: "masked lookup + audit" },
+      ],
+      metrics: [
+        ["57", "test methods"],
+        ["9", "Flyway migrations"],
+        ["3", "short transaction phases"],
+        ["1–5", "condition photos"],
+      ],
+      safeguards: ["idempotency", "optimistic lock", "PII-local rules", "AI fallback"],
+    },
+    flow: [
+      {
+        label: "CHAT INTAKE",
+        desc: "The customer describes the warranty request naturally; the bot extracts intent and product clues without forcing a rigid form.",
+        challenge:
+          "An LLM is useful for understanding language, but it must never decide whether a product exists, is still covered, or deserves a ticket.",
+        fix: "Claude is isolated behind an AiOrchestrator interface and only returns intent, confirmation and extracted fields. PII-bearing steps stay on local rules, and any timeout or malformed AI response falls back through Resilience4j to the deterministic mock engine.",
+      },
+      {
+        label: "VERIFY SERIAL",
+        desc: "The backend looks up the serial in PostgreSQL, reads the authoritative product identity and asks the customer to confirm it.",
+        challenge:
+          "Catalog values can be corrected later, but an issued warranty ticket must preserve exactly what was accepted at intake.",
+        fix: "Serial-first verification reads warranty and product identity from relational data, then snapshots description, model, SKU, product number and serial onto the ticket while retaining the component foreign key.",
+      },
+      {
+        label: "COLLECT PROOF",
+        desc: "The bot gathers the issue, 1–5 condition photos, contact details, Zalo phone and pickup address, skipping fields already known.",
+      },
+      {
+        label: "CREATE TICKET",
+        desc: "A confirmed intake becomes a ticket with an atomic daily code such as NS-YYYYMMDD-000001.",
+        challenge:
+          "Rapid retries and duplicate messages can otherwise create duplicate tickets, active sessions or ticket codes.",
+        fix: "Client-message idempotency, optimistic locking, database uniqueness constraints and an atomic ticket-code sequence keep concurrent turns consistent. External AI and shipping calls are kept outside long database transactions.",
+      },
+      {
+        label: "ARRANGE PICKUP",
+        desc: "A provider abstraction creates the pickup order; the MVP uses a mock Viettel Post adapter and records integration logs.",
+        challenge:
+          "A shipping outage must not roll back or lose a warranty request that was already accepted.",
+        fix: "Ticket creation and shipping application use separate short transactions. If shipping fails, the ticket remains safely at RECEIVED and can be retried instead of disappearing behind a 500 error.",
+      },
+      {
+        label: "TRACK & AUDIT",
+        desc: "The customer receives a token-protected lookup link with masked personal data; staff can trace every material decision through audit and integration logs.",
+      },
+    ],
+  },
+  {
     id: "unihub",
+    featured: true,
+    featuredOrder: 3,
     name: "UniHub Workshop — event lifecycle platform",
+    context:
+      "A university event platform needed registration, payment and door check-in to remain dependable during traffic spikes and unreliable venue Wi-Fi.",
+    role: "Team of 2 · admin panel, offline check-in, Redis, rate limiting, UI/UX and database design",
+    evidenceLabel: "Load-test evidence",
+    evidence:
+      "K6 spike scenario with 12,000 virtual users · p95 under 2 seconds · error rate under 1%.",
     tagline:
       "Digitizes a university's 'skills & career week': student registers → pays by QR → gets an emailed QR ticket → staff scans it at the door, even with no WiFi. Built to survive a real traffic spike.",
     tags: ["backend", "ba"],
@@ -78,7 +198,9 @@ const PROJECTS = [
       "Resilience4j",
       "PWA",
     ],
-    links: [{ label: "Code", href: "https://github.com/giabaocode" }],
+    links: [
+      { label: "GitHub profile →", href: "https://github.com/giabaocode" },
+    ],
     flow: [
       {
         label: "REGISTER",
@@ -112,6 +234,12 @@ const PROJECTS = [
   {
     id: "auction",
     name: "Online Auction Platform",
+    context:
+      "A marketplace needed concurrent bidding, anti-sniping and the buyer–seller handoff after an auction to behave as one coherent system.",
+    role: "Team of 2 · requirements, UI/UX, database design, bidder/seller systems, chat and order tracking",
+    evidenceLabel: "Scope delivered",
+    evidence:
+      "17-table relational schema · 50+ documented endpoints · 6 route groups · 3 user roles.",
     tagline:
       "A full marketplace: bidders bid, sellers list, admins govern. Auto-bid, Buy Now, anti-sniping, a 4-step post-auction payment flow, buyer–seller chat and reputation — all kept correct under concurrent bids.",
     tags: ["backend", "ba"],
@@ -120,7 +248,9 @@ const PROJECTS = [
     date: "Nov 2025 – Jan 2026",
     note: "17-table schema · 50+ documented endpoints · 6 route groups · 3 roles.",
     stack: ["TypeScript", "Express 5", "PostgreSQL", "Cloudinary", "node-cron"],
-    links: [{ label: "Code", href: "https://github.com/giabaocode" }],
+    links: [
+      { label: "GitHub profile →", href: "https://github.com/giabaocode" },
+    ],
     flow: [
       {
         label: "LISTED",
@@ -158,7 +288,15 @@ const PROJECTS = [
   },
   {
     id: "coffee",
+    featured: true,
+    featuredOrder: 4,
     name: "Coffee Shop POS & Management",
+    context:
+      "A real coffee shop needed staff ordering, role-specific operations and management reporting in one daily-use system.",
+    role: "Team of 4 · owned the POS/order module, system UI/UX and requirements analysis",
+    evidenceLabel: "Real-world use",
+    evidence:
+      "Deployed and actively used at a GUTA coffee shop for daily operations.",
     tagline:
       "A role-based system for a real coffee shop (GUTA): staff take orders on a POS, managers watch revenue analytics, HR runs shift scheduling. Admin / Manager / Staff each get their own surface.",
     tags: ["ba", "backend"],
@@ -168,7 +306,10 @@ const PROJECTS = [
     live: "in production",
     stack: ["React 19", "Express 5", "PostgreSQL", "Docker"],
     links: [
-      { label: "Code", href: "https://github.com/tdthien106/Coffee_shop" },
+      {
+        label: "Source code →",
+        href: "https://github.com/tdthien106/Coffee_shop",
+      },
     ],
     flow: [
       {
@@ -202,6 +343,12 @@ const PROJECTS = [
   {
     id: "homestay",
     name: "HomestayDorm — rental operations",
+    context:
+      "A multi-branch rental workflow needed to track each resident from initial inquiry through viewing, deposit, contract and move-out.",
+    role: "Team of 4 · registration module, Prisma schema, UI/UX and requirements analysis",
+    evidenceLabel: "Scope delivered",
+    evidence:
+      "15+ data models · bed-level availability · 6-state registration workflow.",
     tagline:
       "Runs a dorm/rental business down to the individual bed: intake → consult → viewing → deposit → contract → move-out & reconciliation. Multi-branch, 3 roles, built fullstack on Next.js Server Actions (no separate REST API).",
     tags: ["backend", "ba"],
@@ -209,7 +356,9 @@ const PROJECTS = [
     badgeType: "badge",
     date: "Mar – Apr 2026",
     stack: ["Next.js 16", "Prisma 7", "PostgreSQL", "TypeScript", "Zod"],
-    links: [{ label: "Code", href: "https://github.com/giabaocode" }],
+    links: [
+      { label: "GitHub profile →", href: "https://github.com/giabaocode" },
+    ],
     flow: [
       {
         label: "DRAFT → CONSULT",
@@ -239,6 +388,12 @@ const PROJECTS = [
   {
     id: "petcare",
     name: "PetCareX — vet clinic management",
+    context:
+      "A veterinary clinic system needed bookings, examinations, prescriptions, billing and customer benefits to work across multiple roles and branches.",
+    role: "Team of 4 · sole frontend and backend implementer; teammates handled design",
+    evidenceLabel: "Scope delivered",
+    evidence:
+      "5 roles · 9 route groups · customer and staff layouts · parameterized raw SQL without an ORM.",
     tagline:
       "A multi-branch veterinary clinic system — booking, examination, prescriptions, billing, subscription packages and loyalty points. I was the sole developer (frontend + backend) in a 4-person team.",
     tags: ["backend", "ba"],
@@ -247,7 +402,9 @@ const PROJECTS = [
     date: "Nov 2025 – Jan 2026",
     note: "5 roles · 9 route groups · dual layout (customer vs staff) · raw SQL, no ORM.",
     stack: ["React 18", "TypeScript", "Express", "PostgreSQL", "React Query"],
-    links: [{ label: "Code", href: "https://github.com/giabaocode" }],
+    links: [
+      { label: "GitHub profile →", href: "https://github.com/giabaocode" },
+    ],
     flow: [
       {
         label: "BOOK",
@@ -276,6 +433,12 @@ const PROJECTS = [
   {
     id: "melodix",
     name: "Melodix — Android music streaming",
+    context:
+      "A three-role music app needed resilient playback, offline listening and an artist workflow on top of a shared Supabase backend.",
+    role: "Team of 4 · artist module, detail/search/share/profile flows, UI/UX and database co-design",
+    evidenceLabel: "Scope delivered",
+    evidence:
+      "12 repositories · 14 API services · 10+ ViewModels · online and offline playback paths.",
     tagline:
       "A Spotify-style Android app with 3 roles (User / Artist / Admin): background playback, offline download, synced lyrics, Supabase backend. MVVM with 12 repositories, 14 API services, 10+ ViewModels.",
     tags: ["mobile", "backend", "ba"],
@@ -283,7 +446,9 @@ const PROJECTS = [
     badgeType: "badge-blue",
     date: "Mar – Apr 2026",
     stack: ["Java", "Android", "MVVM", "Supabase", "Room", "ExoPlayer"],
-    links: [{ label: "Code", href: "https://github.com/giabaocode" }],
+    links: [
+      { label: "GitHub profile →", href: "https://github.com/giabaocode" },
+    ],
     flow: [
       {
         label: "PLAY",
@@ -314,6 +479,9 @@ const PROJECTS = [
 
 /* ---------- Render project cards ---------- */
 const grid = document.getElementById("project-grid");
+const prefersReduced = window.matchMedia(
+  "(prefers-reduced-motion: reduce)",
+).matches;
 
 function nodeMarkup(node, i, pid) {
   const hasNote = !!(node.challenge || node.fix);
@@ -337,6 +505,61 @@ function detailMarkup(node) {
   return { html, isNote };
 }
 
+function mediaMarkup(media = []) {
+  if (!media.length) return "";
+  const items = media
+    .map(
+      (item) => `
+        <figure class="project-shot">
+          <a href="${item.src}" target="_blank" rel="noopener" aria-label="Open full-size image: ${item.alt}">
+            <img src="${item.src}" alt="${item.alt}" loading="lazy" decoding="async" />
+          </a>
+          <figcaption>${item.caption}</figcaption>
+        </figure>`,
+    )
+    .join("");
+  return `<div class="project-media" aria-label="Product screenshots">${items}</div>`;
+}
+
+function architectureMarkup(architecture) {
+  if (!architecture) return "";
+  const nodes = architecture.nodes
+    .map(
+      (node, index) => `
+        <div class="architecture-node">
+          <span>${node.kicker}</span>
+          <strong>${node.title}</strong>
+          <small>${node.note}</small>
+        </div>
+        ${index < architecture.nodes.length - 1 ? '<span class="architecture-link" aria-hidden="true"><i></i></span>' : ""}`,
+    )
+    .join("");
+  const metrics = architecture.metrics
+    .map(
+      ([value, label]) => `
+        <div class="architecture-metric">
+          <strong>${value}</strong><span>${label}</span>
+        </div>`,
+    )
+    .join("");
+  const safeguards = architecture.safeguards
+    .map((item) => `<span>${ICON_CHECK}${item}</span>`)
+    .join("");
+
+  return `
+    <section class="architecture-panel" aria-label="${architecture.label}">
+      <header>
+        <div><span class="architecture-eyebrow">SYSTEM / 01</span><h4>${architecture.label}</h4></div>
+        <span class="architecture-status"><i></i>${architecture.status}</span>
+      </header>
+      <div class="architecture-scroll">
+        <div class="architecture-flow">${nodes}</div>
+      </div>
+      <div class="architecture-metrics">${metrics}</div>
+      <div class="architecture-safeguards">${safeguards}</div>
+    </section>`;
+}
+
 function projectMarkup(p) {
   const nodes = p.flow
     .map(
@@ -356,19 +579,40 @@ function projectMarkup(p) {
         `<a href="${l.href}" target="_blank" rel="noopener"${l.ghost ? ' class="ghost"' : ""}>${l.label}</a>`,
     )
     .join("");
+  const accessNote = p.accessNote
+    ? `<span class="project-access">${p.accessNote}</span>`
+    : "";
   const livePill = p.live
     ? `<span class="live-pill"><span class="sys-dot"></span>${p.live === "in production" ? "IN PRODUCTION" : "LIVE · " + p.live}</span>`
     : "";
   const noteRow = p.note
-    ? `<p class="project-tagline" style="margin-top:10px;color:var(--text-3);font-family:var(--mono);font-size:12.5px">${p.note}</p>`
+    ? `<p class="project-note">${p.note}</p>`
     : "";
+  const media = mediaMarkup(p.media);
+  const architecture = architectureMarkup(p.architecture);
+  const caseSummary = `
+    <dl class="case-summary">
+      <div>
+        <dt>Context</dt>
+        <dd>${p.context}</dd>
+      </div>
+      <div>
+        <dt>My role</dt>
+        <dd>${p.role}</dd>
+      </div>
+      <div class="case-evidence">
+        <dt>${p.evidenceLabel}</dt>
+        <dd>${p.evidence}</dd>
+      </div>
+    </dl>`;
 
   return `
-    <article class="project" data-tags="${p.tags.join(" ")}">
+    <article class="project ${p.featured ? "featured-project" : "supporting-project"}" data-project="${p.id}" data-tags="${p.tags.join(" ")}">
       <span class="spotlight" aria-hidden="true"></span>
       <div class="project-top">
         <div class="project-head">
           <div class="project-meta">
+            ${p.featured ? '<span class="featured-label">Featured</span>' : ""}
             <span class="badge ${p.badgeType}">${p.badge}</span>
             <time>${p.date}</time>
           </div>
@@ -379,19 +623,119 @@ function projectMarkup(p) {
         ${livePill}
       </div>
 
-      <div class="flow-wrap">
-        <div class="flow" role="group" aria-label="${p.name} workflow">${nodes}</div>
-      </div>
-      <div class="flow-detail${first.isNote ? " is-note" : ""}" id="detail-${p.id}" aria-live="polite">${first.html}</div>
+      ${caseSummary}
+
+      ${architecture}
+
+      ${media}
+
+      <details class="technical-details"${p.id === "lunfa" || p.openDetails ? " open" : ""}>
+        <summary>${p.detailsLabel || (p.id === "lunfa" ? "Technical workflow" : "View technical breakdown")}</summary>
+        <div class="flow-wrap">
+          <div class="flow" role="group" aria-label="${p.name} workflow">${nodes}</div>
+        </div>
+        <div class="flow-detail${first.isNote ? " is-note" : ""}" id="detail-${p.id}" aria-live="polite">${first.html}</div>
+      </details>
 
       <div class="project-foot">
         <div class="project-stack">${stack}</div>
-        <div class="project-actions">${links}</div>
+        <div class="project-actions">${accessNote}${links}</div>
       </div>
     </article>`;
 }
 
-grid.innerHTML = PROJECTS.map(projectMarkup).join("");
+const featuredProjects = PROJECTS.filter((project) => project.featured).sort(
+  (a, b) => (a.featuredOrder || 99) - (b.featuredOrder || 99),
+);
+const supportingProjects = PROJECTS.filter((project) => !project.featured);
+grid.innerHTML = [
+  ...featuredProjects.map(projectMarkup),
+  `<button class="project-toggle" id="project-toggle" type="button" aria-expanded="false" aria-controls="supporting-projects">
+    <span>View ${supportingProjects.length} more projects</span>
+    <span class="project-toggle-icon" aria-hidden="true">+</span>
+  </button>`,
+  '<div class="project-subgrid" id="supporting-projects">',
+  '<div class="project-divider" id="supporting-divider" hidden><span>More selected work</span></div>',
+  ...supportingProjects.map(projectMarkup),
+  "</div>",
+].join("");
+
+const projectToggle = document.getElementById("project-toggle");
+const projectDivider = document.getElementById("supporting-divider");
+let supportingExpanded = false;
+let activeProjectFilter = "all";
+
+function updateProjectVisibility() {
+  const filtering = activeProjectFilter !== "all";
+  let visibleSupporting = 0;
+
+  document.querySelectorAll(".project").forEach((project) => {
+    const tags = project.dataset.tags?.split(" ") || [];
+    const matches = !filtering || tags.includes(activeProjectFilter);
+    const isSupporting = project.classList.contains("supporting-project");
+    const revealSupporting = supportingExpanded || filtering;
+    const visible = matches && (!isSupporting || revealSupporting);
+    project.hidden = !visible;
+    if (visible && isSupporting) visibleSupporting += 1;
+  });
+
+  if (projectDivider) {
+    projectDivider.hidden = visibleSupporting === 0;
+  }
+  if (projectToggle) {
+    projectToggle.hidden = filtering;
+    projectToggle.setAttribute("aria-expanded", supportingExpanded);
+    projectToggle.querySelector("span:first-child").textContent = supportingExpanded
+      ? "Show fewer projects"
+      : `View ${supportingProjects.length} more projects`;
+    projectToggle.querySelector(".project-toggle-icon").textContent = supportingExpanded
+      ? "−"
+      : "+";
+  }
+}
+
+projectToggle?.addEventListener("click", () => {
+  supportingExpanded = !supportingExpanded;
+  updateProjectVisibility();
+});
+
+updateProjectVisibility();
+
+/* ---------- Screenshot lightbox ---------- */
+const lightbox = document.getElementById("image-lightbox");
+const lightboxImage = document.getElementById("lightbox-image");
+const lightboxCaption = document.getElementById("lightbox-caption");
+const lightboxClose = lightbox?.querySelector(".lightbox-close");
+
+grid.addEventListener("click", (event) => {
+  const shotLink = event.target.closest(".project-shot a");
+  if (!shotLink || !lightbox || !lightboxImage || !lightboxCaption) return;
+  event.preventDefault();
+  const sourceImage = shotLink.querySelector("img");
+  const caption = shotLink.closest("figure")?.querySelector("figcaption");
+  lightboxImage.src = shotLink.href;
+  lightboxImage.alt = sourceImage?.alt || "Project screenshot";
+  lightboxCaption.textContent = caption?.textContent || "";
+  lightbox.showModal();
+  document.body.style.overflow = "hidden";
+  lightboxClose?.focus();
+});
+
+lightboxClose?.addEventListener("click", () => lightbox.close());
+lightbox?.addEventListener("click", (event) => {
+  if (event.target !== lightbox) return;
+  const bounds = lightbox.getBoundingClientRect();
+  const inside =
+    event.clientX >= bounds.left &&
+    event.clientX <= bounds.right &&
+    event.clientY >= bounds.top &&
+    event.clientY <= bounds.bottom;
+  if (!inside) lightbox.close();
+});
+lightbox?.addEventListener("close", () => {
+  document.body.style.overflow = "";
+  lightboxImage?.removeAttribute("src");
+});
 
 /* ---------- Node interactions (event delegation) ---------- */
 grid.addEventListener("click", (e) => {
@@ -403,26 +747,50 @@ grid.addEventListener("click", (e) => {
   if (!project) return;
 
   // toggle active state within this project
-  btn.parentElement.querySelectorAll(".node").forEach((n) => {
+  btn.parentElement.querySelectorAll(".node").forEach((n, nodeIndex) => {
     const on = n === btn;
     n.classList.toggle("active", on);
+    n.classList.toggle("completed", nodeIndex < i);
     n.setAttribute("aria-pressed", on);
+  });
+  btn.parentElement.querySelectorAll(".wire").forEach((wire, wireIndex) => {
+    wire.classList.toggle("completed", wireIndex < i);
   });
 
   const { html, isNote } = detailMarkup(project.flow[i]);
   const panel = document.getElementById(`detail-${pid}`);
   panel.innerHTML = html;
   panel.classList.toggle("is-note", isNote);
+  if (!prefersReduced) {
+    panel.animate(
+      [
+        { opacity: 0.25, transform: "translateY(5px)" },
+        { opacity: 1, transform: "translateY(0)" },
+      ],
+      { duration: 190, easing: "ease-out" },
+    );
+  }
 });
 
 /* ---------- Theme ---------- */
 const root = document.documentElement;
 const savedTheme = localStorage.getItem("theme");
-if (savedTheme) root.dataset.theme = savedTheme;
-document.getElementById("theme-btn")?.addEventListener("click", () => {
+const themeButton = document.getElementById("theme-btn");
+if (savedTheme) {
+  root.dataset.theme = savedTheme;
+} else if (window.matchMedia("(prefers-color-scheme: light)").matches) {
+  root.dataset.theme = "light";
+}
+const updateThemeLabel = () => {
+  const nextTheme = root.dataset.theme === "light" ? "dark" : "light";
+  themeButton?.setAttribute("aria-label", `Use ${nextTheme} theme`);
+};
+updateThemeLabel();
+themeButton?.addEventListener("click", () => {
   const next = root.dataset.theme === "light" ? "dark" : "light";
   root.dataset.theme = next;
   localStorage.setItem("theme", next);
+  updateThemeLabel();
 });
 
 /* ---------- Year ---------- */
@@ -431,19 +799,28 @@ document.getElementById("year").textContent = new Date().getFullYear();
 /* ---------- Hamburger ---------- */
 const hamburger = document.getElementById("hamburger");
 const mobileMenu = document.getElementById("mobile-menu");
+const setMenuOpen = (open) => {
+  hamburger?.classList.toggle("open", open);
+  mobileMenu?.classList.toggle("open", open);
+  hamburger?.setAttribute("aria-expanded", open);
+  hamburger?.setAttribute(
+    "aria-label",
+    open ? "Close navigation menu" : "Open navigation menu",
+  );
+  mobileMenu?.setAttribute("aria-hidden", !open);
+  document.body.style.overflow = open ? "hidden" : "";
+};
 hamburger?.addEventListener("click", () => {
-  hamburger.classList.toggle("open");
-  mobileMenu.classList.toggle("open");
-  document.body.style.overflow = mobileMenu.classList.contains("open")
-    ? "hidden"
-    : "";
+  setMenuOpen(hamburger.getAttribute("aria-expanded") !== "true");
 });
 document.querySelectorAll(".mobile-menu a").forEach((a) => {
-  a.addEventListener("click", () => {
-    hamburger.classList.remove("open");
-    mobileMenu.classList.remove("open");
-    document.body.style.overflow = "";
-  });
+  a.addEventListener("click", () => setMenuOpen(false));
+});
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && hamburger?.getAttribute("aria-expanded") === "true") {
+    setMenuOpen(false);
+    hamburger.focus();
+  }
 });
 
 /* ---------- Project filters ---------- */
@@ -451,11 +828,13 @@ const filters = document.querySelectorAll(".filter");
 filters.forEach((btn) => {
   btn.addEventListener("click", () => {
     const f = btn.dataset.filter;
-    filters.forEach((b) => b.classList.toggle("active", b === btn));
-    document.querySelectorAll(".project").forEach((p) => {
-      const tags = p.dataset.tags?.split(" ") || [];
-      p.hidden = f !== "all" && !tags.includes(f);
+    activeProjectFilter = f;
+    filters.forEach((b) => {
+      const active = b === btn;
+      b.classList.toggle("active", active);
+      b.setAttribute("aria-pressed", active);
     });
+    updateProjectVisibility();
   });
 });
 
@@ -480,57 +859,6 @@ const secObs = new IntersectionObserver(
 );
 sections.forEach((s) => secObs.observe(s));
 
-/* ---------- Scroll reveal ---------- */
-const reveals = document.querySelectorAll(
-  ".numbers, .number-item, .project, .skill-card, .tl-item, .edu-card, .contact-grid, .contact-intro, .copy-btn",
-);
-const prefersReduced = window.matchMedia(
-  "(prefers-reduced-motion: reduce)",
-).matches;
-if (prefersReduced) {
-  reveals.forEach((el) => el.classList.add("visible"));
-} else {
-  reveals.forEach((el) => el.classList.add("reveal"));
-  const revealObs = new IntersectionObserver(
-    (entries, obs) => {
-      entries.forEach((e) => {
-        if (!e.isIntersecting) return;
-        e.target.classList.add("visible");
-        obs.unobserve(e.target);
-      });
-    },
-    { rootMargin: "0px 0px -8% 0px", threshold: 0.1 },
-  );
-  reveals.forEach((el) => revealObs.observe(el));
-}
-
-/* ---------- Counters ---------- */
-const counters = document.querySelectorAll("[data-count]");
-const counterObs = new IntersectionObserver(
-  (entries, obs) => {
-    entries.forEach((e) => {
-      if (!e.isIntersecting) return;
-      const el = e.target;
-      const target = parseInt(el.dataset.count, 10);
-      const plus = el.dataset.plus === "1";
-      const duration = 1200;
-      const start = performance.now();
-      function tick(now) {
-        const t = Math.min((now - start) / duration, 1);
-        const eased = 1 - Math.pow(1 - t, 3);
-        const val = Math.round(eased * target);
-        el.textContent = val >= 1000 ? val.toLocaleString() : val;
-        if (plus && t === 1) el.textContent += "+";
-        if (t < 1) requestAnimationFrame(tick);
-      }
-      requestAnimationFrame(tick);
-      obs.unobserve(el);
-    });
-  },
-  { threshold: 0.3 },
-);
-counters.forEach((el) => counterObs.observe(el));
-
 /* ---------- Copy email ---------- */
 const copyBtn = document.getElementById("copy-email");
 copyBtn?.addEventListener("click", async () => {
@@ -551,16 +879,6 @@ copyBtn?.addEventListener("click", async () => {
   }, 2000);
 });
 
-/* ===========================================
-   WOW LAYER — boot intro · scroll bar · card spotlight
-   =========================================== */
-
-/* Boot intro + hero entrance */
-(function boot() {
-  const bootEl = document.getElementById("boot");
-  bootEl && bootEl.classList.add("done");
-  document.body.classList.add("ready");
-})();
 /* Scroll progress bar */
 const progressBar = document.getElementById("scroll-progress");
 if (progressBar) {
@@ -580,146 +898,6 @@ if (progressBar) {
   onScroll();
 }
 
-/* Project card cursor spotlight (rAF-throttled to avoid layout thrash) */
-if (window.matchMedia("(pointer:fine)").matches) {
-  const grid = document.getElementById("project-grid");
-  let pending = false,
-    lastEv = null,
-    lastCard = null;
-  grid?.addEventListener(
-    "pointermove",
-    (e) => {
-      lastEv = e;
-      if (pending) return;
-      pending = true;
-      requestAnimationFrame(() => {
-        pending = false;
-        const card = lastEv.target.closest && lastEv.target.closest(".project");
-        if (!card || card.hidden) return;
-        if (lastCard && lastCard !== card) {
-          lastCard.style.removeProperty("--mx");
-          lastCard.style.removeProperty("--my");
-        }
-        lastCard = card;
-        const r = card.getBoundingClientRect();
-        card.style.setProperty(
-          "--mx",
-          ((lastEv.clientX - r.left) / r.width) * 100 + "%",
-        );
-        card.style.setProperty(
-          "--my",
-          ((lastEv.clientY - r.top) / r.height) * 100 + "%",
-        );
-      });
-    },
-    { passive: true },
-  );
-  grid?.addEventListener("pointerleave", () => {
-    if (!lastCard) return;
-    lastCard.style.removeProperty("--mx");
-    lastCard.style.removeProperty("--my");
-    lastCard = null;
-  });
-}
-
-/* Hero role rotator */
-(function rotator() {
-  const el = document.getElementById("role-rotator");
-  if (!el || window.matchMedia("(prefers-reduced-motion: reduce)").matches)
-    return;
-  const roles = [
-    "Backend Java Engineer",
-    "Business Analyst",
-    "Systems Thinker",
-    "API Designer",
-  ];
-  let i = 0;
-  setInterval(() => {
-    i = (i + 1) % roles.length;
-    el.style.opacity = "0";
-    el.style.transform = "translateY(-5px)";
-    setTimeout(() => {
-      el.textContent = roles[i];
-      el.style.opacity = "1";
-      el.style.transform = "translateY(0)";
-    }, 280);
-  }, 2600);
-})();
-
-/* Tech marquee - duplicate the track for a seamless loop */
-(function marquee() {
-  const t = document.getElementById("marquee-track");
-  if (!t || t.dataset.marqueeReady === "1") return;
-  t.innerHTML += t.innerHTML;
-  t.setAttribute("aria-live", "off");
-  t.dataset.marqueeReady = "1";
-})();
-
-/* Custom cursor (desktop only, additive - never traps input) */
-(function customCursor() {
-  const fine = window.matchMedia("(pointer:fine)").matches;
-  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const dot = document.getElementById("cursor-dot");
-  const ring = document.getElementById("cursor-ring");
-  const enableCustomCursor = false;
-  if (!enableCustomCursor || !fine || reduce || !dot || !ring) return;
-  document.body.classList.add("cursor-on");
-  let mx = innerWidth / 2,
-    my = innerHeight / 2,
-    queued = false;
-  const move = () => {
-    queued = false;
-    dot.style.transform = `translate(${mx}px, ${my}px)`;
-    ring.style.transform = `translate(${mx}px, ${my}px)`;
-  };
-  addEventListener(
-    "pointermove",
-    (e) => {
-      mx = e.clientX;
-      my = e.clientY;
-      if (queued) return;
-      queued = true;
-      requestAnimationFrame(move);
-    },
-    { passive: true },
-  );
-  const hot = "a,button,.node,.project,.filter,.contact-link,.copy-btn";
-  addEventListener("pointerover", (e) => {
-    if (e.target.closest(hot)) ring.classList.add("hot");
-  });
-  addEventListener("pointerout", (e) => {
-    if (e.target.closest(hot)) ring.classList.remove("hot");
-  });
-  addEventListener("pointerdown", () => ring.classList.add("down"));
-  addEventListener("pointerup", () => ring.classList.remove("down"));
-})();
-
-/* Magnetic primary buttons */
-(function magnetic() {
-  if (
-    !window.matchMedia("(pointer:fine)").matches ||
-    window.matchMedia("(prefers-reduced-motion: reduce)").matches
-  )
-    return;
-  document
-    .querySelectorAll(".btn-resume, .copy-btn, .mobile-resume")
-    .forEach((el) => {
-      el.classList.add("magnetic");
-      let rect = null;
-      el.addEventListener("pointerenter", () => {
-        rect = el.getBoundingClientRect();
-      });
-      el.addEventListener("pointermove", (e) => {
-        const r = rect || (rect = el.getBoundingClientRect());
-        el.style.transform = `translate(${(e.clientX - r.left - r.width / 2) * 0.3}px, ${(e.clientY - r.top - r.height / 2) * 0.3}px)`;
-      });
-      el.addEventListener("pointerleave", () => {
-        el.style.transform = "";
-        rect = null;
-      });
-    });
-})();
-
 /* ---------- Scroll to top ---------- */
 const toTop = document.getElementById("to-top");
 let topQueued = false;
@@ -736,5 +914,8 @@ window.addEventListener(
   { passive: true },
 );
 toTop?.addEventListener("click", () =>
-  window.scrollTo({ top: 0, behavior: "smooth" }),
+  window.scrollTo({
+    top: 0,
+    behavior: prefersReduced ? "auto" : "smooth",
+  }),
 );

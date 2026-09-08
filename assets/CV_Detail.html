@@ -202,7 +202,7 @@
   <body>
     <div class="header">
       <h1>PHAM NGOC GIA BAO</h1>
-      <div class="subtitle">Backend Java Intern</div>
+      <div class="subtitle">Java Backend Developer · Full-stack Experience</div>
       <div class="contact">
         <span>Ho Chi Minh City, Vietnam</span><span class="sep">|</span>
         <span>0907 506 049</span><span class="sep">|</span>
@@ -221,14 +221,9 @@
     </div>
 
     <div class="section">
-      <div class="section-title">Career Objective</div>
+      <div class="section-title">Profile</div>
       <p class="objective">
-        Third-year Information Technology student at HCMUS (GPA 3.46/4.0) with
-        practical experience across 7 fullstack projects spanning Spring Boot,
-        Node.js, PostgreSQL, React, and Android. Completed a paid freelance
-        engagement with a production deployment. Seeking a Backend Java Intern
-        role to contribute Spring Boot, database design, and system architecture
-        skills in a team-oriented environment.
+        Third-year Information Technology student at HCMUS (GPA 3.46/4.0), recently completed a Backend Developer Internship at the R&amp;D and Service Center of SSTC Technology JSC, where I engineered a 24-state Spring Boot warranty intake engine. Shipped a paid full-stack product deployed to production. Strongest in Java, workflow analysis, relational data modeling, transactions, concurrency and reliable API design. Seeking a Java Backend Intern or Fresher role.
       </p>
     </div>
 
@@ -253,13 +248,13 @@
         ><span class="value">Java, JavaScript/TypeScript, SQL</span>
         <span class="label">Backend</span
         ><span class="value"
-          >Spring Boot 3 (Security, JPA, Redis, Resilience4j, Scheduled Jobs),
-          Node.js/Express, Prisma ORM</span
+          >Spring Boot 3 (Security, JPA, Validation, Resilience4j), REST APIs,
+          Node.js/Express</span
         >
         <span class="label">Database</span
         ><span class="value"
-          >PostgreSQL (transactions, optimistic locking, full-text search, CTEs,
-          raw SQL), MongoDB, Redis</span
+          >PostgreSQL (transactions, optimistic locking, constraints, CTEs, raw
+          SQL), Flyway, MongoDB, Redis</span
         >
         <span class="label">Frontend</span
         ><span class="value"
@@ -273,7 +268,7 @@
         >
         <span class="label">DevOps</span
         ><span class="value"
-          >Docker Compose, Supabase, Cloudinary, Vercel, Gmail SMTP</span
+          >Docker Compose, Testcontainers, Supabase, Cloudinary, Vercel</span
         >
         <span class="label">Architecture</span
         ><span class="value"
@@ -290,7 +285,39 @@
 
     <div class="section">
       <div class="section-title">Professional Experience</div>
+
       <div class="exp-header">
+        <span class="role">Backend Developer Intern</span>
+        <span class="date">Jun – Aug 2026</span>
+      </div>
+      <div class="exp-company">
+        R&amp;D and Service Center (Vietnam) — SSTC Technology JSC
+      </div>
+      <ul class="exp-list">
+        <li>
+          Sole backend owner of an independent "Bot Brain" warranty intake system for computer components (RAM, SSD, VGA, Motherboard) built with Java 21, Spring Boot 3, and PostgreSQL 16.
+        </li>
+        <li>
+          Architected a 24-state deterministic backend engine (BotEngine) decoupling conversation state from external channels (Web, Zalo OA, Messenger).
+        </li>
+        <li>
+          Enforced core business guardrails: isolated Claude API to intent/entity extraction with Resilience4j circuit breakers; ensured serial/warranty validation and ticket creation strictly originate from PostgreSQL.
+        </li>
+        <li>
+          Engineered high-concurrency safety: JPA optimistic locking (@Version) with auto-retry, atomic ticket code generator (NS-YYYYMMDD-000001) via dedicated sequence table, partial unique indexes for session/customer deduplication, and message idempotency.
+        </li>
+        <li>
+          Built non-blocking local photo upload pipeline (up to 5 condition photos) and privacy-safe public lookup links with 128-bit URL tokens and PII masking (MaskUtils).
+        </li>
+        <li>
+          Wrote 57 automated test methods using Testcontainers PostgreSQL, thoroughly validating race conditions, multi-turn chat flows, and failure fallbacks.
+        </li>
+      </ul>
+      <div class="exp-result">
+        → Handed over to SSTC R&amp;D Center with 16 comprehensive design docs, 10 Flyway migrations, and 1,000 component seed records.
+      </div>
+
+      <div class="exp-header" style="margin-top: 8px;">
         <span class="role">Fullstack Developer (Freelance)</span>
         <span class="date">Mar – Apr 2026</span>
       </div>
@@ -325,6 +352,42 @@
 
     <div class="section">
       <div class="section-title">Projects</div>
+
+      <div class="project">
+        <div class="project-header">
+          <span class="name">AI-Powered Warranty Intake System</span>
+          <span class="date">Jun – Aug 2026</span>
+        </div>
+        <div class="project-meta">
+          R&amp;D and Service Center (Vietnam) — SSTC Technology JSC · Sole backend owner from requirements to delivery
+        </div>
+        <div class="project-tech">
+          Java 21 · Spring Boot 3 · Spring Data JPA · PostgreSQL 16 · Flyway ·
+          Claude API · Resilience4j · Testcontainers · Docker
+        </div>
+        <ul class="project-list">
+          <li>
+            Modeled warranty intake as a 24-state backend-owned engine that
+            collects product evidence, validates serial and coverage, creates a
+            traceable ticket and arranges pickup through a provider abstraction.
+          </li>
+          <li>
+            Restricted AI to intent, confirmation and entity extraction; kept
+            PII-bearing states on local rules and all warranty decisions in
+            PostgreSQL-backed services, with deterministic fallback on AI failure.
+          </li>
+          <li>
+            Designed snapshot-based ticket records, token-protected public
+            lookup with masked PII, photo attachment ownership, audit logs and
+            external integration logs.
+          </li>
+          <li>
+            Prevented duplicate work with client-message idempotency, optimistic
+            locking, unique constraints and atomic daily ticket sequences; 57
+            automated test methods cover unit, full-flow and concurrency scenarios.
+          </li>
+        </ul>
+      </div>
 
       <div class="project">
         <div class="project-header">

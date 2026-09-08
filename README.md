@@ -1,15 +1,14 @@
-# Portfolio — "The Workflow Engine"
+# Gia Bao — Java Backend Portfolio
 
-Static portfolio for Pham Ngoc Gia Bao, built from scratch (no template) out of
-`INFO_TEMPLATE.md` and the project folders in this workspace.
+Static portfolio for Pham Ngoc Gia Bao, built with plain HTML, CSS and
+JavaScript.
 
-## Concept
+## Positioning
 
-Gia Bao's real differentiator across all 7 projects: he models messy business
-processes as **state machines** and keeps them correct under concurrency
-(optimistic/row locks, idempotency, anti-sniping, transactions). The site makes
-that the hero idea — **every project is rendered as an interactive state machine**.
-Tap a node to reveal what happens at that stage and the hard problem solved there.
+The site is designed primarily for recruiters hiring Java Backend Intern or
+Fresher candidates. It leads with Spring Boot, PostgreSQL and workflow
+reliability, then supports that positioning with verified proof and eight case
+studies. Freelance delivery remains supporting evidence of end-to-end ownership.
 
 ## Run
 
@@ -25,11 +24,12 @@ python -m http.server 4321 --directory .
 ## Files
 
 - `index.html` — structure (projects are injected by `script.js`)
-- `styles.css` — design tokens + node/transition visual language (dark + light)
+- `styles.css` — design tokens, responsive layout and dark/light themes
 - `script.js` — `PROJECTS` data (each project's state machine lives here), node
-  interactions, theme toggle, filters, counters, scroll reveal
-- `assets/` — `Resume.html`, `CV_Detail.html`, project images
-- `_old_backup/` — the previous (generic) portfolio, kept as a fallback
+  interactions, featured/supporting project visibility, theme toggle, filters,
+  navigation and contact helpers
+- `assets/` — resume, detailed CV, project assets and favicon
+- `robots.txt` — crawler access rules
 
 ## Editing content
 
@@ -37,22 +37,12 @@ All project content is the `PROJECTS` array at the top of `script.js`. Each entr
 `flow` is the list of states; a state with `challenge` + `fix` gets an amber dot
 and shows the problem/solution when clicked.
 
-## Hero animation — "the live engine"
-
-The right side of the hero is a self-contained `<canvas>` animation: a request
-packet flowing through a backend system (CLIENT → API → AUTH → SERVICE → LOCK →
-DB → CACHE → QUEUE → EMAIL), with nodes lighting up as packets arrive. It ties
-into the site's node/transition language and reinforces the "I build reliable
-systems" theme.
-
-- Pure vanilla JS in `script.js` (the `heroEngine()` block) — no libraries, no assets.
-- Reads theme colors live from CSS variables (dark/light both correct).
-- Pauses when off-screen / tab hidden; renders a single static frame under
-  `prefers-reduced-motion`. Edit the `NODES` / `PATHS` objects to change the graph.
-
 ## Notes
 
 - Education shows "Sep 2023 – Present" (matches the transcript), GPA 3.46/4.0.
-- Project code links point to public GitHub; Coffee Shop links to the team repo.
+- The warranty intake case study was engineered during Gia Bao's Backend
+  Developer Internship at the R&D and Service Center (Vietnam) of SSTC Technology JSC.
+- Coffee Shop links to its team repository. Other public projects link to Gia
+  Bao's GitHub profile until project-specific repository URLs are available.
 - Deploy: upload the contents of this `portfolio/` folder to any static host
   (Vercel / Netlify / GitHub Pages).

@@ -5,16 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="Pham Ngoc Gia Bao — Backend Java & Business Analyst intern. I model messy business processes into reliable state machines. 7 shipped systems, 2 in production."
+      content="Gia Bao is a Java backend candidate who builds reliable Spring Boot APIs, PostgreSQL data models and workflow-heavy systems."
     />
+    <meta name="author" content="Pham Ngoc Gia Bao" />
+    <meta name="robots" content="index, follow" />
     <meta name="theme-color" content="#0a0e14" />
-    <title>Gia Bao — Workflow Engineer · Backend Java & BA</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap"
-      rel="stylesheet"
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:title" content="Gia Bao — Java Backend Developer" />
+    <meta
+      property="og:description"
+      content="Java, Spring Boot and PostgreSQL projects with strong workflow modeling, concurrency handling and end-to-end ownership."
     />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Gia Bao — Java Backend Developer" />
+    <meta
+      name="twitter:description"
+      content="Java, Spring Boot and PostgreSQL systems built around real business workflows."
+    />
+    <title>Gia Bao — Java Backend Developer</title>
+    <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="./styles.css" />
     <script>
       document.documentElement.classList.add("js");
@@ -26,29 +36,9 @@
     <!-- Scroll progress -->
     <div class="scroll-progress" id="scroll-progress" aria-hidden="true"></div>
 
-    <!-- Ambient aurora glow -->
-    <div class="aurora" aria-hidden="true">
-      <span></span><span></span><span></span>
-    </div>
-    <div class="depth-lights" aria-hidden="true">
-      <span class="depth-light depth-a"></span>
-      <span class="depth-light depth-b"></span>
-      <span class="depth-light depth-c"></span>
-    </div>
-
-    <!-- Boot intro overlay -->
-    <div class="boot" id="boot" aria-hidden="true">
-      <pre class="boot-log" id="boot-log"></pre>
-    </div>
-
-    <!-- Custom cursor + film grain (desktop / JS only) -->
-    <div class="cursor-dot" id="cursor-dot" aria-hidden="true"></div>
-    <div class="cursor-ring" id="cursor-ring" aria-hidden="true"></div>
-    <div class="grain" aria-hidden="true"></div>
-
     <!-- ===== HEADER ===== -->
     <header class="site-header" id="header">
-      <nav class="nav">
+      <nav class="nav" aria-label="Primary navigation">
         <a class="logo" href="#top">
           <span class="logo-mark"></span>gia_bao<span class="logo-cursor"
             >_</span
@@ -56,15 +46,15 @@
         </a>
 
         <div class="nav-links" id="nav-links">
-          <a href="#projects">Workflows</a>
-          <a href="#skills">Capabilities</a>
-          <a href="#experience">Log</a>
-          <a href="#contact">Connect</a>
+          <a href="#projects">Work</a>
+          <a href="#capabilities">Capabilities</a>
+          <a href="#about">About</a>
+          <a href="#contact">Contact</a>
         </div>
 
         <div class="nav-right">
-          <span class="sys-status" title="Open to internship offers">
-            <span class="sys-dot"></span>AVAILABLE
+          <span class="sys-status" title="Open to Java backend internship and fresher opportunities">
+            <span class="sys-dot"></span>OPEN TO JAVA BACKEND ROLES
           </span>
           <button
             class="theme-btn"
@@ -102,7 +92,9 @@
           <button
             class="hamburger"
             type="button"
-            aria-label="Menu"
+            aria-label="Open navigation menu"
+            aria-controls="mobile-menu"
+            aria-expanded="false"
             id="hamburger"
           >
             <span></span><span></span>
@@ -112,11 +104,11 @@
     </header>
 
     <!-- ===== MOBILE MENU ===== -->
-    <div class="mobile-menu" id="mobile-menu">
-      <a href="#projects">Workflows</a>
-      <a href="#skills">Capabilities</a>
-      <a href="#experience">Log</a>
-      <a href="#contact">Connect</a>
+    <div class="mobile-menu" id="mobile-menu" aria-hidden="true">
+      <a href="#projects">Work</a>
+      <a href="#capabilities">Capabilities</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
       <a href="./assets/Resume.html" class="mobile-resume">Open Resume</a>
     </div>
 
@@ -126,95 +118,108 @@
         <div class="hero-grid">
           <div class="hero-copy">
             <p class="hero-tag">
-              <span class="rotator" id="role-rotator"
-                >Backend Java Engineer</span
-              >
+              Java Backend · Spring Boot · PostgreSQL
             </p>
             <h1>
-              I turn messy business processes<br />
-              into <span class="hl">reliable state machines.</span>
+              I build reliable Java backends for
+              <span class="hl">complex business workflows.</span>
             </h1>
             <p class="hero-sub">
-              Pham Ngoc Gia Bao — IT student at HCMUS, Ho Chi Minh City. I've
-              shipped <strong>7 systems</strong> across Spring Boot, Express,
-              PostgreSQL, React and Android —
-              <strong>2 of them run real businesses in production.</strong>
-              What I actually do: model human workflows as rigorous states, then
-              keep them correct under concurrency.
+              I’m Gia Bao, a third-year IT student at HCMUS who recently completed
+              a Backend Developer Internship at the R&amp;D Center of SSTC Technology JSC.
+              I turn multi-step business rules into explicit state machines, relational data
+              models and dependable Spring Boot APIs—backed by tests, not just diagrams.
             </p>
 
-            <div class="hero-proof" aria-label="Portfolio proof points">
-              <span><strong>7</strong> shipped systems</span>
-              <span><strong>2</strong> production projects</span>
-              <span><strong>12k</strong> load-tested users</span>
-            </div>
-
-            <!-- Signature animated pipeline -->
-            <div class="hero-machine" aria-hidden="true">
-              <div class="hm-node hm-1">
-                <span class="hm-dot"></span><span class="hm-lbl">DRAFT</span>
-              </div>
-              <span class="hm-wire"></span>
-              <div class="hm-node hm-2">
-                <span class="hm-dot"></span
-                ><span class="hm-lbl">IN REVIEW</span>
-              </div>
-              <span class="hm-wire"></span>
-              <div class="hm-node hm-3">
-                <span class="hm-dot"></span
-                ><span class="hm-lbl">SHIPPED ✓</span>
-              </div>
+            <div class="hero-proof" aria-label="How I can contribute">
+              <span>Java 21 + Spring Boot 3</span>
+              <span>Transactions + concurrency</span>
+              <span>Requirements → tested delivery</span>
             </div>
 
             <div class="hero-actions">
-              <a class="primary-cta" href="#projects">Explore case studies</a>
-              <a class="secondary-cta" href="./assets/CV_Detail.html"
-                >Open detailed CV</a
+              <a
+                class="primary-cta"
+                href="./assets/Resume.html"
+                >View resume</a
               >
+              <a class="secondary-cta" href="#projects">View case studies</a>
             </div>
 
             <div class="hero-links">
-              <a href="mailto:pn.giabao9705@gmail.com"
-                >pn.giabao9705@gmail.com</a
-              >
-              <span class="dot"></span>
               <a
                 href="https://github.com/giabaocode"
                 target="_blank"
                 rel="noopener"
-                >GitHub</a
+                >GitHub profile</a
               >
               <span class="dot"></span>
-              <a href="tel:+84907506049">0907 506 049</a>
+              <a href="./assets/CV_Detail.html">Detailed CV</a>
+              <span class="dot"></span>
+              <span>Ho Chi Minh City, Vietnam</span>
             </div>
           </div>
           <!-- /hero-copy -->
+          <aside class="hero-system" aria-label="Illustration of a reliable backend request flow">
+            <div class="system-window-bar">
+              <span class="window-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+              <span>runtime / warranty-intake</span>
+              <span class="runtime-status"><i></i>healthy</span>
+            </div>
+            <div class="system-request">
+              <span class="request-method">POST</span>
+              <code>/api/chat/message</code>
+              <span class="request-code">202</span>
+            </div>
+            <div class="system-pipeline" aria-hidden="true">
+              <div class="system-stage">
+                <span>01</span><strong>Validate</strong><small>contract + identity</small>
+              </div>
+              <div class="system-trace"><i></i></div>
+              <div class="system-stage active">
+                <span>02</span><strong>Decide</strong><small>24-state engine</small>
+              </div>
+              <div class="system-trace"><i></i></div>
+              <div class="system-stage">
+                <span>03</span><strong>Commit</strong><small>short transaction</small>
+              </div>
+            </div>
+            <div class="system-log" aria-hidden="true">
+              <p><span>15:42:08.014</span><b>INFO</b> serial verified from PostgreSQL</p>
+              <p><span>15:42:08.021</span><b>SAFE</b> idempotency key claimed</p>
+              <p><span>15:42:08.036</span><b>DONE</b> ticket snapshot committed</p>
+            </div>
+            <div class="system-footer">
+              <span><i></i> PostgreSQL</span>
+              <span>optimistic_lock=true</span>
+            </div>
+          </aside>
         </div>
         <!-- /hero-grid -->
       </section>
 
       <!-- ====== RUNTIME METRICS ====== -->
-      <section class="numbers" aria-label="Runtime metrics">
+      <section class="numbers" aria-label="Verified portfolio proof">
         <div class="number-item">
-          <span class="number" data-count="7">0</span>
-          <span class="number-label">Systems shipped</span>
+          <span class="number">8</span>
+          <span class="number-label">Completed portfolio projects</span>
         </div>
         <div class="number-item">
-          <span class="number" data-count="2">0</span>
-          <span class="number-label">Live in production</span>
+          <span class="number">2</span>
+          <span class="number-label">Used in real-world settings</span>
         </div>
         <div class="number-item">
-          <span class="number" data-count="50" data-plus="1">0</span>
-          <span class="number-label">API endpoints designed</span>
+          <span class="number">24</span>
+          <span class="number-label">States in the warranty bot engine</span>
         </div>
         <div class="number-item">
-          <span class="number" data-count="12000">0</span>
-          <span class="number-label">Virtual users load-tested</span>
+          <span class="number">12,000</span>
+          <span class="number-label">Virtual users in a K6 test scenario</span>
         </div>
       </section>
 
       <!-- ====== TECH MARQUEE ====== -->
-      <section class="marquee" aria-label="Tech stack">
+      <section class="marquee" aria-label="Core technology stack">
         <div class="marquee-track" id="marquee-track">
           <span>Java&nbsp;21</span><b>·</b><span>Spring&nbsp;Boot&nbsp;3</span
           ><b>·</b><span>PostgreSQL</span><b>·</b><span>Redis</span><b>·</b
@@ -222,8 +227,10 @@
           ><span>Express</span><b>·</b><span>React</span><b>·</b
           ><span>Next.js</span><b>·</b><span>TypeScript</span><b>·</b
           ><span>Prisma</span><b>·</b><span>MongoDB</span><b>·</b
+          ><span>Flyway</span><b>·</b><span>Testcontainers</span><b>·</b
           ><span>Resilience4j</span><b>·</b><span>K6</span><b>·</b
-          ><span>JWT</span><b>·</b><span>Gemini&nbsp;AI</span><b>·</b>
+          ><span>JWT</span><b>·</b><span>Gemini&nbsp;AI</span><b>·</b
+          ><span>Claude&nbsp;AI</span><b>·</b>
         </div>
       </section>
 
@@ -231,81 +238,136 @@
       <section class="section" id="projects">
         <div class="section-header">
           <div>
-            <h2>Workflows I built</h2>
+            <p class="section-eyebrow">Selected work</p>
+            <h2>Case studies, not just screenshots</h2>
             <p class="section-note">
-              Each project is a state machine.
-              <span class="hint">Tap a node</span> to see what happens at that
-              stage — and the hard problem I solved there.
+              Start with the problem, my exact role and the evidence. Then
+              <span class="hint">select a workflow step</span> to inspect the
+              technical decisions behind it.
             </p>
           </div>
-          <div class="filters" aria-label="Filter workflows">
-            <button class="filter active" data-filter="all">All</button>
-            <button class="filter" data-filter="backend">Backend</button>
-            <button class="filter" data-filter="ba">BA</button>
-            <button class="filter" data-filter="ai">AI</button>
-            <button class="filter" data-filter="mobile">Mobile</button>
+          <div class="filters" aria-label="Filter case studies">
+            <button class="filter active" type="button" data-filter="all" aria-pressed="true">All work</button>
+            <button class="filter" type="button" data-filter="backend" aria-pressed="false">Backend</button>
+            <button class="filter" type="button" data-filter="ba" aria-pressed="false">Analysis</button>
+            <button class="filter" type="button" data-filter="ai" aria-pressed="false">AI</button>
+            <button class="filter" type="button" data-filter="mobile" aria-pressed="false">Mobile</button>
           </div>
         </div>
 
         <div class="project-grid" id="project-grid">
           <!-- injected by script.js -->
         </div>
+        <noscript>
+          <p class="noscript-note">
+            JavaScript is required for the interactive case studies. You can
+            still review my work in the
+            <a href="./assets/CV_Detail.html">detailed CV</a>.
+          </p>
+        </noscript>
       </section>
 
-      <!-- ====== SKILLS / CAPABILITIES ====== -->
-      <section class="section" id="skills">
-        <h2>Capability registry</h2>
-        <div class="bento">
-          <div class="skill-card feat bento-3">
-            <h3><span class="sk-tick"></span>Backend</h3>
-            <p>
-              Spring Boot 3 · Java 21 · Node.js · Express · REST design · JWT ·
-              rate limiting · async events · Resilience4j
-            </p>
-            <span class="bento-badge">primary focus</span>
-          </div>
-          <div class="skill-card bento-3">
-            <h3><span class="sk-tick"></span>Database &amp; concurrency</h3>
-            <p>
-              PostgreSQL · transactions · row-level &amp; optimistic locking ·
-              CTEs · full-text search · MongoDB · Redis
-            </p>
-          </div>
-          <div class="skill-card bento-2">
-            <h3><span class="sk-tick"></span>Business analysis</h3>
-            <p>
-              Workflow decomposition · state-machine modeling · user stories ·
-              API contracts · role-based requirements · sprint planning
-            </p>
-          </div>
-          <div class="skill-card bento-2">
-            <h3><span class="sk-tick"></span>Frontend</h3>
-            <p>
-              React 18–19 · Next.js App Router · Tailwind CSS · React Query ·
-              React Hook Form · Recharts
-            </p>
-          </div>
-          <div class="skill-card bento-2">
-            <h3><span class="sk-tick"></span>AI integration</h3>
-            <p>
-              Gemini / Vertex AI · prompt engineering (~3k-word systems) ·
-              structured JSON output · PDF summarization
-            </p>
-          </div>
-          <div class="skill-card bento-6">
-            <h3><span class="sk-tick"></span>Tooling &amp; ops</h3>
-            <p>
-              Git · Docker Compose · Postman · Jira · K6 load testing · PWA /
-              Service Workers · Android Studio
-            </p>
-          </div>
+      <!-- ====== BACKEND CAPABILITIES ====== -->
+      <section class="section" id="capabilities">
+        <p class="section-eyebrow">Backend capabilities</p>
+        <h2>What I can contribute to an engineering team</h2>
+        <p class="section-lead">
+          My strongest work starts where CRUD ends: business rules,
+          transactions, failure paths and workflows that must remain correct.
+        </p>
+        <div class="service-grid">
+          <article class="service-item">
+            <span class="service-number">01</span>
+            <div>
+              <h3>Java &amp; Spring Boot APIs</h3>
+              <p>
+                Layered REST services with validation, authentication,
+                centralized error handling and clear service boundaries.
+              </p>
+              <p class="service-output">
+                Evidence: the warranty system’s channel-independent bot brain and UniHub’s
+                registration, payment and check-in backend.
+              </p>
+            </div>
+          </article>
+          <article class="service-item">
+            <span class="service-number">02</span>
+            <div>
+              <h3>PostgreSQL &amp; reliability</h3>
+              <p>
+                Relational modeling, migrations, transactions, optimistic and
+                row-level locking, idempotency and database constraints.
+              </p>
+              <p class="service-output">
+                Evidence: concurrent ticket creation, atomic sequences,
+                auction bidding locks and load-tested workshop registration.
+              </p>
+            </div>
+          </article>
+          <article class="service-item">
+            <span class="service-number">03</span>
+            <div>
+              <h3>Workflow &amp; state modeling</h3>
+              <p>
+                Translating operational rules into explicit states,
+                permissions, edge cases, data ownership and API contracts.
+              </p>
+              <p class="service-output">
+                Full-stack experience helps me trace backend decisions through
+                the interface, integrations and the user’s complete journey.
+              </p>
+            </div>
+          </article>
+        </div>
+        <p class="stack-note">
+          <strong>Core tools:</strong> Java 21, Spring Boot 3, PostgreSQL,
+          Flyway, Testcontainers, Redis, Resilience4j and Docker.
+        </p>
+      </section>
+
+      <!-- ====== ABOUT ====== -->
+      <section class="section about-section" id="about">
+        <div>
+          <p class="section-eyebrow">About</p>
+          <h2>I work from the workflow outward</h2>
+        </div>
+        <div class="about-copy">
+          <p>
+            I’m a third-year Information Technology student at HCMUS focused
+            on Java backend engineering. My strongest work sits between
+            business analysis and implementation: I make the rules explicit
+            before turning them into code.
+          </p>
+          <p>
+            That means asking what happens when two people book the same slot,
+            a payment arrives late, the network drops or a role tries to do the
+            wrong thing. I have also delivered a paid full-stack product, so I
+            understand how backend decisions affect the complete user journey.
+          </p>
         </div>
       </section>
 
-      <!-- ====== EXPERIENCE / LOG ====== -->
+      <!-- ====== EXPERIENCE ====== -->
       <section class="section" id="experience">
-        <h2>Transition log</h2>
+        <p class="section-eyebrow">Experience</p>
+        <h2>Where the work has been used</h2>
         <div class="timeline">
+          <div class="tl-item">
+            <div class="tl-date">Jun – Aug 2026</div>
+            <div class="tl-content">
+              <h3>
+                Backend Developer Intern ·
+                <span class="tl-type">R&amp;D Internship</span>
+              </h3>
+              <p class="tl-org">R&amp;D and Service Center (Vietnam) — SSTC Technology JSC</p>
+              <p>
+                Owned the "Bot Brain" electronics warranty intake system end-to-end:
+                requirements, a 24-state Spring Boot bot engine, PostgreSQL data model,
+                optimistic locking, client idempotency, photo upload pipeline, Claude AI guardrails,
+                and 57 automated tests (Testcontainers).
+              </p>
+            </div>
+          </div>
           <div class="tl-item">
             <div class="tl-date">Mar – Apr 2026</div>
             <div class="tl-content">
@@ -373,13 +435,18 @@
 
       <!-- ====== CONTACT ====== -->
       <section class="section" id="contact">
-        <h2>Open a transition</h2>
+        <p class="section-eyebrow">Get in touch</p>
+        <h2>Building a backend team? Let’s talk.</h2>
         <p class="contact-intro">
-          Looking for a <strong>Backend Java</strong> or
-          <strong>BA</strong> internship in Ho Chi Minh City. Best fit: teams
-          that care about clear requirements, clean APIs and systems that stay
-          correct under load.
+          I’m open to Java Backend Intern and Fresher opportunities in Ho Chi
+          Minh City or remote. I’m also available for carefully scoped
+          freelance work when the project fits my backend strengths.
         </p>
+        <a
+          class="contact-cta"
+          href="mailto:pn.giabao9705@gmail.com?subject=Java%20Backend%20opportunity&body=Hi%20Gia%20Bao%2C%0A%0AI%27d%20like%20to%20talk%20about%20a%20Java%20Backend%20opportunity.%0A%0A"
+          >Email me about a role <span aria-hidden="true">→</span></a
+        >
         <div class="contact-grid">
           <a href="mailto:pn.giabao9705@gmail.com" class="contact-link">
             <span class="contact-label">Email</span>
@@ -396,16 +463,7 @@
             class="contact-link"
           >
             <span class="contact-label">GitHub</span>
-            <span>giabaocode</span>
-          </a>
-          <a
-            href="https://www.facebook.com/lamineyabao21"
-            target="_blank"
-            rel="noopener"
-            class="contact-link"
-          >
-            <span class="contact-label">Facebook</span>
-            <span>Gia Bao</span>
+            <span>View profile →</span>
           </a>
           <a href="./assets/CV_Detail.html" class="contact-link">
             <span class="contact-label">CV</span>
@@ -416,6 +474,7 @@
           class="copy-btn"
           type="button"
           id="copy-email"
+          aria-live="polite"
           data-email="pn.giabao9705@gmail.com"
         >
           Copy email address
@@ -423,14 +482,22 @@
       </section>
     </main>
 
+    <dialog class="image-lightbox" id="image-lightbox" aria-label="Project screenshot preview">
+      <button class="lightbox-close" type="button" aria-label="Close image preview">×</button>
+      <figure>
+        <img id="lightbox-image" src="" alt="" />
+        <figcaption id="lightbox-caption"></figcaption>
+      </figure>
+    </dialog>
+
     <button class="to-top" id="to-top" type="button" aria-label="Back to top">
       ↑
     </button>
 
     <footer class="footer">
       <span
-        >© <span id="year"></span> Pham Ngoc Gia Bao · built from scratch, no
-        template</span
+        >© <span id="year"></span> Pham Ngoc Gia Bao · Backend systems &amp;
+        workflow-driven products</span
       >
       <span class="foot-status"
         ><span class="sys-dot"></span>Ho Chi Minh City</span
