@@ -1,0 +1,612 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pham Ngoc Gia Bao - Full-Stack AI Developer CV</title>
+    <meta
+      name="description"
+      content="Curriculum Vitae of Pham Ngoc Gia Bao — Full-Stack AI Developer specializing in LLM Orchestration, Spring Boot, Next.js, TypeScript, React, and Production AI Architectures."
+    />
+    <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32x32.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      @page {
+        size: A4;
+        margin: 0;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      :root {
+        --primary: #0f4c81;
+        --primary-light: #2563eb;
+        --primary-subtle: #eff6ff;
+        --text-main: #111827;
+        --text-muted: #4b5563;
+        --text-subtle: #6b7280;
+        --border-color: #e5e7eb;
+        --border-accent: #bfdbfe;
+        --mono-font: "JetBrains Mono", Consolas, monospace;
+      }
+      body {
+        font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        font-size: 9.25pt;
+        line-height: 1.48;
+        color: var(--text-main);
+        padding: 34px 44px;
+        max-width: 210mm;
+        margin: 0 auto;
+        background: #fff;
+        -webkit-font-smoothing: antialiased;
+      }
+      a {
+        color: var(--primary-light);
+        text-decoration: none;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+
+      /* Floating Action Bar (Hidden on print) */
+      .action-bar {
+        position: fixed;
+        bottom: 24px;
+        right: 24px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        background: rgba(15, 23, 42, 0.92);
+        backdrop-filter: blur(8px);
+        padding: 8px 14px;
+        border-radius: 9999px;
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.2);
+        z-index: 1000;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+      }
+      .action-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: #2563eb;
+        color: #fff;
+        font-size: 8.5pt;
+        font-weight: 600;
+        padding: 6px 14px;
+        border-radius: 9999px;
+        border: none;
+        cursor: pointer;
+        transition: all 0.15s ease;
+        text-decoration: none;
+      }
+      .action-btn:hover {
+        background: #1d4ed8;
+        transform: translateY(-1px);
+        text-decoration: none;
+      }
+      .action-btn.secondary {
+        background: rgba(255, 255, 255, 0.12);
+        color: #e2e8f0;
+      }
+      .action-btn.secondary:hover {
+        background: rgba(255, 255, 255, 0.22);
+        color: #fff;
+      }
+
+      /* Header */
+      .header {
+        text-align: center;
+        margin-bottom: 12px;
+        border-bottom: 2.5px solid var(--primary);
+        padding-bottom: 9px;
+      }
+      .header h1 {
+        font-size: 20pt;
+        font-weight: 800;
+        color: var(--text-main);
+        letter-spacing: -0.02em;
+        margin-bottom: 2px;
+      }
+      .header .subtitle {
+        font-size: 11pt;
+        color: var(--primary);
+        font-weight: 600;
+        margin-bottom: 5px;
+        letter-spacing: -0.01em;
+      }
+      .header .contact {
+        font-size: 8.5pt;
+        color: var(--text-muted);
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 4px 8px;
+      }
+      .header .contact span {
+        display: inline-flex;
+        align-items: center;
+      }
+      .header .contact .sep {
+        color: #d1d5db;
+      }
+
+      /* Section */
+      .section {
+        margin-bottom: 10.5px;
+      }
+      .section-title {
+        font-size: 9.75pt;
+        font-weight: 700;
+        text-transform: uppercase;
+        color: var(--primary);
+        border-bottom: 1px solid var(--border-color);
+        padding-bottom: 2px;
+        margin-bottom: 6px;
+        letter-spacing: 0.8px;
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+      }
+      .section-title .tagline {
+        font-size: 7.5pt;
+        font-weight: 500;
+        color: var(--text-subtle);
+        text-transform: none;
+        letter-spacing: normal;
+      }
+
+      .summary-text {
+        font-size: 8.95pt;
+        color: #1f2937;
+        text-align: justify;
+        line-height: 1.48;
+      }
+      .summary-text strong {
+        color: var(--text-main);
+      }
+
+      /* Education */
+      .edu-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+      }
+      .edu-row .school {
+        font-weight: 700;
+        color: var(--text-main);
+        font-size: 9.25pt;
+      }
+      .edu-row .date {
+        font-size: 8.25pt;
+        color: var(--text-subtle);
+        font-weight: 500;
+      }
+      .edu-detail {
+        font-size: 8.75pt;
+        color: var(--text-muted);
+        margin-top: 1px;
+      }
+      .edu-detail strong {
+        color: #1f2937;
+      }
+
+      /* Skills Grid */
+      .skills-table {
+        width: 100%;
+        font-size: 8.75pt;
+        border-collapse: collapse;
+      }
+      .skills-table tr {
+        border-bottom: 1px dashed #f3f4f6;
+      }
+      .skills-table tr:last-child {
+        border-bottom: none;
+      }
+      .skills-table td {
+        padding: 2.2px 0;
+        vertical-align: top;
+      }
+      .skills-table .label {
+        font-weight: 700;
+        color: #1f2937;
+        width: 132px;
+        padding-right: 8px;
+        font-size: 8.5pt;
+      }
+      .skills-table .value {
+        color: #374151;
+      }
+      .skills-table .value strong {
+        color: var(--primary);
+        font-weight: 600;
+      }
+
+      /* Experience & Projects */
+      .item {
+        margin-bottom: 8.5px;
+        page-break-inside: avoid;
+      }
+      .item:last-child {
+        margin-bottom: 0;
+      }
+      .item-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+      }
+      .item-header .role {
+        font-weight: 700;
+        font-size: 9.35pt;
+        color: var(--text-main);
+      }
+      .item-header .role .badge {
+        display: inline-block;
+        font-size: 7pt;
+        font-weight: 600;
+        padding: 0.5px 6px;
+        border-radius: 4px;
+        background: var(--primary-subtle);
+        color: var(--primary-light);
+        border: 1px solid var(--border-accent);
+        margin-left: 5px;
+        vertical-align: middle;
+        text-transform: uppercase;
+        letter-spacing: 0.3px;
+      }
+      .item-header .date {
+        font-size: 8.25pt;
+        color: var(--text-subtle);
+        font-weight: 500;
+      }
+      .item-company {
+        font-size: 8.75pt;
+        color: var(--text-muted);
+        font-style: italic;
+        margin-bottom: 2px;
+      }
+      .item-tech {
+        font-size: 7.9pt;
+        color: var(--primary);
+        font-family: var(--mono-font);
+        margin-bottom: 3px;
+        background: #f8fafc;
+        padding: 2px 6px;
+        border-radius: 4px;
+        border: 1px solid #edf2f7;
+        display: inline-block;
+      }
+      .item-list {
+        padding-left: 14px;
+        font-size: 8.75pt;
+        color: #374151;
+      }
+      .item-list li {
+        margin-bottom: 2px;
+        line-height: 1.45;
+      }
+      .item-list li strong {
+        color: var(--text-main);
+      }
+      .item-outcome {
+        font-size: 8.25pt;
+        color: #065f46;
+        background: #ecfdf5;
+        border-left: 2.5px solid #10b981;
+        padding: 2px 8px;
+        margin-top: 3px;
+        font-weight: 500;
+        border-radius: 0 4px 4px 0;
+      }
+
+      /* Print Optimizations */
+      @media print {
+        body {
+          padding: 26px 36px;
+          max-width: 100%;
+        }
+        .action-bar {
+          display: none !important;
+        }
+        a {
+          color: inherit;
+          text-decoration: none;
+        }
+        .item-tech {
+          background: #f1f5f9 !important;
+          -webkit-print-color-adjust: exact;
+          print-color-adjust: exact;
+        }
+        .item-outcome {
+          background: #f0fdf4 !important;
+          -webkit-print-color-adjust: exact;
+          print-color-adjust: exact;
+        }
+        .badge {
+          -webkit-print-color-adjust: exact;
+          print-color-adjust: exact;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Floating Action Toolbar -->
+    <div class="action-bar" role="toolbar" aria-label="CV navigation actions">
+      <a href="../index.html" class="action-btn secondary">
+        ← Portfolio
+      </a>
+      <a href="./CV_Detail.html" class="action-btn secondary">
+        Java Backend CV
+      </a>
+      <a href="./Resume.html" class="action-btn secondary">
+        ATS 1-Page
+      </a>
+      <button class="action-btn" onclick="window.print()">
+        🖨️ Print / Save PDF
+      </button>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+      <h1>PHAM NGOC GIA BAO</h1>
+      <div class="subtitle">Full-Stack AI Developer · LLM Orchestration &amp; Full-Stack Systems</div>
+      <div class="contact">
+        <span>Ho Chi Minh City, Vietnam</span>
+        <span class="sep">|</span>
+        <span>(+84) 0907 506 049</span>
+        <span class="sep">|</span>
+        <span><a href="mailto:pn.giabao9705@gmail.com">pn.giabao9705@gmail.com</a></span>
+        <span class="sep">|</span>
+        <span><a href="https://github.com/giabaocode" target="_blank" rel="noopener">github.com/giabaocode</a></span>
+        <span class="sep">|</span>
+        <span><a href="https://lunfa.net" target="_blank" rel="noopener">lunfa.net (Live AI App)</a></span>
+        <span class="sep">|</span>
+        <span><a href="https://giabaocode.github.io/Portfolio/" target="_blank" rel="noopener">Interactive Portfolio</a></span>
+      </div>
+    </header>
+
+    <!-- Professional Profile -->
+    <section class="section">
+      <div class="section-title">
+        <span>Executive Profile</span>
+        <span class="tagline">Production-Proven AI Engineering · Full-Stack Systems Architecture</span>
+      </div>
+      <p class="summary-text">
+        <strong>Full-Stack AI Developer</strong> and third-year IT student at <strong>HCMUS (GPA 3.46/4.0)</strong> with hands-on experience shipping, scaling, and testing production-grade LLM applications. Successfully built and deployed a commercial AI language learning SaaS (<strong>lunfa.net</strong>) powered by <strong>Google Gemini 2.5 Flash</strong> with structured JSON outputs and 3-layer parsing fallbacks. Architected an enterprise 24-state AI warranty intake bot brain at <strong>SSTC Technology JSC</strong> integrating <strong>Claude API</strong> with deterministic finite-state-machine guardrails, Resilience4j circuit breakers, and 57 Testcontainers integration tests. Proficient in connecting modern frontend interfaces (<strong>Next.js 16, React 19, TypeScript, Tailwind</strong>) with resilient, high-concurrency backend services (<strong>Spring Boot 3, Node.js, PostgreSQL, MongoDB, Redis</strong>). Driven to build latency-sensitive, agentic AI workflows with rock-solid data integrity.
+      </p>
+    </section>
+
+    <!-- Education -->
+    <section class="section">
+      <div class="section-title">Education</div>
+      <div class="edu-row">
+        <span class="school">University of Science — Vietnam National University HCMC (HCMUS)</span>
+        <span class="date">Sep 2023 – Present (Expected: 2027)</span>
+      </div>
+      <div class="edu-detail">
+        <strong>B.Sc. in Information Technology</strong> · Cumulative GPA: <strong>3.46 / 4.0 (8.01 / 10)</strong>
+      </div>
+      <div class="edu-detail">
+        Core Coursework: <strong>Artificial Intelligence (8.2/10)</strong> · Object-Oriented Programming (9.8/10) · Software Engineering (8.5/10) · Web Application Development (8.3/10) · Advanced Database Systems (8.1/10) · Data Structures &amp; Algorithms
+      </div>
+    </section>
+
+    <!-- Technical Skills -->
+    <section class="section">
+      <div class="section-title">
+        <span>Technical Skills</span>
+        <span class="tagline">Full-Stack AI Developer Stack</span>
+      </div>
+      <table class="skills-table">
+        <tbody>
+          <tr>
+            <td class="label">AI &amp; LLM Engineering</td>
+            <td class="value">
+              <strong>Claude 3.5 API, Google Gemini 2.5 Flash (Vertex AI), OpenAI API</strong> · Prompt Engineering (Few-Shot, Chain-of-Thought, System Prompts) · Structured Outputs (JSON Schema, Zod, Pydantic) · LLM Guardrails &amp; Deterministic FSM Fallbacks · Function Calling / Tool Use · Streaming Responses (SSE / EventSource) · PII Masking &amp; AI Safety · Context Window &amp; Token Optimization
+            </td>
+          </tr>
+          <tr>
+            <td class="label">Frontend &amp; AI UX</td>
+            <td class="value">
+              <strong>Next.js 16 (App Router, Server Actions, RSC), React 18/19, TypeScript</strong> · Tailwind CSS 4, Radix UI, TanStack Query · Streaming AI Markdown / Syntax Highlighting / Typing UI · Interactive Correction Cards &amp; Grammar Highlighting · State Management (Zustand, React Context) · Responsive Web Design &amp; PWA
+            </td>
+          </tr>
+          <tr>
+            <td class="label">Backend &amp; Services</td>
+            <td class="value">
+              <strong>Java 21, Spring Boot 3 (Security, Data JPA, Validation), Node.js, Express 5</strong> · RESTful APIs · Server-Sent Events (SSE: <code>text/event-stream</code>), WebSockets · JWT, OAuth2 (Google, Facebook) · Resilience4j (Circuit Breakers, Exponential Backoff, Rate Limiter)
+            </td>
+          </tr>
+          <tr>
+            <td class="label">Databases &amp; Caching</td>
+            <td class="value">
+              <strong>PostgreSQL 16</strong> (Transactions, Optimistic Locking <code>@Version</code>, Composite Indexes, CTEs, Raw SQL) · <strong>MongoDB</strong> (Conversational Thread Storage, Flexible Document Schemas) · <strong>Redis 7</strong> (Sliding Window Rate Limiting, Session Cache) · Prisma 7, Flyway
+            </td>
+          </tr>
+          <tr>
+            <td class="label">DevOps &amp; Testing</td>
+            <td class="value">
+              <strong>Docker, Docker Compose, Testcontainers</strong> (PostgreSQL integration testing) · K6 (Load testing 12,000 VUs) · Git/GitHub, Vercel, Supabase, Cloudinary, Postman, Linux CLI
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Professional Experience -->
+    <section class="section">
+      <div class="section-title">Professional Experience</div>
+
+      <!-- SSTC R&D Internship -->
+      <article class="item">
+        <div class="item-header">
+          <span class="role">Backend &amp; AI Workflow Developer Intern <span class="badge">Enterprise AI</span></span>
+          <span class="date">Jun – Aug 2026</span>
+        </div>
+        <div class="item-company">R&amp;D and Service Center (Vietnam) — SSTC Technology JSC</div>
+        <div class="item-tech">Java 21 · Spring Boot 3 · Claude API · PostgreSQL 16 · Resilience4j · Testcontainers · Docker · Flyway</div>
+        <ul class="item-list">
+          <li>
+            <strong>Sole backend developer</strong> responsible for designing and implementing an end-to-end conversational "Bot Brain" warranty intake and hardware diagnostic engine for computer components (RAM, SSD, VGA, Motherboards).
+          </li>
+          <li>
+            <strong>Deterministic AI Architecture:</strong> Architected a <strong>24-state finite state machine (FSM)</strong> that decoupled natural language processing from mission-critical business transactions, ensuring conversation state is persisted and channel-agnostic (Web, Zalo OA, Messenger).
+          </li>
+          <li>
+            <strong>AI Guardrails &amp; Anti-Hallucination:</strong> Confined Claude API strictly to intent recognition, entity extraction, and customer confirmation; enforced all serial validations, warranty eligibility computations, and ticket creation in PostgreSQL with deterministic local rule fallbacks.
+          </li>
+          <li>
+            <strong>Resilience &amp; Circuit Breakers:</strong> Integrated <strong>Resilience4j circuit breakers</strong>, timeout policies, and exponential backoff retry for Claude API calls, ensuring zero service disruption during LLM network latency or outage events.
+          </li>
+          <li>
+            <strong>Concurrency &amp; Data Security:</strong> Prevented duplicate ticket creation with message idempotency keys, JPA optimistic locking (<code>@Version</code>), and atomic ticket numbering (<code>NS-YYYYMMDD-000001</code>). Implemented PII masking (<code>MaskUtils</code>) and 128-bit tokenized public tracking links.
+          </li>
+          <li>
+            <strong>Comprehensive Automated Testing:</strong> Authored <strong>57 automated test methods using Testcontainers PostgreSQL</strong>, systematically verifying multi-turn conversational edge cases, race conditions, and LLM fallback paths.
+          </li>
+        </ul>
+        <div class="item-outcome">
+          → Delivered production-ready codebase to SSTC R&amp;D Center with 16 comprehensive technical specifications, 10 Flyway migrations, and 1,000 seed hardware component records.
+        </div>
+      </article>
+
+      <!-- Lunfa Freelance Project -->
+      <article class="item">
+        <div class="item-header">
+          <span class="role">Fullstack AI Developer (Freelance / Contract) <span class="badge">Production SaaS</span></span>
+          <span class="date">Mar – Apr 2026</span>
+        </div>
+        <div class="item-company">Research Group — Ho Chi Minh City University of Education</div>
+        <div class="item-tech">React 19 · Express 5 · Google Gemini 2.5 Flash (Vertex AI) · MongoDB · JWT · OAuth2 · Nodemailer</div>
+        <ul class="item-list">
+          <li>
+            Engineered the complete full-stack architecture for <strong>lunfa.net</strong> — an AI-powered conversational Chinese language learning platform for university researchers, from requirements to production deployment.
+          </li>
+          <li>
+            <strong>Prompt Engineering &amp; Structured Generation:</strong> Authored an extensive <strong>3,000-word prompt specification</strong> for Google Gemini 2.5 Flash, enforcing strict JSON Schema output for grammatical error breakdown, pinyin annotation, and pedagogical suggestions.
+          </li>
+          <li>
+            <strong>3-Tier Parsing Fallback Pipeline:</strong> Developed an automated recovery pipeline (JSON Schema Validation → Regex Content Extractor → Conversational Graceful Degradation) that safely handled malformed AI token outputs without dropping session context.
+          </li>
+          <li>
+            <strong>Interactive AI UX:</strong> Built a responsive React 19 interface with real-time error highlight markers, collapsible correction cards, and interactive vocabulary inspect popovers.
+          </li>
+          <li>
+            <strong>Security &amp; Conversation Storage:</strong> Integrated dual OAuth2 (Google &amp; Facebook) + Email OTP verification via Nodemailer; persisted multi-turn conversations and student progression history in MongoDB.
+          </li>
+        </ul>
+        <div class="item-outcome">
+          → Deployed live at <a href="https://lunfa.net" target="_blank" rel="noopener"><strong>lunfa.net</strong></a> · Actively used by research students and faculty · Delivered on time and paid in full.
+        </div>
+      </article>
+    </section>
+
+    <!-- Key Full-Stack Projects -->
+    <section class="section">
+      <div class="section-title">
+        <span>Featured Full-Stack &amp; Systems Projects</span>
+        <span class="tagline">Production Implementations</span>
+      </div>
+
+      <!-- HomestayDorm -->
+      <article class="item">
+        <div class="item-header">
+          <span class="role">HomestayDorm — Modern Full-Stack Property Management System</span>
+          <span class="date">Mar – Apr 2026</span>
+        </div>
+        <div class="item-company">Team of 4 · Role: Database Architect, Registration Pipeline, Full-Stack Feature Implementation</div>
+        <div class="item-tech">Next.js 16 (App Router) · React 19 · TypeScript · Prisma 7 · PostgreSQL · Tailwind CSS 4 · Zod</div>
+        <ul class="item-list">
+          <li>
+            Built a full-stack dormitory management web application leveraging <strong>Next.js 16 Server Actions</strong> for type-safe server-client communication without boilerplate REST controllers.
+          </li>
+          <li>
+            Designed a relational schema with 15+ models in <strong>Prisma 7</strong> with bed-level inventory granularity (Room → Bed → RegistrationTicket → Contract) and transaction rollback safety.
+          </li>
+          <li>
+            Implemented a multi-stage registration lifecycle with state machine checks (<code>DRAFT → CONSULTING → WAITING_VIEW → CONTRACT_SIGNED</code>), complete with automated email notifications.
+          </li>
+        </ul>
+      </article>
+
+      <!-- UniHub Workshop -->
+      <article class="item">
+        <div class="item-header">
+          <span class="role">UniHub Workshop — High-Concurrency University Event Platform</span>
+          <span class="date">Apr – May 2026</span>
+        </div>
+        <div class="item-company">Team of 2 · Role: Admin Engine, Redis Rate Limiting, Offline Check-in PWA, Database Design</div>
+        <div class="item-tech">Java 21 · Spring Boot 3.4 · Redis 7 · PostgreSQL 16 · React 18 PWA · IndexedDB · K6 Load Testing</div>
+        <ul class="item-list">
+          <li>
+            Engineered <strong>2-tier Redis sliding window rate limiting</strong> (5 req/10s per IP, 3 req/10s per user) with fallback to in-memory tokens to protect registration endpoints against flash-crowd attacks.
+          </li>
+          <li>
+            Developed an offline check-in <strong>Progressive Web App (PWA)</strong>: cached application shell with Service Worker, stored offline QR scans in IndexedDB, and synchronized bidirectionally on reconnection.
+          </li>
+          <li>
+            Executed rigorous load tests via <strong>K6 simulating 12,000 Virtual Users (VUs)</strong> under surge traffic, proving p95 response time &lt; 2s with &lt; 1% error rate and zero seat overselling via JPA optimistic locking (<code>@Version</code>).
+          </li>
+        </ul>
+      </article>
+
+      <!-- Online Auction Platform -->
+      <article class="item">
+        <div class="item-header">
+          <span class="role">Online Real-Time Auction &amp; Order Settlement System</span>
+          <span class="date">Nov 2025 – Jan 2026</span>
+        </div>
+        <div class="item-company">Team of 2 · Role: Database Architect, Bidding Concurrency, Seller/Bidder Subsystems</div>
+        <div class="item-tech">TypeScript · Express 5 · PostgreSQL (17 tables) · React 18 · Radix UI · Cloudinary · node-cron</div>
+        <ul class="item-list">
+          <li>
+            Architected a 17-table normalized PostgreSQL schema with composite indexes, audit logs, and self-referencing product category trees.
+          </li>
+          <li>
+            Prevented race conditions during concurrent bids using <strong>PostgreSQL row-level locking (<code>SELECT ... FOR UPDATE</code>)</strong>; implemented automated anti-sniping extension and auto-bid proxy calculations.
+          </li>
+          <li>
+            Built a 4-step escrow-style settlement workflow (Payment Proof → Shipping Confirmation → Delivery Acceptance → Mutual Rating) with real-time buyer-seller messaging.
+          </li>
+        </ul>
+      </article>
+
+      <!-- PetCareX -->
+      <article class="item">
+        <div class="item-header">
+          <span class="role">PetCareX — Full-Stack Veterinary Clinic Management System</span>
+          <span class="date">Nov 2025 – Jan 2026</span>
+        </div>
+        <div class="item-company">Team of 4 · Role: Sole Implementer (Full Frontend + Backend Architecture)</div>
+        <div class="item-tech">TypeScript · Express 4 · PostgreSQL (Raw Parameterized SQL, No ORM) · React 18 · TanStack Query · Zod</div>
+        <ul class="item-list">
+          <li>
+            Single-handedly coded all 9 route groups with a 5-role RBAC security layer (Customer, Doctor, Receptionist, Admin, Staff) and double layout system.
+          </li>
+          <li>
+            Designed automated doctor appointment scheduling with double-booking prevention and atomic PostgreSQL transaction boundaries (<code>BEGIN / COMMIT / ROLLBACK</code>).
+          </li>
+        </ul>
+      </article>
+    </section>
+
+    <!-- Leadership & Extracurricular -->
+    <section class="section">
+      <div class="section-title">Leadership &amp; Extracurricular Activities</div>
+      <div class="edu-row">
+        <span class="school">HOPE Volunteer Club HCMC — Event Operations Team</span>
+        <span class="date">Mar – Dec 2024</span>
+      </div>
+      <div class="edu-detail">
+        Coordinated logistical operations, team communications, and community outreach for non-profit student initiatives across Ho Chi Minh City.
+      </div>
+    </section>
+  </body>
+</html>

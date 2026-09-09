@@ -9,7 +9,9 @@
     />
     <meta name="author" content="Pham Ngoc Gia Bao" />
     <meta name="robots" content="index, follow" />
-    <meta name="theme-color" content="#0a0e14" />
+    <meta name="theme-color" content="#0a0f14" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#f6f8f7" media="(prefers-color-scheme: light)" />
+    <meta name="msapplication-TileColor" content="#0a0f14" />
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="en_US" />
     <meta property="og:title" content="Gia Bao — Java Backend Developer" />
@@ -17,15 +19,67 @@
       property="og:description"
       content="Java, Spring Boot and PostgreSQL projects with strong workflow modeling, concurrency handling and end-to-end ownership."
     />
-    <meta name="twitter:card" content="summary" />
+    <meta property="og:image" content="./assets/og-preview.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Pham Ngoc Gia Bao — Java Backend Developer Portfolio" />
+    <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Gia Bao — Java Backend Developer" />
     <meta
       name="twitter:description"
       content="Java, Spring Boot and PostgreSQL systems built around real business workflows."
     />
+    <meta name="twitter:image" content="./assets/og-preview.png" />
     <title>Gia Bao — Java Backend Developer</title>
-    <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml" />
+
+    <!-- Google Fonts: Inter & JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300..800;1,14..32,300..800&family=JetBrains+Mono:ital,wght@0,300..700;1,300..700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Multi-device Favicons & App Icons -->
+    <link rel="icon" href="./favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" sizes="16x16" href="./assets/favicon-16x16.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="./assets/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="48x48" href="./assets/favicon-48x48.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="./assets/apple-touch-icon.png" />
+    <link rel="manifest" href="./site.webmanifest" />
     <link rel="stylesheet" href="./styles.css" />
+
+    <!-- Schema.org JSON-LD -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Pham Ngoc Gia Bao",
+      "alternateName": "Gia Bao",
+      "jobTitle": "Java Backend Developer",
+      "description": "Java backend candidate who builds reliable Spring Boot APIs, PostgreSQL data models and workflow-heavy systems.",
+      "alumniOf": {
+        "@type": "CollegeOrUniversity",
+        "name": "University of Science — VNU HCMC (HCMUS)"
+      },
+      "knowsAbout": [
+        "Java 21",
+        "Spring Boot 3",
+        "PostgreSQL 16",
+        "Distributed Workflows",
+        "State Machines",
+        "Concurrency & Locking",
+        "Flyway",
+        "Testcontainers",
+        "Redis",
+        "Resilience4j"
+      ],
+      "url": "https://giabaocode.github.io",
+      "sameAs": [
+        "https://github.com/giabaocode"
+      ]
+    }
+    </script>
     <script>
       document.documentElement.classList.add("js");
     </script>
@@ -88,6 +142,31 @@
               <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
             </svg>
           </button>
+          <button
+            class="sound-toggle-btn"
+            type="button"
+            aria-label="Toggle tactile sound effects"
+            title="Toggle tactile sound effects"
+            id="sound-toggle"
+          >
+            <svg class="icon-sound-on" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+              <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
+              <path d="M19.07 4.93a10 10 0 0 1 0 14.14" />
+            </svg>
+            <svg class="icon-sound-off" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+              <line x1="23" y1="9" x2="17" y2="15" />
+              <line x1="17" y1="9" x2="23" y2="15" />
+            </svg>
+          </button>
+          <button class="cmd-k-btn" id="cmd-k-btn" type="button" aria-label="Open command palette (Press ⌘K)">
+            <svg class="cmd-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8" /><path d="m21 21-4.3-4.3" />
+            </svg>
+            <span class="cmd-label">Search</span>
+            <kbd class="cmd-badge">⌘K</kbd>
+          </button>
           <a class="btn-resume" href="./assets/Resume.html">Resume</a>
           <button
             class="hamburger"
@@ -105,6 +184,10 @@
 
     <!-- ===== MOBILE MENU ===== -->
     <div class="mobile-menu" id="mobile-menu" aria-hidden="true">
+      <button class="mobile-cmd-btn" id="mobile-cmd-btn" type="button">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        Quick Search &amp; Actions (⌘K)
+      </button>
       <a href="#projects">Work</a>
       <a href="#capabilities">Capabilities</a>
       <a href="#about">About</a>
@@ -154,44 +237,58 @@
                 >GitHub profile</a
               >
               <span class="dot"></span>
-              <a href="./assets/CV_Detail.html">Detailed CV</a>
+              <a href="./assets/CV_FullStack_AI.html" title="Full-Stack AI Developer CV">Full-Stack AI CV</a>
+              <span class="dot"></span>
+              <a href="./assets/CV_Detail.html" title="Java Backend Detailed CV">Java Backend CV</a>
               <span class="dot"></span>
               <span>Ho Chi Minh City, Vietnam</span>
             </div>
           </div>
           <!-- /hero-copy -->
-          <aside class="hero-system" aria-label="Illustration of a reliable backend request flow">
+          <aside class="hero-system" id="hero-runtime" aria-label="Illustration of a reliable backend request flow">
             <div class="system-window-bar">
               <span class="window-dots" aria-hidden="true"><i></i><i></i><i></i></span>
-              <span>runtime / warranty-intake</span>
-              <span class="runtime-status"><i></i>healthy</span>
+              <span class="window-title">runtime / warranty-intake</span>
+              <div class="runtime-telemetry">
+                <span class="runtime-latency" id="runtime-latency" title="Observed p95 latency">21ms</span>
+                <span class="runtime-status"><i class="status-pulse"></i><span id="runtime-status-text">healthy</span></span>
+              </div>
             </div>
             <div class="system-request">
-              <span class="request-method">POST</span>
-              <code>/api/chat/message</code>
-              <span class="request-code">202</span>
+              <div class="req-left">
+                <span class="request-method">POST</span>
+                <code>/api/chat/message</code>
+                <span class="request-code" id="runtime-status-code">202</span>
+              </div>
+              <div class="req-right">
+                <span class="runtime-trace-id" id="runtime-trace-id">trace_8f21a</span>
+                <button class="btn-simulate" id="btn-simulate-req" type="button" title="Send a simulated concurrent request to the pipeline">
+                  <span class="btn-simulate-icon">⚡</span> Run request
+                </button>
+              </div>
             </div>
-            <div class="system-pipeline" aria-hidden="true">
-              <div class="system-stage">
+            <div class="system-pipeline" id="system-pipeline" aria-label="Transaction pipeline stages">
+              <div class="system-stage" id="stage-01">
                 <span>01</span><strong>Validate</strong><small>contract + identity</small>
               </div>
-              <div class="system-trace"><i></i></div>
-              <div class="system-stage active">
+              <div class="system-trace" id="trace-line-01"><i></i></div>
+              <div class="system-stage active" id="stage-02">
                 <span>02</span><strong>Decide</strong><small>24-state engine</small>
               </div>
-              <div class="system-trace"><i></i></div>
-              <div class="system-stage">
+              <div class="system-trace" id="trace-line-02"><i></i></div>
+              <div class="system-stage" id="stage-03">
                 <span>03</span><strong>Commit</strong><small>short transaction</small>
               </div>
             </div>
-            <div class="system-log" aria-hidden="true">
+            <div class="system-log" id="system-log-stream" aria-live="polite">
               <p><span>15:42:08.014</span><b>INFO</b> serial verified from PostgreSQL</p>
               <p><span>15:42:08.021</span><b>SAFE</b> idempotency key claimed</p>
               <p><span>15:42:08.036</span><b>DONE</b> ticket snapshot committed</p>
             </div>
             <div class="system-footer">
-              <span><i></i> PostgreSQL</span>
+              <span><i></i> PostgreSQL 16</span>
               <span>optimistic_lock=true</span>
+              <span class="footer-test">57 tests passing</span>
             </div>
           </aside>
         </div>
@@ -465,8 +562,12 @@
             <span class="contact-label">GitHub</span>
             <span>View profile →</span>
           </a>
+          <a href="./assets/CV_FullStack_AI.html" class="contact-link">
+            <span class="contact-label">AI CV</span>
+            <span>Full-Stack AI Developer →</span>
+          </a>
           <a href="./assets/CV_Detail.html" class="contact-link">
-            <span class="contact-label">CV</span>
+            <span class="contact-label">Java CV</span>
             <span>Detailed version →</span>
           </a>
         </div>
@@ -490,6 +591,123 @@
       </figure>
     </dialog>
 
+    <!-- ===== COMMAND PALETTE (CMD + K) ===== -->
+    <dialog class="cmd-palette" id="cmd-palette" aria-label="Quick Command Palette">
+      <div class="cmd-palette-box">
+        <div class="cmd-search-bar">
+          <svg class="cmd-search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
+          </svg>
+          <input
+            type="text"
+            id="cmd-input"
+            class="cmd-input"
+            placeholder="Search projects, capabilities, actions or press Esc to close..."
+            autocomplete="off"
+            spellcheck="false"
+          />
+          <button class="cmd-close-btn" id="cmd-close-btn" type="button" aria-label="Close command palette">ESC</button>
+        </div>
+
+        <div class="cmd-results" id="cmd-results" role="listbox">
+          <!-- Dynamically populated by script.js -->
+        </div>
+
+        <div class="cmd-footer">
+          <span><kbd>↑</kbd><kbd>↓</kbd> to navigate</span>
+          <span><kbd>↵</kbd> to select</span>
+          <span><kbd>ESC</kbd> to close</span>
+        </div>
+      </div>
+    </dialog>
+
+    <!-- ===== CONCURRENCY PLAYGROUND MODAL ===== -->
+    <dialog class="concurrency-modal" id="concurrency-modal" aria-label="Interactive Concurrency Simulator">
+      <div class="concurrency-box">
+        <div class="concurrency-header">
+          <div class="concurrency-title">
+            <span class="concurrency-badge">INTERACTIVE PROOF</span>
+            <h3>Optimistic Concurrency Control Simulator</h3>
+          </div>
+          <button class="concurrency-close" id="concurrency-close" type="button" aria-label="Close simulator">×</button>
+        </div>
+
+        <p class="concurrency-intro">
+          This widget simulates <strong>5 concurrent HTTP worker threads</strong> hitting the <code>POST /api/workshops/1/register</code> endpoint simultaneously when only <strong>1 remaining seat</strong> exists (<code>version = 1</code>).
+        </p>
+
+        <div class="sim-dashboard">
+          <div class="sim-stat">
+            <span class="sim-stat-label">DATABASE RECORD</span>
+            <span class="sim-stat-val" id="sim-db-version">workshop_id=1 · version=1 · available=1</span>
+          </div>
+          <div class="sim-stat">
+            <span class="sim-stat-label">REDIS RATE LIMIT</span>
+            <span class="sim-stat-val text-signal" id="sim-redis-status">5 req/10s bucket healthy</span>
+          </div>
+        </div>
+
+        <div class="sim-threads" id="sim-threads">
+          <!-- 5 threads populated by JS -->
+        </div>
+
+        <div class="sim-controls">
+          <button class="sim-fire-btn" id="sim-fire-btn" type="button">
+            <span class="sim-fire-icon">🔥</span> Fire 5 Concurrent Requests
+          </button>
+          <button class="sim-reset-btn" id="sim-reset-btn" type="button">Reset State</button>
+        </div>
+
+        <div class="sim-explanation" id="sim-explanation">
+          Click <strong>"Fire 5 Concurrent Requests"</strong> to witness how Spring Boot's <code>@Version</code> annotation and PostgreSQL row MVCC prevent overselling with zero deadlocks.
+        </div>
+      </div>
+    </dialog>
+
+    <!-- ===== PRODUCTION CODE & SCHEMA INSPECTOR MODAL ===== -->
+    <dialog class="code-modal" id="code-inspector-modal" aria-label="Production Code and Schema Inspector">
+      <div class="code-box">
+        <div class="code-modal-header">
+          <div class="code-modal-title">
+            <span class="code-modal-badge">PRODUCTION ARCHITECTURE</span>
+            <h3 id="code-inspector-title">Production Code &amp; Schema Inspector</h3>
+          </div>
+          <button class="code-modal-close" id="code-inspector-close" type="button" aria-label="Close code inspector">×</button>
+        </div>
+
+        <div class="code-tabs-nav" role="tablist">
+          <button class="code-tab active" type="button" data-file="sstc-sql" role="tab" aria-selected="true">
+            <span class="file-icon sql-icon">SQL</span> V1__warranty_ticket_schema.sql
+          </button>
+          <button class="code-tab" type="button" data-file="sstc-java" role="tab" aria-selected="false">
+            <span class="file-icon java-icon">JAVA</span> WarrantyWorkflowService.java
+          </button>
+          <button class="code-tab" type="button" data-file="unihub-java" role="tab" aria-selected="false">
+            <span class="file-icon java-icon">JAVA</span> WorkshopBookingService.java
+          </button>
+          <button class="code-tab" type="button" data-file="unihub-sql" role="tab" aria-selected="false">
+            <span class="file-icon sql-icon">SQL</span> V2__inventory_lock.sql
+          </button>
+        </div>
+
+        <div class="code-content-wrap">
+          <div class="code-toolbar">
+            <span class="code-filepath" id="code-filepath">src/main/resources/db/migration/V1__warranty_ticket_schema.sql</span>
+            <button class="code-copy-btn" id="code-copy-btn" type="button">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+              <span>Copy snippet</span>
+            </button>
+          </div>
+
+          <pre class="code-pre"><code id="code-display" class="language-sql"><!-- Dynamically populated by script.js --></code></pre>
+
+          <div class="code-annotation" id="code-annotation">
+            <!-- Dynamically populated by script.js -->
+          </div>
+        </div>
+      </div>
+    </dialog>
+
     <button class="to-top" id="to-top" type="button" aria-label="Back to top">
       ↑
     </button>
@@ -504,6 +722,6 @@
       >
     </footer>
 
-    <script src="./script.js"></script>
+    <script src="./script.js?v=2.2"></script>
   </body>
 </html>

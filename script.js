@@ -113,7 +113,21 @@ const PROJECTS = [
       "Testcontainers",
       "Docker",
     ],
-    links: [],
+    media: [
+      {
+        src: "./assets/photo_prod/sstc-chat.png",
+        alt: "Giao diện Web Chat tiếp nhận bảo hành SSTC với tiến trình 6 bước và khung nhập serial",
+        caption: "Web Chat tiếp nhận — giao diện tương tác với tiến trình 6 bước, trích xuất serial và đối chiếu dữ liệu.",
+      },
+      {
+        src: "./assets/photo_prod/sstc-intake.png",
+        alt: "Bảng tiếp nhận kho nội bộ SSTC quản lý phiên nhận kiện, quét tem vận đơn và đối soát",
+        caption: "Bảng tiếp nhận kho nội bộ — quản lý phiên nhận kiện, quét tem vận đơn và đối soát thông tin linh kiện khi hàng về.",
+      },
+    ],
+    links: [
+      { label: "Inspect DDL & Code ⚡", href: "#code-inspector-modal", isAction: true, file: "sstc-sql" },
+    ],
     accessNote: "Engineered during internship at SSTC Technology JSC (Vietnam R&D and Service Center)",
     architecture: {
       label: "Backend system map",
@@ -199,6 +213,8 @@ const PROJECTS = [
       "PWA",
     ],
     links: [
+      { label: "Run Concurrency Demo ⚡", href: "#concurrency-modal", isAction: true },
+      { label: "Inspect DDL & Code ⚡", href: "#code-inspector-modal", isAction: true, file: "unihub-java" },
       { label: "GitHub profile →", href: "https://github.com/giabaocode" },
     ],
     flow: [
@@ -574,10 +590,12 @@ function projectMarkup(p) {
   const first = detailMarkup(p.flow[0]);
   const stack = p.stack.map((s) => `<span>${s}</span>`).join("");
   const links = p.links
-    .map(
-      (l) =>
-        `<a href="${l.href}" target="_blank" rel="noopener"${l.ghost ? ' class="ghost"' : ""}>${l.label}</a>`,
-    )
+    .map((l) => {
+      if (l.isAction) {
+        return `<button type="button" class="btn-project-action" data-action="${l.href}" ${l.file ? `data-file="${l.file}"` : ""}>${l.label}</button>`;
+      }
+      return `<a href="${l.href}" target="_blank" rel="noopener"${l.ghost ? ' class="ghost"' : ""}>${l.label}</a>`;
+    })
     .join("");
   const accessNote = p.accessNote
     ? `<span class="project-access">${p.accessNote}</span>`
@@ -919,3 +937,1106 @@ toTop?.addEventListener("click", () =>
     behavior: prefersReduced ? "auto" : "smooth",
   }),
 );
+
+/* ===========================================
+   CARD SPOTLIGHT (CURSOR TRACKING)
+   =========================================== */
+function initCardSpotlights() {
+  document.querySelectorAll(".project").forEach((card) => {
+    card.addEventListener("mousemove", (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      card.style.setProperty("--mouse-x", `${x}px`);
+      card.style.setProperty("--mouse-y", `${y}px`);
+    });
+  });
+}
+initCardSpotlights();
+
+/* ===========================================
+   KEYBOARD NAVIGATION FOR WORKFLOW NODES
+   =========================================== */
+grid.addEventListener("keydown", (e) => {
+  const btn = e.target.closest(".node");
+  if (!btn) return;
+  const nodes = [...btn.parentElement.querySelectorAll(".node")];
+  const currentIndex = nodes.indexOf(btn);
+
+  if (e.key === "ArrowRight" && currentIndex < nodes.length - 1) {
+    e.preventDefault();
+    nodes[currentIndex + 1].focus();
+    nodes[currentIndex + 1].click();
+  } else if (e.key === "ArrowLeft" && currentIndex > 0) {
+    e.preventDefault();
+    nodes[currentIndex - 1].focus();
+    nodes[currentIndex - 1].click();
+  }
+});
+
+/* ===========================================
+   LIVING HERO RUNTIME ENGINE
+   =========================================== */
+const runtimeLatencyEl = document.getElementById("runtime-latency");
+const runtimeTraceEl = document.getElementById("runtime-trace-id");
+const runtimeStatusCode = document.getElementById("runtime-status-code");
+const btnSimulateReq = document.getElementById("btn-simulate-req");
+const logStream = document.getElementById("system-log-stream");
+const stage1 = document.getElementById("stage-01");
+const stage2 = document.getElementById("stage-02");
+const stage3 = document.getElementById("stage-03");
+
+let isHeroSimulating = false;
+
+function generateTraceId() {
+  return "trace_" + Math.random().toString(16).substring(2, 7);
+}
+
+function getFormattedTime() {
+  const now = new Date();
+  const pad = (n, z = 2) => String(n).padStart(z, "0");
+  return `${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}.${pad(now.getMilliseconds(), 3)}`;
+}
+
+function triggerHeroSimulation(isManual = false) {
+  if (isHeroSimulating) return;
+  isHeroSimulating = true;
+
+  const traceId = generateTraceId();
+  const latency = Math.floor(Math.random() * 14) + 16; // 16ms - 29ms
+  if (runtimeTraceEl) runtimeTraceEl.textContent = traceId;
+  if (runtimeLatencyEl) runtimeLatencyEl.textContent = `${latency}ms`;
+  if (btnSimulateReq) {
+    btnSimulateReq.disabled = true;
+    btnSimulateReq.innerHTML = `<span class="btn-simulate-icon">⏳</span> Running...`;
+  }
+
+  // Phase 1: Validate
+  stage1?.classList.add("active");
+  stage2?.classList.remove("active");
+  stage3?.classList.remove("active");
+
+  setTimeout(() => {
+    // Phase 2: Decide
+    stage1?.classList.remove("active");
+    stage2?.classList.add("active");
+
+    setTimeout(() => {
+      // Phase 3: Commit
+      stage2?.classList.remove("active");
+      stage3?.classList.add("active");
+
+      // Add log
+      if (logStream) {
+        const time = getFormattedTime();
+        const codeNum = String(Math.floor(Math.random() * 900) + 100);
+        const ymd = new Date().toISOString().slice(0, 10).replace(/-/g, "");
+        const logs = [
+          `<p><span>${time}</span><b>POST</b> ${traceId} token claimed via Redis</p>`,
+          `<p><span>${time}</span><b>SAFE</b> PostgreSQL row version=1 verified</p>`,
+          `<p><span>${time}</span><b>DONE</b> ticket NS-${ymd}-${codeNum} committed in ${latency}ms</p>`,
+        ];
+        logStream.innerHTML = logs.join("");
+      }
+
+      setTimeout(() => {
+        // Settle back to steady state
+        stage3?.classList.remove("active");
+        stage2?.classList.add("active");
+        if (btnSimulateReq) {
+          btnSimulateReq.disabled = false;
+          btnSimulateReq.innerHTML = `<span class="btn-simulate-icon">⚡</span> Run request`;
+        }
+        isHeroSimulating = false;
+      }, 400);
+    }, 350);
+  }, 300);
+}
+
+btnSimulateReq?.addEventListener("click", () => triggerHeroSimulation(true));
+
+// Auto periodic telemetry heartbeat (every 8.5s) if user doesn't prefer reduced motion
+if (!prefersReduced) {
+  setInterval(() => {
+    if (!isHeroSimulating && document.visibilityState === "visible") {
+      triggerHeroSimulation(false);
+    }
+  }, 8500);
+}
+
+/* ===========================================
+   COMMAND PALETTE (CMD + K)
+   =========================================== */
+const cmdPalette = document.getElementById("cmd-palette");
+const cmdInput = document.getElementById("cmd-input");
+const cmdResults = document.getElementById("cmd-results");
+const cmdCloseBtn = document.getElementById("cmd-close-btn");
+const cmdKBtn = document.getElementById("cmd-k-btn");
+const mobileCmdBtn = document.getElementById("mobile-cmd-btn");
+
+const COMMANDS = [
+  // Navigation
+  { category: "Navigation", title: "Selected Work & Case Studies", desc: "View production systems and state machines", href: "#projects", icon: "💼", badge: "WORK" },
+  { category: "Navigation", title: "Backend Capabilities", desc: "Java, PostgreSQL, transactions & reliability", href: "#capabilities", icon: "⚡", badge: "STACK" },
+  { category: "Navigation", title: "About & Engineering Philosophy", desc: "Background, HCMUS & workflow-driven approach", href: "#about", icon: "👤", badge: "ABOUT" },
+  { category: "Navigation", title: "Contact Information", desc: "Get in touch for internships & opportunities", href: "#contact", icon: "✉️", badge: "EMAIL" },
+
+  // Key Projects
+  { category: "Case Studies", title: "SSTC Technology JSC — R&D Internship", desc: "24-state warranty bot engine, PostgreSQL, Testcontainers", action: "open_sstc", icon: "🏢", badge: "SSTC" },
+  { category: "Case Studies", title: "UniHub Workshop Lifecycle Platform", desc: "12,000 VU load-tested, optimistic locking, Redis rate limit", action: "open_unihub", icon: "🎓", badge: "UNIHUB" },
+  { category: "Case Studies", title: "Lunfa — AI Chinese Writing Tutor", desc: "Live in production at lunfa.net with Vertex AI Gemini 2.5", href: "https://lunfa.net", isExternal: true, icon: "🌏", badge: "LUNFA" },
+
+  // Interactive Tools & Actions
+  { category: "Interactive Actions", title: "Inspect Production Code & DDL", desc: "View actual PostgreSQL Flyway schemas and Spring Boot transaction code", action: "open_code_inspector", icon: "💻", badge: "CODE" },
+  { category: "Interactive Actions", title: "Simulate Concurrency Race (Optimistic Lock)", desc: "Simulate 5 concurrent requests hitting a single remaining ticket", action: "open_concurrency_sim", icon: "🔥", badge: "DEMO" },
+  { category: "Interactive Actions", title: "Trigger Backend Runtime Simulation", desc: "Send simulated request through hero pipeline", action: "simulate_hero", icon: "⚡", badge: "TEST" },
+  { category: "Interactive Actions", title: "Toggle Tactile Audio Effects", desc: "Enable or disable mechanical click sounds", action: "toggle_sound", icon: "🔊", badge: "AUDIO" },
+  { category: "Interactive Actions", title: "View 1-Page Resume (ATS-Ready)", desc: "Open print-ready single-page resume", href: "./assets/Resume.html", icon: "📄", badge: "RESUME" },
+  { category: "Interactive Actions", title: "View Full-Stack AI Developer CV", desc: "Tailored for Full-Stack AI, LLM Orchestration, Next.js & Spring Boot", href: "./assets/CV_FullStack_AI.html", icon: "🤖", badge: "AI CV" },
+  { category: "Interactive Actions", title: "View Detailed Academic CV (Java Backend)", desc: "Comprehensive course metrics & 8 projects breakdown", href: "./assets/CV_Detail.html", icon: "📋", badge: "CV" },
+  { category: "Interactive Actions", title: "Copy Email Address", desc: "pn.giabao9705@gmail.com", action: "copy_email", icon: "📋", badge: "COPY" },
+  { category: "Interactive Actions", title: "Toggle Dark / Light Theme", desc: "Switch color theme palette", action: "toggle_theme", icon: "🌓", badge: "THEME" },
+];
+
+let activeCmdIndex = 0;
+let filteredCommands = [...COMMANDS];
+
+function renderCmdResults() {
+  if (!cmdResults) return;
+  if (filteredCommands.length === 0) {
+    cmdResults.innerHTML = `
+      <div style="padding: 24px; text-align: center; color: var(--text-3); font-size: 13px;">
+        No results found for "${cmdInput?.value || ""}".
+      </div>`;
+    return;
+  }
+
+  const groups = {};
+  filteredCommands.forEach((cmd, idx) => {
+    if (!groups[cmd.category]) groups[cmd.category] = [];
+    groups[cmd.category].push({ cmd, globalIndex: idx });
+  });
+
+  let html = "";
+  for (const [category, items] of Object.entries(groups)) {
+    html += `<div class="cmd-group-title">${category}</div>`;
+    items.forEach(({ cmd, globalIndex }) => {
+      const isActive = globalIndex === activeCmdIndex;
+      html += `
+        <div class="cmd-item${isActive ? " active" : ""}" data-index="${globalIndex}" role="option" aria-selected="${isActive}">
+          <div class="cmd-item-left">
+            <span class="cmd-item-icon">${cmd.icon}</span>
+            <div class="cmd-item-info">
+              <div class="cmd-item-title">${cmd.title}</div>
+              <div class="cmd-item-desc">${cmd.desc}</div>
+            </div>
+          </div>
+          <span class="cmd-item-badge">${cmd.badge}</span>
+        </div>`;
+    });
+  }
+
+  cmdResults.innerHTML = html;
+
+  const activeEl = cmdResults.querySelector(".cmd-item.active");
+  if (activeEl) {
+    activeEl.scrollIntoView({ block: "nearest" });
+  }
+}
+
+function openCmdPalette() {
+  if (!cmdPalette) return;
+  cmdPalette.showModal();
+  document.body.style.overflow = "hidden";
+  if (cmdInput) {
+    cmdInput.value = "";
+    cmdInput.focus();
+  }
+  filteredCommands = [...COMMANDS];
+  activeCmdIndex = 0;
+  renderCmdResults();
+}
+
+function closeCmdPalette() {
+  if (!cmdPalette) return;
+  cmdPalette.close();
+  document.body.style.overflow = "";
+}
+
+function executeCommand(cmd) {
+  if (!cmd) return;
+  closeCmdPalette();
+
+  if (cmd.href) {
+    if (cmd.isExternal) {
+      window.open(cmd.href, "_blank", "noopener");
+    } else if (cmd.href.startsWith("#")) {
+      const target = document.querySelector(cmd.href);
+      if (target) {
+        target.scrollIntoView({ behavior: "smooth" });
+      }
+    } else {
+      window.location.href = cmd.href;
+    }
+  } else if (cmd.action) {
+    if (cmd.action === "open_sstc") {
+      const sstcEl = document.querySelector('[data-project="sstc"]');
+      if (sstcEl) {
+        sstcEl.scrollIntoView({ behavior: "smooth" });
+        const details = sstcEl.querySelector(".technical-details");
+        if (details) details.open = true;
+      }
+    } else if (cmd.action === "open_unihub") {
+      const unihubEl = document.querySelector('[data-project="unihub"]');
+      if (unihubEl) {
+        unihubEl.scrollIntoView({ behavior: "smooth" });
+        const details = unihubEl.querySelector(".technical-details");
+        if (details) details.open = true;
+      }
+    } else if (cmd.action === "open_concurrency_sim") {
+      openConcurrencyModal();
+    } else if (cmd.action === "simulate_hero") {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      setTimeout(() => triggerHeroSimulation(true), 300);
+    } else if (cmd.action === "copy_email") {
+      navigator.clipboard?.writeText("pn.giabao9705@gmail.com");
+      const copyBtn = document.getElementById("copy-email");
+      if (copyBtn) {
+        copyBtn.textContent = "Copied ✓";
+        setTimeout(() => (copyBtn.textContent = "Copy email address"), 2000);
+      }
+    } else if (cmd.action === "toggle_theme") {
+      const themeBtn = document.getElementById("theme-btn");
+      themeBtn?.click();
+    }
+  }
+}
+
+cmdKBtn?.addEventListener("click", openCmdPalette);
+mobileCmdBtn?.addEventListener("click", openCmdPalette);
+cmdCloseBtn?.addEventListener("click", closeCmdPalette);
+
+cmdPalette?.addEventListener("click", (e) => {
+  if (e.target === cmdPalette) closeCmdPalette();
+});
+
+cmdInput?.addEventListener("input", (e) => {
+  const query = e.target.value.toLowerCase().trim();
+  if (!query) {
+    filteredCommands = [...COMMANDS];
+  } else {
+    filteredCommands = COMMANDS.filter(
+      (c) =>
+        c.title.toLowerCase().includes(query) ||
+        c.desc.toLowerCase().includes(query) ||
+        c.category.toLowerCase().includes(query) ||
+        c.badge.toLowerCase().includes(query),
+    );
+  }
+  activeCmdIndex = 0;
+  renderCmdResults();
+});
+
+cmdInput?.addEventListener("keydown", (e) => {
+  if (e.key === "ArrowDown") {
+    e.preventDefault();
+    if (filteredCommands.length > 0) {
+      activeCmdIndex = (activeCmdIndex + 1) % filteredCommands.length;
+      renderCmdResults();
+    }
+  } else if (e.key === "ArrowUp") {
+    e.preventDefault();
+    if (filteredCommands.length > 0) {
+      activeCmdIndex =
+        (activeCmdIndex - 1 + filteredCommands.length) % filteredCommands.length;
+      renderCmdResults();
+    }
+  } else if (e.key === "Enter") {
+    e.preventDefault();
+    if (filteredCommands[activeCmdIndex]) {
+      executeCommand(filteredCommands[activeCmdIndex]);
+    }
+  } else if (e.key === "Escape") {
+    closeCmdPalette();
+  }
+});
+
+cmdResults?.addEventListener("click", (e) => {
+  const item = e.target.closest(".cmd-item");
+  if (!item) return;
+  const idx = parseInt(item.dataset.index, 10);
+  executeCommand(filteredCommands[idx]);
+});
+
+// Global shortcut Cmd+K / Ctrl+K
+window.addEventListener("keydown", (e) => {
+  if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
+    e.preventDefault();
+    if (cmdPalette?.open) {
+      closeCmdPalette();
+    } else {
+      openCmdPalette();
+    }
+  }
+});
+
+/* ===========================================
+   CONCURRENCY PLAYGROUND CONTROLLER
+   =========================================== */
+const concurrencyModal = document.getElementById("concurrency-modal");
+const concurrencyClose = document.getElementById("concurrency-close");
+const simFireBtn = document.getElementById("sim-fire-btn");
+const simResetBtn = document.getElementById("sim-reset-btn");
+const simThreads = document.getElementById("sim-threads");
+const simDbVersion = document.getElementById("sim-db-version");
+const simRedisStatus = document.getElementById("sim-redis-status");
+const simExplanation = document.getElementById("sim-explanation");
+
+const THREADS_DATA = [
+  { id: "Thread #1", user: "student_492", pid: "tx-4921" },
+  { id: "Thread #2", user: "student_883", pid: "tx-4922" },
+  { id: "Thread #3", user: "student_104", pid: "tx-4923" },
+  { id: "Thread #4", user: "student_771", pid: "tx-4924" },
+  { id: "Thread #5", user: "student_315", pid: "tx-4925" },
+];
+
+function renderInitialThreads() {
+  if (!simThreads) return;
+  simThreads.innerHTML = THREADS_DATA.map(
+    (t) => `
+      <div class="sim-thread" id="sim-${t.pid}">
+        <div>
+          <span class="sim-thread-name">${t.id} (${t.user})</span>
+          <span style="color: var(--text-3); font-size: 10px; margin-left: 6px;">[PID ${t.pid}]</span>
+        </div>
+        <span class="sim-thread-status">IDLE · version=1 read</span>
+      </div>`,
+  ).join("");
+  if (simDbVersion) {
+    simDbVersion.textContent = "workshop_id=1 · version=1 · available=1";
+  }
+  if (simRedisStatus) {
+    simRedisStatus.textContent = "5 req/10s bucket healthy";
+  }
+  if (simExplanation) {
+    simExplanation.innerHTML = `Click <strong>"Fire 5 Concurrent Requests"</strong> to witness how Spring Boot's <code>@Version</code> annotation and PostgreSQL row MVCC prevent overselling with zero deadlocks.`;
+  }
+}
+
+function openConcurrencyModal() {
+  if (!concurrencyModal) return;
+  concurrencyModal.showModal();
+  document.body.style.overflow = "hidden";
+  renderInitialThreads();
+}
+
+function closeConcurrencyModal() {
+  if (!concurrencyModal) return;
+  concurrencyModal.close();
+  document.body.style.overflow = "";
+}
+
+concurrencyClose?.addEventListener("click", closeConcurrencyModal);
+concurrencyModal?.addEventListener("click", (e) => {
+  if (e.target === concurrencyModal) closeConcurrencyModal();
+});
+
+simResetBtn?.addEventListener("click", renderInitialThreads);
+
+simFireBtn?.addEventListener("click", () => {
+  if (simFireBtn.disabled) return;
+  simFireBtn.disabled = true;
+  simFireBtn.textContent = "Executing 5 concurrent transactions...";
+
+  if (simRedisStatus) {
+    simRedisStatus.textContent = "Tokens consumed: 5/5 claimed (Bucket throttled)";
+  }
+
+  // Set all to TRYING
+  document.querySelectorAll(".sim-thread").forEach((el) => {
+    el.className = "sim-thread";
+    el.querySelector(".sim-thread-status").textContent =
+      "TRY_COMMIT (WHERE version=1)";
+  });
+
+  // Winner is random thread
+  const winnerIndex = Math.floor(Math.random() * THREADS_DATA.length);
+
+  setTimeout(() => {
+    THREADS_DATA.forEach((t, idx) => {
+      const el = document.getElementById(`sim-${t.pid}`);
+      if (!el) return;
+
+      if (idx === winnerIndex) {
+        el.className = "sim-thread winner";
+        el.querySelector(".sim-thread-status").textContent =
+          "200 OK · COMMITTED (version=2, seat claimed)";
+      } else {
+        el.className = "sim-thread conflict";
+        el.querySelector(".sim-thread-status").textContent =
+          "409 CONFLICT · OptimisticLockException (Rollback)";
+      }
+    });
+
+    if (simDbVersion) {
+      simDbVersion.innerHTML = `<strong>workshop_id=1 · version=2 · available=0 (LOCKED)</strong>`;
+    }
+
+    if (simExplanation) {
+      simExplanation.innerHTML = `
+        <strong>Result:</strong> ${THREADS_DATA[winnerIndex].id} won the atomic write race. The other 4 threads caught 
+        <code>OptimisticLockException</code> because the row version incremented to 2, causing their 
+        <code>UPDATE ... WHERE version=1</code> to affect 0 rows. 
+        <strong>Zero overselling. Zero database deadlocks.</strong>`;
+    }
+
+    simFireBtn.disabled = false;
+    simFireBtn.innerHTML = `<span class="sim-fire-icon">🔥</span> Fire Again`;
+  }, 450);
+});
+
+// Event delegation for opening concurrency modal from action buttons
+document.addEventListener("click", (e) => {
+  const btn = e.target.closest(
+    '[data-action="#concurrency-modal"], .btn-project-action',
+  );
+  if (btn) {
+    e.preventDefault();
+    openConcurrencyModal();
+  }
+});
+
+// Re-init spotlights when projects are expanded
+projectToggle?.addEventListener("click", () => {
+  setTimeout(initCardSpotlights, 50);
+});
+
+/* ===========================================
+   WEB AUDIO API — TACTILE SOUND ENGINE
+   =========================================== */
+class SoundEngine {
+  constructor() {
+    this.ctx = null;
+    // Default to enabled (true) unless explicitly muted in localStorage
+    this.enabled = localStorage.getItem("portfolio_sound_v2") !== "false";
+    this.toggleBtn = document.getElementById("sound-toggle");
+    this.updateUI();
+    this.setupAutoUnlock();
+  }
+
+  setupAutoUnlock() {
+    const unlock = async () => {
+      await this.ensureContext();
+      window.removeEventListener("pointerdown", unlock);
+      window.removeEventListener("keydown", unlock);
+      window.removeEventListener("click", unlock);
+    };
+    window.addEventListener("pointerdown", unlock, { passive: true, once: true });
+    window.addEventListener("keydown", unlock, { passive: true, once: true });
+    window.addEventListener("click", unlock, { passive: true, once: true });
+  }
+
+  async ensureContext() {
+    try {
+      if (!this.ctx && (typeof AudioContext !== "undefined" || typeof webkitAudioContext !== "undefined")) {
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        this.ctx = new AudioCtx();
+      }
+      if (this.ctx && this.ctx.state === "suspended") {
+        await this.ctx.resume();
+      }
+    } catch {
+      // Browser policy or audio device busy
+    }
+    return this.ctx;
+  }
+
+  updateUI() {
+    if (!this.toggleBtn) return;
+    this.toggleBtn.classList.toggle("sound-muted", !this.enabled);
+    this.toggleBtn.setAttribute("aria-pressed", String(this.enabled));
+    this.toggleBtn.setAttribute(
+      "title",
+      this.enabled
+        ? "Tactile sound effects: ON (Click to mute)"
+        : "Tactile sound effects: OFF (Click to unmute)"
+    );
+  }
+
+  async toggle() {
+    await this.ensureContext();
+    if (this.enabled) {
+      // Play a soft downward click before muting
+      this.playClick("mute_tick");
+      this.enabled = false;
+    } else {
+      this.enabled = true;
+      // Play a bright confirmation chime when unmuting
+      this.playClick("chime");
+    }
+    localStorage.setItem("portfolio_sound_v2", String(this.enabled));
+    this.updateUI();
+  }
+
+  async playClick(type = "soft") {
+    // If sound is muted by user, skip (unless it's mute_tick which is played during toggle)
+    if (!this.enabled && type !== "mute_tick") return;
+
+    try {
+      const ctx = await this.ensureContext();
+      if (!ctx || ctx.state !== "running") return;
+
+      const now = ctx.currentTime;
+
+      if (type === "chime") {
+        // Bright two-tone confirmation when enabling sound
+        const osc1 = ctx.createOscillator();
+        const osc2 = ctx.createOscillator();
+        const gain = ctx.createGain();
+
+        osc1.type = "sine";
+        osc1.frequency.setValueAtTime(659.25, now); // E5
+        osc2.type = "sine";
+        osc2.frequency.setValueAtTime(987.77, now + 0.05); // B5
+
+        gain.gain.setValueAtTime(0.22, now);
+        gain.gain.linearRampToValueAtTime(0.01, now + 0.12);
+        gain.gain.linearRampToValueAtTime(0, now + 0.14);
+
+        osc1.connect(gain);
+        osc2.connect(gain);
+        gain.connect(ctx.destination);
+
+        osc1.start(now);
+        osc1.stop(now + 0.06);
+        osc2.start(now + 0.05);
+        osc2.stop(now + 0.14);
+        return;
+      }
+
+      if (type === "mute_tick") {
+        // Subtle downward click when turning off
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = "triangle";
+        osc.frequency.setValueAtTime(320, now);
+        osc.frequency.exponentialRampToValueAtTime(110, now + 0.035);
+
+        gain.gain.setValueAtTime(0.18, now);
+        gain.gain.linearRampToValueAtTime(0, now + 0.035);
+
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.035);
+        return;
+      }
+
+      if (type === "pop" || type === "sharp") {
+        // Crisp mechanical switch snap (Cherry MX / tactile actuation)
+        // High transient for the crisp tactile "tick"
+        const oscHigh = ctx.createOscillator();
+        const oscLow = ctx.createOscillator();
+        const gain = ctx.createGain();
+
+        oscHigh.type = "triangle";
+        oscHigh.frequency.setValueAtTime(1600, now);
+        oscHigh.frequency.exponentialRampToValueAtTime(750, now + 0.018);
+
+        oscLow.type = "sine";
+        oscLow.frequency.setValueAtTime(540, now);
+        oscLow.frequency.exponentialRampToValueAtTime(160, now + 0.055);
+
+        gain.gain.setValueAtTime(0.28, now);
+        gain.gain.exponentialRampToValueAtTime(0.005, now + 0.05);
+        gain.gain.linearRampToValueAtTime(0, now + 0.055);
+
+        oscHigh.connect(gain);
+        oscLow.connect(gain);
+        gain.connect(ctx.destination);
+
+        oscHigh.start(now);
+        oscHigh.stop(now + 0.02);
+        oscLow.start(now);
+        oscLow.stop(now + 0.055);
+      } else {
+        // Soft tactile tap (like Topre switch or refined iOS keyboard tap)
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+
+        osc.type = "triangle";
+        osc.frequency.setValueAtTime(680, now);
+        osc.frequency.exponentialRampToValueAtTime(220, now + 0.042);
+
+        gain.gain.setValueAtTime(0.22, now);
+        gain.gain.exponentialRampToValueAtTime(0.005, now + 0.038);
+        gain.gain.linearRampToValueAtTime(0, now + 0.042);
+
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+
+        osc.start(now);
+        osc.stop(now + 0.042);
+      }
+    } catch {
+      // Graceful fallback
+    }
+  }
+}
+
+const soundEngine = new SoundEngine();
+window.soundEngine = soundEngine;
+document.getElementById("sound-toggle")?.addEventListener("click", () => soundEngine.toggle());
+
+// Hook sound to all interactive UI elements
+document.addEventListener("click", (e) => {
+  const target = e.target.closest(
+    "button, a, .node, .filter, .code-tab, input[type='radio'], input[type='checkbox'], summary, [role='button']"
+  );
+  if (target) {
+    if (target.id === "sound-toggle") return; // Toggle button handles its own chime/tick
+    const isSharp = target.matches(
+      ".primary-cta, .secondary-cta, .sim-fire-btn, .btn-simulate, .btn-project-action, .theme-btn, .cmd-k-btn, .code-copy-btn, .btn-resume, .mobile-cmd-btn"
+    );
+    soundEngine.playClick(isSharp ? "sharp" : "soft");
+  }
+});
+
+/* ===========================================
+   PRODUCTION CODE & SCHEMA INSPECTOR
+   =========================================== */
+const codeModal = document.getElementById("code-inspector-modal");
+const codeCloseBtn = document.getElementById("code-inspector-close");
+const codeTitle = document.getElementById("code-inspector-title");
+const codeFilepath = document.getElementById("code-filepath");
+const codeDisplay = document.getElementById("code-display");
+const codeAnnotation = document.getElementById("code-annotation");
+const codeCopyBtn = document.getElementById("code-copy-btn");
+const codeTabs = document.querySelectorAll(".code-tab");
+
+const CODE_SNIPPETS = {
+  "sstc-sql": {
+    title: "SSTC Warranty Intake — PostgreSQL 16 Flyway Migration",
+    filepath: "src/main/resources/db/migration/V1__warranty_ticket_schema.sql",
+    annotation: "<strong>PostgreSQL Reliability:</strong> Sequence table guarantees zero-gap ticket codes (NS-YYYYMMDD-000001) under concurrent traffic. Cột <code>version BIGINT DEFAULT 0</code> áp dụng Optimistic Concurrency Control, và composite index tối ưu hóa tra cứu theo trạng thái.",
+    raw: `-- V1__warranty_ticket_schema.sql (PostgreSQL 16)
+-- 1. Atomic Daily Sequence Table (Ensures zero-gap ticket codes)
+CREATE TABLE IF NOT EXISTS ticket_daily_seq (
+    seq_date DATE PRIMARY KEY,
+    current_val INT NOT NULL DEFAULT 0
+);
+
+-- 2. Authoritative Warranty Tickets Table
+CREATE TABLE IF NOT EXISTS warranty_tickets (
+    id BIGSERIAL PRIMARY KEY,
+    ticket_code VARCHAR(32) NOT NULL UNIQUE,
+    component_id BIGINT NOT NULL REFERENCES catalog_components(id) ON DELETE RESTRICT,
+    serial_number VARCHAR(64) NOT NULL,
+    customer_phone VARCHAR(20) NOT NULL,
+    current_state VARCHAR(32) NOT NULL DEFAULT 'RECEIVED',
+    
+    -- Crucial: Optimistic Locking version column for concurrent turn consistency
+    version BIGINT NOT NULL DEFAULT 0,
+    
+    -- Client idempotency key & privacy-safe lookup token
+    client_idempotency_key VARCHAR(64) UNIQUE,
+    lookup_token VARCHAR(64) NOT NULL UNIQUE,
+    
+    -- Immutable product snapshot at intake (protects against future catalog edits)
+    product_snapshot JSONB NOT NULL,
+    
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+-- Composite index for lightning-fast lookups
+CREATE INDEX idx_tickets_serial_state ON warranty_tickets(serial_number, current_state);
+CREATE INDEX idx_tickets_lookup_token ON warranty_tickets(lookup_token);`,
+    html: `<span class="syn-com">-- V1__warranty_ticket_schema.sql (PostgreSQL 16)</span>
+<span class="syn-com">-- 1. Atomic Daily Sequence Table (Ensures zero-gap ticket codes)</span>
+<span class="syn-kw">CREATE TABLE IF NOT EXISTS</span> <span class="syn-type">ticket_daily_seq</span> (
+    seq_date <span class="syn-type">DATE PRIMARY KEY</span>,
+    current_val <span class="syn-type">INT NOT NULL DEFAULT</span> <span class="syn-num">0</span>
+);
+
+<span class="syn-com">-- 2. Authoritative Warranty Tickets Table</span>
+<span class="syn-kw">CREATE TABLE IF NOT EXISTS</span> <span class="syn-type">warranty_tickets</span> (
+    id <span class="syn-type">BIGSERIAL PRIMARY KEY</span>,
+    ticket_code <span class="syn-type">VARCHAR</span>(<span class="syn-num">32</span>) <span class="syn-kw">NOT NULL UNIQUE</span>,
+    component_id <span class="syn-type">BIGINT NOT NULL REFERENCES</span> catalog_components(id) <span class="syn-kw">ON DELETE RESTRICT</span>,
+    serial_number <span class="syn-type">VARCHAR</span>(<span class="syn-num">64</span>) <span class="syn-kw">NOT NULL</span>,
+    customer_phone <span class="syn-type">VARCHAR</span>(<span class="syn-num">20</span>) <span class="syn-kw">NOT NULL</span>,
+    current_state <span class="syn-type">VARCHAR</span>(<span class="syn-num">32</span>) <span class="syn-kw">NOT NULL DEFAULT</span> <span class="syn-str">'RECEIVED'</span>,
+    
+    <span class="syn-com">-- Crucial: Optimistic Locking version column for concurrent turn consistency</span>
+    version <span class="syn-type">BIGINT NOT NULL DEFAULT</span> <span class="syn-num">0</span>,
+    
+    <span class="syn-com">-- Client idempotency key &amp; privacy-safe lookup token</span>
+    client_idempotency_key <span class="syn-type">VARCHAR</span>(<span class="syn-num">64</span>) <span class="syn-kw">UNIQUE</span>,
+    lookup_token <span class="syn-type">VARCHAR</span>(<span class="syn-num">64</span>) <span class="syn-kw">NOT NULL UNIQUE</span>,
+    
+    <span class="syn-com">-- Immutable product snapshot at intake (protects against future catalog edits)</span>
+    product_snapshot <span class="syn-type">JSONB NOT NULL</span>,
+    
+    created_at <span class="syn-type">TIMESTAMPTZ NOT NULL DEFAULT NOW</span>(),
+    updated_at <span class="syn-type">TIMESTAMPTZ NOT NULL DEFAULT NOW</span>()
+);
+
+<span class="syn-com">-- Composite index for lightning-fast lookups</span>
+<span class="syn-kw">CREATE INDEX</span> idx_tickets_serial_state <span class="syn-kw">ON</span> warranty_tickets(serial_number, current_state);
+<span class="syn-kw">CREATE INDEX</span> idx_tickets_lookup_token <span class="syn-kw">ON</span> warranty_tickets(lookup_token);`
+  },
+
+  "sstc-java": {
+    title: "SSTC Warranty Intake — Transaction Boundary & AI Isolation",
+    filepath: "src/main/java/com/sstc/warranty/service/WarrantyIntakeWorkflowService.java",
+    annotation: "<strong>Architectural Invariant:</strong> Cuộc gọi Claude AI được đặt HOÀN TOÀN ngoài database transaction boundary. Tránh tuyệt đối socket timeout từ AI làm cạn kiệt connection pool của PostgreSQL.",
+    raw: `// WarrantyIntakeWorkflowService.java (Spring Boot 3 / Java 21)
+@Service
+@RequiredArgsConstructor
+@Slf4j
+public class WarrantyIntakeWorkflowService {
+
+    private final WarrantyTicketRepository ticketRepo;
+    private final ComponentCatalogRepository catalogRepo;
+    private final AiOrchestrator aiOrchestrator; // Isolated behind interface
+    private final DailySequenceGenerator sequenceGenerator;
+    private final BotStateMachineEngine botEngine;
+
+    /**
+     * CRITICAL INVARIANT:
+     * LLM calls are kept strictly OUTSIDE the database transaction boundary.
+     * Socket timeouts from external AI will never exhaust PostgreSQL connection pool.
+     */
+    public IntakeTurnResponse handleCustomerTurn(UUID sessionId, String customerMessage) {
+        // Step 1: External AI Inference (Out of Transaction)
+        AiExtractionResult aiResult = aiOrchestrator.extractIntentAndEntities(customerMessage);
+
+        // Step 2: Deterministic State Machine & Transaction Boundary
+        return executeShortTransaction(sessionId, aiResult);
+    }
+
+    @Transactional(isolation = Isolation.READ_COMMITTED, timeout = 3)
+    public IntakeTurnResponse executeShortTransaction(UUID sessionId, AiExtractionResult ai) {
+        SessionContext session = sessionRepo.findWithOptimisticLock(sessionId)
+            .orElseThrow(() -> new SessionNotFoundException(sessionId));
+
+        // Enforce At-Most-Once processing with Idempotency Key
+        if (!session.claimTurnIdempotency(ai.turnToken())) {
+            log.warn("Duplicate turn ignored for session: {}", sessionId);
+            return session.getLastSnapshotResponse();
+        }
+
+        // Advance 24-state deterministic bot machine
+        BotTransitionResult transition = botEngine.advance(session.getCurrentState(), ai);
+        session.setCurrentState(transition.getNextState());
+
+        if (transition.shouldCommitTicket()) {
+            String ticketCode = sequenceGenerator.generateNextDaily("NS");
+            WarrantyTicket ticket = WarrantyTicket.builder()
+                .ticketCode(ticketCode)
+                .serialNumber(session.getVerifiedSerial())
+                .productSnapshot(session.getProductIdentity())
+                .currentState(TicketState.RECEIVED)
+                .lookupToken(SecureTokenUtil.maskedLookupToken())
+                .build();
+            ticketRepo.save(ticket); // Managed by JPA @Version
+        }
+        return buildResponse(session);
+    }
+}`,
+    html: `<span class="syn-com">// WarrantyIntakeWorkflowService.java (Spring Boot 3 / Java 21)</span>
+<span class="syn-ann">@Service</span>
+<span class="syn-ann">@RequiredArgsConstructor</span>
+<span class="syn-ann">@Slf4j</span>
+<span class="syn-kw">public class</span> <span class="syn-type">WarrantyIntakeWorkflowService</span> {
+
+    <span class="syn-kw">private final</span> WarrantyTicketRepository ticketRepo;
+    <span class="syn-kw">private final</span> ComponentCatalogRepository catalogRepo;
+    <span class="syn-kw">private final</span> AiOrchestrator aiOrchestrator; <span class="syn-com">// Isolated behind interface</span>
+    <span class="syn-kw">private final</span> DailySequenceGenerator sequenceGenerator;
+    <span class="syn-kw">private final</span> BotStateMachineEngine botEngine;
+
+    <span class="syn-com">/**
+     * CRITICAL INVARIANT:
+     * LLM calls are kept strictly OUTSIDE the database transaction boundary.
+     * Socket timeouts from external AI will never exhaust PostgreSQL connection pool.
+     */</span>
+    <span class="syn-kw">public</span> IntakeTurnResponse <span class="syn-fn">handleCustomerTurn</span>(UUID sessionId, String customerMessage) {
+        <span class="syn-com">// Step 1: External AI Inference (Out of Transaction)</span>
+        AiExtractionResult aiResult = aiOrchestrator.<span class="syn-fn">extractIntentAndEntities</span>(customerMessage);
+
+        <span class="syn-com">// Step 2: Deterministic State Machine &amp; Transaction Boundary</span>
+        <span class="syn-kw">return</span> <span class="syn-fn">executeShortTransaction</span>(sessionId, aiResult);
+    }
+
+    <span class="syn-ann">@Transactional</span>(isolation = Isolation.READ_COMMITTED, timeout = <span class="syn-num">3</span>)
+    <span class="syn-kw">public</span> IntakeTurnResponse <span class="syn-fn">executeShortTransaction</span>(UUID sessionId, AiExtractionResult ai) {
+        SessionContext session = sessionRepo.<span class="syn-fn">findWithOptimisticLock</span>(sessionId)
+            .<span class="syn-fn">orElseThrow</span>(() -&gt; <span class="syn-kw">new</span> SessionNotFoundException(sessionId));
+
+        <span class="syn-com">// Enforce At-Most-Once processing with Idempotency Key</span>
+        <span class="syn-kw">if</span> (!session.<span class="syn-fn">claimTurnIdempotency</span>(ai.<span class="syn-fn">turnToken</span>())) {
+            log.<span class="syn-fn">warn</span>(<span class="syn-str">"Duplicate turn ignored for session: {}"</span>, sessionId);
+            <span class="syn-kw">return</span> session.<span class="syn-fn">getLastSnapshotResponse</span>();
+        }
+
+        <span class="syn-com">// Advance 24-state deterministic bot machine</span>
+        BotTransitionResult transition = botEngine.<span class="syn-fn">advance</span>(session.<span class="syn-fn">getCurrentState</span>(), ai);
+        session.<span class="syn-fn">setCurrentState</span>(transition.<span class="syn-fn">getNextState</span>());
+
+        <span class="syn-kw">if</span> (transition.<span class="syn-fn">shouldCommitTicket</span>()) {
+            String ticketCode = sequenceGenerator.<span class="syn-fn">generateNextDaily</span>(<span class="syn-str">"NS"</span>);
+            WarrantyTicket ticket = WarrantyTicket.<span class="syn-fn">builder</span>()
+                .<span class="syn-fn">ticketCode</span>(ticketCode)
+                .<span class="syn-fn">serialNumber</span>(session.<span class="syn-fn">getVerifiedSerial</span>())
+                .<span class="syn-fn">productSnapshot</span>(session.<span class="syn-fn">getProductIdentity</span>())
+                .<span class="syn-fn">currentState</span>(TicketState.RECEIVED)
+                .<span class="syn-fn">lookupToken</span>(SecureTokenUtil.<span class="syn-fn">maskedLookupToken</span>())
+                .<span class="syn-fn">build</span>();
+            ticketRepo.<span class="syn-fn">save</span>(ticket); <span class="syn-com">// Managed by JPA @Version</span>
+        }
+        <span class="syn-kw">return</span> <span class="syn-fn">buildResponse</span>(session);
+    }
+}`
+  },
+
+  "unihub-java": {
+    title: "UniHub Workshop — Concurrency & Optimistic Locking Service",
+    filepath: "src/main/java/com/unihub/workshop/service/WorkshopBookingService.java",
+    annotation: "<strong>High-Concurrency Protection:</strong> Khi 12,000 VU gửi đồng thời, cơ chế `@Version` đảm bảo 100% không bị bán vượt vé (zero overselling) mà không làm khóa cứng database, trong khi Redis Sliding Window giới hạn lượng request bất thường.",
+    raw: `// WorkshopBookingService.java (Spring Boot 3)
+@Service
+@RequiredArgsConstructor
+@Slf4j
+public class WorkshopBookingService {
+
+    private final WorkshopInventoryRepository inventoryRepo;
+    private final RegistrationRepository registrationRepo;
+    private final RedisRateLimiter rateLimiter;
+
+    @Transactional(isolation = Isolation.READ_COMMITTED)
+    public BookingResult registerStudent(Long workshopId, Long studentId) {
+        // Tier 1: Redis Sliding Window Rate Limiting (5 req/10s per IP)
+        rateLimiter.acquirePermission(studentId);
+
+        // Tier 2: Read entity with JPA @Version
+        WorkshopInventory inventory = inventoryRepo.findById(workshopId)
+            .orElseThrow(() -> new WorkshopNotFoundException(workshopId));
+
+        if (inventory.getAvailableSeats() <= 0) {
+            throw new SoldOutException("No seats remaining for workshop: " + workshopId);
+        }
+
+        try {
+            // Decrement seat and increment @Version
+            inventory.claimSeat();
+            inventoryRepo.saveAndFlush(inventory); // Triggers UPDATE ... WHERE version = expectedVersion
+
+            Registration ticket = Registration.builder()
+                .workshopId(workshopId)
+                .studentId(studentId)
+                .status(RegistrationStatus.CONFIRMED)
+                .build();
+            registrationRepo.save(ticket);
+            
+            return BookingResult.success(ticket.getId());
+
+        } catch (OptimisticLockException | ObjectOptimisticLockingFailureException ex) {
+            // Caught when another thread committed version+1 ahead of us
+            log.info("Seat contention detected on workshop {}. Race condition gracefully resolved.", workshopId);
+            throw new ConcurrentSeatConflictException("Seat was claimed by another student. Please retry.");
+        }
+    }
+}`,
+    html: `<span class="syn-com">// WorkshopBookingService.java (Spring Boot 3)</span>
+<span class="syn-ann">@Service</span>
+<span class="syn-ann">@RequiredArgsConstructor</span>
+<span class="syn-ann">@Slf4j</span>
+<span class="syn-kw">public class</span> <span class="syn-type">WorkshopBookingService</span> {
+
+    <span class="syn-kw">private final</span> WorkshopInventoryRepository inventoryRepo;
+    <span class="syn-kw">private final</span> RegistrationRepository registrationRepo;
+    <span class="syn-kw">private final</span> RedisRateLimiter rateLimiter;
+
+    <span class="syn-ann">@Transactional</span>(isolation = Isolation.READ_COMMITTED)
+    <span class="syn-kw">public</span> BookingResult <span class="syn-fn">registerStudent</span>(Long workshopId, Long studentId) {
+        <span class="syn-com">// Tier 1: Redis Sliding Window Rate Limiting (5 req/10s per IP)</span>
+        rateLimiter.<span class="syn-fn">acquirePermission</span>(studentId);
+
+        <span class="syn-com">// Tier 2: Read entity with JPA @Version</span>
+        WorkshopInventory inventory = inventoryRepo.<span class="syn-fn">findById</span>(workshopId)
+            .<span class="syn-fn">orElseThrow</span>(() -&gt; <span class="syn-kw">new</span> WorkshopNotFoundException(workshopId));
+
+        <span class="syn-kw">if</span> (inventory.<span class="syn-fn">getAvailableSeats</span>() &lt;= <span class="syn-num">0</span>) {
+            <span class="syn-kw">throw new</span> SoldOutException(<span class="syn-str">"No seats remaining for workshop: "</span> + workshopId);
+        }
+
+        <span class="syn-kw">try</span> {
+            <span class="syn-com">// Decrement seat and increment @Version</span>
+            inventory.<span class="syn-fn">claimSeat</span>();
+            inventoryRepo.<span class="syn-fn">saveAndFlush</span>(inventory); <span class="syn-com">// Triggers UPDATE ... WHERE version = expectedVersion</span>
+
+            Registration ticket = Registration.<span class="syn-fn">builder</span>()
+                .<span class="syn-fn">workshopId</span>(workshopId)
+                .<span class="syn-fn">studentId</span>(studentId)
+                .<span class="syn-fn">status</span>(RegistrationStatus.CONFIRMED)
+                .<span class="syn-fn">build</span>();
+            registrationRepo.<span class="syn-fn">save</span>(ticket);
+            
+            <span class="syn-kw">return</span> BookingResult.<span class="syn-fn">success</span>(ticket.<span class="syn-fn">getId</span>());
+
+        } <span class="syn-kw">catch</span> (OptimisticLockException | ObjectOptimisticLockingFailureException ex) {
+            <span class="syn-com">// Caught when another thread committed version+1 ahead of us</span>
+            log.<span class="syn-fn">info</span>(<span class="syn-str">"Seat contention detected on workshop {}. Race condition gracefully resolved."</span>, workshopId);
+            <span class="syn-kw">throw new</span> ConcurrentSeatConflictException(<span class="syn-str">"Seat was claimed by another student. Please retry."</span>);
+        }
+    }
+}`
+  },
+
+  "unihub-sql": {
+    title: "UniHub Workshop — Inventory Schema & Constraints",
+    filepath: "src/main/resources/db/migration/V2__workshop_seat_inventory.sql",
+    annotation: "<strong>Relational Invariant:</strong> Khóa duy nhất tổng hợp `uk_student_workshop` ngăn chặn việc một sinh viên đăng ký trùng lặp ngay ở tầng CSDL, kể cả khi có độ trễ phân tán.",
+    raw: `-- V2__workshop_seat_inventory.sql (PostgreSQL 16)
+CREATE TABLE IF NOT EXISTS workshop_inventory (
+    id BIGSERIAL PRIMARY KEY,
+    workshop_name VARCHAR(128) NOT NULL,
+    total_capacity INT NOT NULL CHECK (total_capacity > 0),
+    available_seats INT NOT NULL CHECK (available_seats >= 0),
+    
+    -- Optimistic locking column managed by Spring Data JPA
+    version BIGINT NOT NULL DEFAULT 0,
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS workshop_registrations (
+    id BIGSERIAL PRIMARY KEY,
+    workshop_id BIGINT NOT NULL REFERENCES workshop_inventory(id) ON DELETE CASCADE,
+    student_id BIGINT NOT NULL,
+    status VARCHAR(24) NOT NULL DEFAULT 'CONFIRMED',
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    
+    -- Composite unique constraint: Prevents duplicate registration under clock skew
+    CONSTRAINT uk_student_workshop UNIQUE (workshop_id, student_id)
+);
+
+CREATE INDEX idx_reg_workshop_student ON workshop_registrations(workshop_id, student_id);`,
+    html: `<span class="syn-com">-- V2__workshop_seat_inventory.sql (PostgreSQL 16)</span>
+<span class="syn-kw">CREATE TABLE IF NOT EXISTS</span> <span class="syn-type">workshop_inventory</span> (
+    id <span class="syn-type">BIGSERIAL PRIMARY KEY</span>,
+    workshop_name <span class="syn-type">VARCHAR</span>(<span class="syn-num">128</span>) <span class="syn-kw">NOT NULL</span>,
+    total_capacity <span class="syn-type">INT NOT NULL CHECK</span> (total_capacity &gt; <span class="syn-num">0</span>),
+    available_seats <span class="syn-type">INT NOT NULL CHECK</span> (available_seats &gt;= <span class="syn-num">0</span>),
+    
+    <span class="syn-com">-- Optimistic locking column managed by Spring Data JPA</span>
+    version <span class="syn-type">BIGINT NOT NULL DEFAULT</span> <span class="syn-num">0</span>,
+    updated_at <span class="syn-type">TIMESTAMPTZ NOT NULL DEFAULT NOW</span>()
+);
+
+<span class="syn-kw">CREATE TABLE IF NOT EXISTS</span> <span class="syn-type">workshop_registrations</span> (
+    id <span class="syn-type">BIGSERIAL PRIMARY KEY</span>,
+    workshop_id <span class="syn-type">BIGINT NOT NULL REFERENCES</span> workshop_inventory(id) <span class="syn-kw">ON DELETE CASCADE</span>,
+    student_id <span class="syn-type">BIGINT NOT NULL</span>,
+    status <span class="syn-type">VARCHAR</span>(<span class="syn-num">24</span>) <span class="syn-kw">NOT NULL DEFAULT</span> <span class="syn-str">'CONFIRMED'</span>,
+    created_at <span class="syn-type">TIMESTAMPTZ NOT NULL DEFAULT NOW</span>(),
+    
+    <span class="syn-com">-- Composite unique constraint: Prevents duplicate registration under clock skew</span>
+    <span class="syn-kw">CONSTRAINT</span> uk_student_workshop <span class="syn-kw">UNIQUE</span> (workshop_id, student_id)
+);
+
+<span class="syn-kw">CREATE INDEX</span> idx_reg_workshop_student <span class="syn-kw">ON</span> workshop_registrations(workshop_id, student_id);`
+  }
+};
+
+let activeSnippetKey = "sstc-sql";
+
+function renderCodeSnippet(key) {
+  const snippet = CODE_SNIPPETS[key];
+  if (!snippet) return;
+  activeSnippetKey = key;
+
+  if (codeTitle) codeTitle.textContent = snippet.title;
+  if (codeFilepath) codeFilepath.textContent = snippet.filepath;
+  if (codeDisplay) codeDisplay.innerHTML = snippet.html;
+  if (codeAnnotation) codeAnnotation.innerHTML = snippet.annotation;
+
+  codeTabs.forEach((tab) => {
+    const isSelected = tab.dataset.file === key;
+    tab.classList.toggle("active", isSelected);
+    tab.setAttribute("aria-selected", isSelected);
+  });
+}
+
+function openCodeInspectorModal(defaultKey = "sstc-sql") {
+  if (!codeModal) return;
+  renderCodeSnippet(defaultKey);
+  codeModal.showModal();
+  document.body.style.overflow = "hidden";
+  soundEngine.playClick("pop");
+}
+
+function closeCodeInspectorModal() {
+  if (!codeModal) return;
+  codeModal.close();
+  document.body.style.overflow = "";
+}
+
+codeCloseBtn?.addEventListener("click", closeCodeInspectorModal);
+codeModal?.addEventListener("click", (e) => {
+  if (e.target === codeModal) closeCodeInspectorModal();
+});
+
+codeTabs.forEach((tab) => {
+  tab.addEventListener("click", () => {
+    const key = tab.dataset.file;
+    renderCodeSnippet(key);
+  });
+});
+
+codeCopyBtn?.addEventListener("click", async () => {
+  const snippet = CODE_SNIPPETS[activeSnippetKey];
+  if (!snippet) return;
+  try {
+    await navigator.clipboard.writeText(snippet.raw);
+    const span = codeCopyBtn.querySelector("span");
+    if (span) {
+      span.textContent = "Copied ✓";
+      soundEngine.playClick("sharp");
+      setTimeout(() => (span.textContent = "Copy snippet"), 2000);
+    }
+  } catch {
+    // fallback
+  }
+});
+
+// Event delegation for opening modals from action buttons
+document.addEventListener("click", (e) => {
+  const btn = e.target.closest('[data-action], .btn-project-action');
+  if (btn) {
+    const action = btn.dataset.action;
+    if (action === "#concurrency-modal") {
+      e.preventDefault();
+      openConcurrencyModal();
+    } else if (action === "#code-inspector-modal" || action === "open_code_inspector") {
+      e.preventDefault();
+      openCodeInspectorModal(btn.dataset.file || "sstc-sql");
+    }
+  }
+});
+
+// Hook Command Palette actions to new features
+const originalExecuteCommand = executeCommand;
+executeCommand = function (cmd) {
+  if (cmd?.action === "open_code_inspector") {
+    closeCmdPalette();
+    openCodeInspectorModal("sstc-sql");
+  } else if (cmd?.action === "toggle_sound") {
+    closeCmdPalette();
+    soundEngine.toggle();
+  } else {
+    originalExecuteCommand(cmd);
+  }
+};
+
