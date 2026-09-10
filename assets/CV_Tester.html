@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Pham Ngoc Gia Bao — Software Tester and QA Automation resume" />
+  <title>Pham Ngoc Gia Bao | Software Tester Resume</title>
+  <link rel="stylesheet" href="./cv-role.css" />
+</head>
+<body>
+  <header>
+    <h1>PHAM NGOC GIA BAO</h1>
+    <p class="headline">Software Tester · QA Automation Intern</p>
+    <div class="contact">
+      <span>Ho Chi Minh City, Vietnam</span><span>0907 506 049</span>
+      <span><a href="mailto:pn.giabao9705@gmail.com">pn.giabao9705@gmail.com</a></span>
+      <span><a href="https://github.com/giabaocode">github.com/giabaocode</a></span>
+      <span><a href="https://giabaocode.github.io/Portfolio/">giabaocode.github.io/Portfolio</a></span>
+    </div>
+  </header>
+
+  <section aria-labelledby="qa-summary">
+    <h2 id="qa-summary">Summary</h2>
+    <p>Information Technology undergraduate at HCMUS (GPA 3.46/4.0, expected 2027) with backend engineering experience testing workflow-heavy Spring Boot and PostgreSQL systems. Strongest in requirement-based test design, API/integration testing, state transitions, concurrency, data integrity and security boundaries. Seeking a Software Tester or QA Automation internship.</p>
+  </section>
+
+  <section aria-labelledby="qa-skills">
+    <h2 id="qa-skills">Core Skills</h2>
+    <dl class="skills">
+      <dt>Test design</dt><dd>Functional, integration, regression, boundary, negative, state-transition, concurrency and recovery scenarios</dd>
+      <dt>Automation</dt><dd>JUnit 5, Spring Boot Test, MockMvc, Testcontainers/PostgreSQL, K6 and SQL data verification</dd>
+      <dt>Engineering</dt><dd>REST APIs, Git/GitHub, Postman, Docker, PostgreSQL, Java, TypeScript, Jira, Chrome DevTools</dd>
+    </dl>
+  </section>
+
+  <section aria-labelledby="qa-experience">
+    <h2 id="qa-experience">Experience</h2>
+    <article class="item">
+      <div class="item-head"><span class="item-title">Backend Developer Intern — SSTC Technology JSC</span><span class="item-date">Jun – Aug 2026</span></div>
+      <p class="item-sub">R&amp;D and Service Center · Sole developer · Testing and reliability focus</p>
+      <ul>
+        <li>Designed automated coverage for a 29-state warranty workflow spanning chat intake, shipping, warehouse reconciliation, inspection, manager decisions and returns.</li>
+        <li>Validated idempotency, optimistic locking, unique constraints and retry behavior under duplicate and concurrent requests using JUnit and PostgreSQL Testcontainers.</li>
+        <li>Covered RBAC/CSRF boundaries, PII masking, signed or token-gated access, append-only audit evidence and attachment retention paths.</li>
+        <li>Tested failure recovery and event ordering for external AI and shipping integrations without keeping network calls inside long database transactions.</li>
+        <li>Implemented 800+ automated test methods in the final source; the latest documented complete Maven verification passed 805 tests.</li>
+      </ul>
+    </article>
+
+    <article class="item">
+      <div class="item-head"><span class="item-title">Full-Stack Developer — Lunfa Research Product</span><span class="item-date">Mar – Apr 2026</span></div>
+      <p class="item-sub">Freelance · <a href="https://lunfa.net">lunfa.net</a></p>
+      <ul>
+        <li>Verified authentication, session persistence and guided-correction flows for a production AI-assisted Chinese learning application.</li>
+        <li>Implemented layered parsing and safe fallback behavior for malformed or incomplete structured AI responses.</li>
+      </ul>
+    </article>
+  </section>
+
+  <section aria-labelledby="qa-projects">
+    <h2 id="qa-projects">Selected Test Cases</h2>
+    <div class="project-grid">
+      <article class="project">
+        <h3>UniHub — Registration &amp; QR Check-in</h3>
+        <p>Authored a K6 spike scenario for 12,000 virtual users and verified quota, duplicate registration, optimistic-lock conflict and offline QR synchronization behavior.</p>
+      </article>
+      <article class="project">
+        <h3>Online Auction — Transaction Workflow</h3>
+        <p>Designed tests for concurrent bids, auto-bid ceilings, anti-sniping extension, row locking and multi-step payment/dispatch/receipt transitions.</p>
+      </article>
+    </div>
+  </section>
+
+  <section aria-labelledby="qa-education">
+    <h2 id="qa-education">Education</h2>
+    <div class="item-head"><span class="item-title">University of Science — VNU HCMC</span><span class="item-date">Sep 2023 – 2027 (expected)</span></div>
+    <p>B.Sc. Information Technology · GPA 3.46/4.0 · OOP 9.8 · Software Engineering 8.5 · Advanced Databases &amp; SQL 8.1</p>
+  </section>
+
+  <nav class="toolbar" aria-label="Resume actions">
+    <a href="../index.html">← Portfolio</a><a href="./CV_BA.html">BA CV</a>
+    <a href="./CV_Data_Engineer.html">Data CV</a>
+    <button type="button" onclick="window.print()">Print / Save PDF</button>
+  </nav>
+</body>
+</html>

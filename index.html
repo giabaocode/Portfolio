@@ -40,7 +40,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300..800;1,14..32,300..800&family=JetBrains+Mono:ital,wght@0,300..700;1,300..700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300..800;1,14..32,300..800&amp;family=JetBrains+Mono:ital,wght@0,300..700;1,300..700&amp;display=swap"
       rel="stylesheet"
     />
 
@@ -51,7 +51,7 @@
     <link rel="icon" type="image/png" sizes="48x48" href="./assets/favicon-48x48.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="./assets/apple-touch-icon.png" />
     <link rel="manifest" href="./site.webmanifest" />
-    <link rel="stylesheet" href="./styles.css" />
+    <link rel="stylesheet" href="./styles.css?v=3.0" />
 
     <!-- Schema.org JSON-LD -->
     <script type="application/ld+json">
@@ -78,7 +78,7 @@
         "Redis",
         "Resilience4j"
       ],
-      "url": "https://giabaocode.github.io",
+      "url": "https://giabaocode.github.io/Portfolio/",
       "sameAs": [
         "https://github.com/giabaocode"
       ]
@@ -146,24 +146,6 @@
               <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
             </svg>
           </button>
-          <button
-            class="sound-toggle-btn"
-            type="button"
-            aria-label="Toggle tactile sound effects"
-            title="Toggle tactile sound effects"
-            id="sound-toggle"
-          >
-            <svg class="icon-sound-on" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
-              <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
-              <path d="M19.07 4.93a10 10 0 0 1 0 14.14" />
-            </svg>
-            <svg class="icon-sound-off" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
-              <line x1="23" y1="9" x2="17" y2="15" />
-              <line x1="17" y1="9" x2="23" y2="15" />
-            </svg>
-          </button>
           <button class="cmd-k-btn" id="cmd-k-btn" type="button" aria-label="Open command palette (Press ⌘K)">
             <svg class="cmd-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
               <circle cx="11" cy="11" r="8" /><path d="m21 21-4.3-4.3" />
@@ -212,7 +194,7 @@
               <span class="hl">complex business workflows.</span>
             </h1>
             <p class="hero-sub">
-              I’m Gia Bao, a third-year IT student at HCMUS who recently completed
+              I’m Gia Bao, an Information Technology undergraduate at HCMUS (expected 2027) who completed
               a Backend Developer Internship at the R&amp;D Center of SSTC Technology JSC.
               I turn multi-step business rules into explicit state machines, relational data
               models and dependable Spring Boot APIs—backed by tests, not just diagrams.
@@ -241,40 +223,28 @@
                 >GitHub profile</a
               >
               <span class="dot"></span>
-              <a href="./assets/CV_Data_Engineer.html" title="Data Engineer Intern CV (HQSOFT)">Data Eng CV</a>
-              <span class="dot"></span>
-              <a href="./assets/CV_BA.html" title="IT Business Analyst CV (DigifyTech)">IT BA CV</a>
-              <span class="dot"></span>
-              <a href="./assets/CV_Tester.html" title="Software Tester Intern CV (HPT)">Tester CV</a>
-              <span class="dot"></span>
-              <a href="./assets/CV_FullStack_AI.html" title="Full-Stack AI Developer CV">Full-Stack AI CV</a>
-              <span class="dot"></span>
-              <a href="./assets/CV_Detail.html" title="Java Backend Detailed CV">Java Backend CV</a>
+              <a href="./assets/CV_Detail.html" title="Java Backend detailed CV">Detailed Java CV</a>
               <span class="dot"></span>
               <span>Ho Chi Minh City, Vietnam</span>
             </div>
           </div>
           <!-- /hero-copy -->
-          <aside class="hero-system" id="hero-runtime" aria-label="Illustration of a reliable backend request flow">
+          <aside class="hero-system" id="hero-runtime" aria-label="SSTC backend architecture excerpt">
             <div class="system-window-bar">
               <span class="window-dots" aria-hidden="true"><i></i><i></i><i></i></span>
-              <span class="window-title">runtime / warranty-intake</span>
+              <span class="window-title">architecture / warranty-operations</span>
               <div class="runtime-telemetry">
-                <span class="runtime-latency" id="runtime-latency" title="Observed p95 latency">21ms</span>
-                <span class="runtime-status"><i class="status-pulse"></i><span id="runtime-status-text">healthy</span></span>
+                <span class="runtime-status"><i class="status-pulse"></i><span id="runtime-status-text">source handover</span></span>
               </div>
             </div>
             <div class="system-request">
               <div class="req-left">
                 <span class="request-method">POST</span>
                 <code>/api/chat/message</code>
-                <span class="request-code" id="runtime-status-code">202</span>
+                <span class="request-code" id="runtime-status-code">FLOW</span>
               </div>
               <div class="req-right">
-                <span class="runtime-trace-id" id="runtime-trace-id">trace_8f21a</span>
-                <button class="btn-simulate" id="btn-simulate-req" type="button" title="Send a simulated concurrent request to the pipeline">
-                  <span class="btn-simulate-icon">⚡</span> Run request
-                </button>
+                <span class="runtime-trace-id" id="runtime-trace-id">customer → operations</span>
               </div>
             </div>
             <div class="system-pipeline" id="system-pipeline" aria-label="Transaction pipeline stages">
@@ -283,22 +253,22 @@
               </div>
               <div class="system-trace" id="trace-line-01"><i></i></div>
               <div class="system-stage active" id="stage-02">
-                <span>02</span><strong>Decide</strong><small>24-state engine</small>
+                <span>02</span><strong>Orchestrate</strong><small>29-state engine</small>
               </div>
               <div class="system-trace" id="trace-line-02"><i></i></div>
               <div class="system-stage" id="stage-03">
-                <span>03</span><strong>Commit</strong><small>short transaction</small>
+                <span>03</span><strong>Operate</strong><small>ship · inspect · return</small>
               </div>
             </div>
             <div class="system-log" id="system-log-stream" aria-live="polite">
-              <p><span>15:42:08.014</span><b>INFO</b> serial verified from PostgreSQL</p>
-              <p><span>15:42:08.021</span><b>SAFE</b> idempotency key claimed</p>
-              <p><span>15:42:08.036</span><b>DONE</b> ticket snapshot committed</p>
+              <p><b>DATA</b> PostgreSQL owns serial, warranty and ticket truth</p>
+              <p><b>SAFE</b> idempotency, optimistic locking and role boundaries</p>
+              <p><b>AUDIT</b> evidence, shipment and inspection decisions are traceable</p>
             </div>
             <div class="system-footer">
               <span><i></i> PostgreSQL 16</span>
               <span>optimistic_lock=true</span>
-              <span class="footer-test">57 tests passing</span>
+              <span class="footer-test">800+ automated test methods implemented</span>
             </div>
           </aside>
         </div>
@@ -306,7 +276,7 @@
       </section>
 
       <!-- ====== RUNTIME METRICS ====== -->
-      <section class="numbers" aria-label="Verified portfolio proof">
+      <section class="numbers" aria-label="Portfolio evidence">
         <div class="number-item">
           <span class="number">8</span>
           <span class="number-label">Completed portfolio projects</span>
@@ -316,12 +286,12 @@
           <span class="number-label">Used in real-world settings</span>
         </div>
         <div class="number-item">
-          <span class="number">24</span>
-          <span class="number-label">States in the warranty bot engine</span>
+          <span class="number">29</span>
+          <span class="number-label">States in the SSTC workflow engine</span>
         </div>
         <div class="number-item">
-          <span class="number">12,000</span>
-          <span class="number-label">Virtual users in a K6 test scenario</span>
+          <span class="number">57</span>
+          <span class="number-label">Versioned SSTC schema migrations</span>
         </div>
       </section>
 
@@ -440,7 +410,7 @@
         </div>
         <div class="about-copy">
           <p>
-            I’m a third-year Information Technology student at HCMUS focused
+            I’m an Information Technology undergraduate at HCMUS (expected 2027) focused
             on Java backend engineering. My strongest work sits between
             business analysis and implementation: I make the rules explicit
             before turning them into code.
@@ -468,10 +438,10 @@
               </h3>
               <p class="tl-org">R&amp;D and Service Center (Vietnam) — SSTC Technology JSC</p>
               <p>
-                Owned the "Bot Brain" electronics warranty intake system end-to-end:
-                requirements, a 24-state Spring Boot bot engine, PostgreSQL data model,
-                optimistic locking, client idempotency, photo upload pipeline, Claude AI guardrails,
-                and 57 automated tests (Testcontainers).
+                Sole developer of the SSTC warranty operations source from requirements to
+                handover: a 29-state Spring Boot workflow spanning customer intake, shipping,
+                warehouse reconciliation, inspection and returns, backed by PostgreSQL,
+                versioned migrations and automated tests.
               </p>
             </div>
           </div>
@@ -530,7 +500,7 @@
             <h3>University of Science — VNU HCMC</h3>
             <p>B.Sc. Information Technology · GPA 3.46 / 4.0 (8.01 / 10)</p>
           </div>
-          <time>Sep 2023 – Present</time>
+          <time>Sep 2023 – 2027 (expected)</time>
         </div>
         <p class="edu-courses">
           Top coursework: OOP <strong>9.8</strong> · Applied Statistics
@@ -551,7 +521,7 @@
         </p>
         <a
           class="contact-cta"
-          href="mailto:pn.giabao9705@gmail.com?subject=Java%20Backend%20opportunity&body=Hi%20Gia%20Bao%2C%0A%0AI%27d%20like%20to%20talk%20about%20a%20Java%20Backend%20opportunity.%0A%0A"
+          href="mailto:pn.giabao9705@gmail.com?subject=Java%20Backend%20opportunity&amp;body=Hi%20Gia%20Bao%2C%0A%0AI%27d%20like%20to%20talk%20about%20a%20Java%20Backend%20opportunity.%0A%0A"
           >Email me about a role <span aria-hidden="true">→</span></a
         >
         <div class="contact-grid">
@@ -648,14 +618,14 @@
       <div class="concurrency-box">
         <div class="concurrency-header">
           <div class="concurrency-title">
-            <span class="concurrency-badge">INTERACTIVE PROOF</span>
+            <span class="concurrency-badge">ARCHITECTURE DEMO</span>
             <h3>Optimistic Concurrency Control Simulator</h3>
           </div>
           <button class="concurrency-close" id="concurrency-close" type="button" aria-label="Close simulator">×</button>
         </div>
 
         <p class="concurrency-intro">
-          This widget simulates <strong>5 concurrent HTTP worker threads</strong> hitting the <code>POST /api/workshops/1/register</code> endpoint simultaneously when only <strong>1 remaining seat</strong> exists (<code>version = 1</code>).
+          This illustrative widget visualizes <strong>5 concurrent HTTP workers</strong> hitting the <code>POST /api/workshops/1/register</code> endpoint when only <strong>1 seat</strong> remains. It explains the locking design; it is not a live benchmark.
         </p>
 
         <div class="sim-dashboard">
@@ -681,51 +651,7 @@
         </div>
 
         <div class="sim-explanation" id="sim-explanation">
-          Click <strong>"Fire 5 Concurrent Requests"</strong> to witness how Spring Boot's <code>@Version</code> annotation and PostgreSQL row MVCC prevent overselling with zero deadlocks.
-        </div>
-      </div>
-    </dialog>
-
-    <!-- ===== PRODUCTION CODE & SCHEMA INSPECTOR MODAL ===== -->
-    <dialog class="code-modal" id="code-inspector-modal" aria-label="Production Code and Schema Inspector">
-      <div class="code-box">
-        <div class="code-modal-header">
-          <div class="code-modal-title">
-            <span class="code-modal-badge">PRODUCTION ARCHITECTURE</span>
-            <h3 id="code-inspector-title">Production Code &amp; Schema Inspector</h3>
-          </div>
-          <button class="code-modal-close" id="code-inspector-close" type="button" aria-label="Close code inspector">×</button>
-        </div>
-
-        <div class="code-tabs-nav" role="tablist">
-          <button class="code-tab active" type="button" data-file="sstc-sql" role="tab" aria-selected="true">
-            <span class="file-icon sql-icon">SQL</span> V1__warranty_ticket_schema.sql
-          </button>
-          <button class="code-tab" type="button" data-file="sstc-java" role="tab" aria-selected="false">
-            <span class="file-icon java-icon">JAVA</span> WarrantyWorkflowService.java
-          </button>
-          <button class="code-tab" type="button" data-file="unihub-java" role="tab" aria-selected="false">
-            <span class="file-icon java-icon">JAVA</span> WorkshopBookingService.java
-          </button>
-          <button class="code-tab" type="button" data-file="unihub-sql" role="tab" aria-selected="false">
-            <span class="file-icon sql-icon">SQL</span> V2__inventory_lock.sql
-          </button>
-        </div>
-
-        <div class="code-content-wrap">
-          <div class="code-toolbar">
-            <span class="code-filepath" id="code-filepath">src/main/resources/db/migration/V1__warranty_ticket_schema.sql</span>
-            <button class="code-copy-btn" id="code-copy-btn" type="button">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
-              <span>Copy snippet</span>
-            </button>
-          </div>
-
-          <pre class="code-pre"><code id="code-display" class="language-sql"><!-- Dynamically populated by script.js --></code></pre>
-
-          <div class="code-annotation" id="code-annotation">
-            <!-- Dynamically populated by script.js -->
-          </div>
+          Click <strong>"Fire 5 Concurrent Requests"</strong> to visualize how Spring Boot's <code>@Version</code> annotation detects conflicting updates when one seat remains.
         </div>
       </div>
     </dialog>
@@ -744,6 +670,6 @@
       >
     </footer>
 
-    <script src="./script.js?v=2.2"></script>
+    <script src="./script.js?v=3.0"></script>
   </body>
 </html>

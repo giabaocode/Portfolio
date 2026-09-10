@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Pham Ngoc Gia Bao — Data and SQL Engineering resume" />
+  <title>Pham Ngoc Gia Bao | Data Engineering Resume</title>
+  <link rel="stylesheet" href="./cv-role.css" />
+</head>
+<body>
+  <header>
+    <h1>PHAM NGOC GIA BAO</h1>
+    <p class="headline">Data Engineering Intern · PostgreSQL &amp; Data Reliability</p>
+    <div class="contact">
+      <span>Ho Chi Minh City, Vietnam</span><span>0907 506 049</span>
+      <span><a href="mailto:pn.giabao9705@gmail.com">pn.giabao9705@gmail.com</a></span>
+      <span><a href="https://github.com/giabaocode">github.com/giabaocode</a></span>
+      <span><a href="https://giabaocode.github.io/Portfolio/">giabaocode.github.io/Portfolio</a></span>
+    </div>
+  </header>
+
+  <section aria-labelledby="data-summary">
+    <h2 id="data-summary">Summary</h2>
+    <p>Information Technology undergraduate at HCMUS (GPA 3.46/4.0, expected 2027) focused on PostgreSQL, relational modeling and reliable operational data. Experienced in versioned schema evolution, spreadsheet-derived imports, validation, constraints, indexes, idempotency, backfills and auditable event records across warranty, inventory, sales and clinic domains. Seeking a Data Engineering or SQL Engineering internship.</p>
+  </section>
+
+  <section aria-labelledby="data-skills">
+    <h2 id="data-skills">Core Skills</h2>
+    <dl class="skills">
+      <dt>SQL &amp; databases</dt><dd>PostgreSQL, joins, CTEs, aggregation, subqueries, transactions, normalization, constraints, indexes and query-oriented schema design</dd>
+      <dt>Data reliability</dt><dd>Flyway migrations, safe backfills, deduplication, idempotent imports, audit/event records, retention and cleanup rules</dd>
+      <dt>Tools</dt><dd>SQL, Java 21, Spring Boot, Docker Compose, Testcontainers, Git/GitHub, DBeaver, pgAdmin, Postman</dd>
+    </dl>
+  </section>
+
+  <section aria-labelledby="data-experience">
+    <h2 id="data-experience">Experience</h2>
+    <article class="item">
+      <div class="item-head"><span class="item-title">Backend Developer Intern — SSTC Technology JSC</span><span class="item-date">Jun – Aug 2026</span></div>
+      <p class="item-sub">R&amp;D and Service Center · Sole developer · PostgreSQL and data-reliability focus</p>
+      <ul>
+        <li>Evolved the operational PostgreSQL schema through 57 versioned migration files covering warranty, shipping, warehouse intake, inspection, evidence, authorization and returns.</li>
+        <li>Implemented backward-compatible columns, safe data backfills, foreign keys, checks, uniqueness rules and indexes to preserve integrity as workflows expanded.</li>
+        <li>Normalized and imported more than 1,000 product and inventory rows from spreadsheet-derived source data with validation and deduplication controls.</li>
+        <li>Modeled append-only audit and event records for shipment state, warehouse reconciliation, inspection evidence and customer consent; added retention and cleanup workflows.</li>
+        <li>Verified migrations and data invariants against disposable PostgreSQL instances using Flyway and Testcontainers.</li>
+      </ul>
+      <p class="note">Complete source handover delivered to SSTC; public portfolio materials exclude company production data.</p>
+    </article>
+  </section>
+
+  <section aria-labelledby="data-projects">
+    <h2 id="data-projects">Selected Data Projects</h2>
+    <div class="project-grid">
+      <article class="project">
+        <h3>Coffee Shop POS — Sales &amp; Inventory</h3>
+        <p>Designed a 20+ table PostgreSQL operational model for orders, line items, recipes, stock deductions, users and revenue reporting; deployed for daily use at a coffee shop.</p>
+      </article>
+      <article class="project">
+        <h3>PetCareX — Clinic Operations</h3>
+        <p>Modeled appointments, medical history, invoices, inventory, payroll and recurring vaccination schedules with transactional multi-table updates.</p>
+      </article>
+      <article class="project">
+        <h3>HomestayDorm — Allocation Data</h3>
+        <p>Designed 15+ relational entities with building-to-bed granularity and a six-stage tenant onboarding pipeline using PostgreSQL and Prisma.</p>
+      </article>
+      <article class="project">
+        <h3>Online Auction — Transaction Integrity</h3>
+        <p>Used row-level locking and relational constraints to keep concurrent bids, winner selection and post-auction fulfillment consistent.</p>
+      </article>
+    </div>
+  </section>
+
+  <section aria-labelledby="data-education">
+    <h2 id="data-education">Education</h2>
+    <div class="item-head"><span class="item-title">University of Science — VNU HCMC</span><span class="item-date">Sep 2023 – 2027 (expected)</span></div>
+    <p>B.Sc. Information Technology · GPA 3.46/4.0 · Advanced Databases &amp; SQL 8.1 · Applied Statistics 9.5 · OOP 9.8</p>
+  </section>
+
+  <nav class="toolbar" aria-label="Resume actions">
+    <a href="../index.html">← Portfolio</a><a href="./CV_BA.html">BA CV</a>
+    <a href="./CV_Tester.html">Tester CV</a>
+    <button type="button" onclick="window.print()">Print / Save PDF</button>
+  </nav>
+</body>
+</html>

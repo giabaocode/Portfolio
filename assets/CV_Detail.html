@@ -253,6 +253,15 @@
       <a href="../index.html" class="action-btn secondary">
         ← Portfolio
       </a>
+      <a href="./CV_Data_Engineer.html" class="action-btn secondary">
+        📊 Data Eng CV
+      </a>
+      <a href="./CV_Tester.html" class="action-btn secondary">
+        🧪 Tester CV
+      </a>
+      <a href="./CV_BA.html" class="action-btn secondary">
+        💼 IT BA CV
+      </a>
       <a href="./CV_FullStack_AI.html" class="action-btn secondary">
         🤖 Full-Stack AI CV
       </a>
@@ -280,14 +289,14 @@
             >github.com/giabaocode</a
           ></span
         ><span class="sep">|</span>
-        <span><a href="https://lunfa.net">lunfa.net</a></span>
+        <span><a href="https://giabaocode.github.io/Portfolio/">Portfolio</a></span>
       </div>
     </div>
 
     <div class="section">
       <div class="section-title">Profile</div>
       <p class="objective">
-        Third-year Information Technology student at HCMUS (GPA 3.46/4.0), recently completed a Backend Developer Internship at the R&amp;D and Service Center of SSTC Technology JSC, where I engineered a 24-state Spring Boot warranty intake engine. Shipped a paid full-stack product deployed to production. Strongest in Java, workflow analysis, relational data modeling, transactions, concurrency and reliable API design. Seeking a Java Backend Intern or Fresher role.
+        Information Technology undergraduate at HCMUS (GPA 3.46/4.0, expected 2027). Completed a Backend Developer Internship at SSTC Technology JSC as the sole developer of a Spring Boot warranty operations source spanning intake, shipping, warehouse reconciliation, inspection and returns. Shipped a paid full-stack product deployed to production. Strongest in Java, workflow analysis, relational data modeling, transactions, concurrency and reliable API design. Seeking a Java Backend Intern or Fresher role.
       </p>
     </div>
 
@@ -297,7 +306,7 @@
         <span class="school"
           >University of Science — Vietnam National University HCMC</span
         >
-        <span class="date">Sep 2023 – Present</span>
+        <span class="date">Sep 2023 – 2027 (expected)</span>
       </div>
       <div class="edu-detail">
         B.Sc. in Information Technology · GPA: 3.46/4.0 (8.01/10) · Coursework: OOP 9.8, Software Engineering 8.5,
@@ -359,10 +368,10 @@
       </div>
       <ul class="exp-list">
         <li>
-          Sole backend owner of an independent "Bot Brain" warranty intake system for computer components (RAM, SSD, VGA, Motherboard) built with Java 21, Spring Boot 3, and PostgreSQL 16.
+          Sole developer of a warranty operations platform for computer components (RAM, SSD, VGA, Motherboard) built with Java 21, Spring Boot 3, and PostgreSQL 16.
         </li>
         <li>
-          Architected a 24-state deterministic backend engine (BotEngine) decoupling conversation state from external channels (Web, Zalo OA, Messenger).
+          Architected a 29-state deterministic workflow spanning customer intake, shipping, warehouse receiving, inspection, approval and returns.
         </li>
         <li>
           Enforced core business guardrails: isolated Claude API to intent/entity extraction with Resilience4j circuit breakers; ensured serial/warranty validation and ticket creation strictly originate from PostgreSQL.
@@ -374,11 +383,11 @@
           Built non-blocking local photo upload pipeline (up to 5 condition photos) and privacy-safe public lookup links with 128-bit URL tokens and PII masking (MaskUtils).
         </li>
         <li>
-          Wrote 57 automated test methods using Testcontainers PostgreSQL, thoroughly validating race conditions, multi-turn chat flows, and failure fallbacks.
+          Implemented 800+ automated test methods across unit and integration coverage; the last documented full Maven verification passed 805 tests with PostgreSQL Testcontainers.
         </li>
       </ul>
       <div class="exp-result">
-        → Handed over to SSTC R&amp;D Center with 16 comprehensive design docs, 10 Flyway migrations, and 1,000 component seed records.
+        → Delivered a complete source handover with 57 versioned schema migrations, extensive design documentation and a spreadsheet-derived product/inventory import workflow.
       </div>
 
       <div class="exp-header" style="margin-top: 8px;">
@@ -423,7 +432,7 @@
           <span class="date">Jun – Aug 2026</span>
         </div>
         <div class="project-meta">
-          R&amp;D and Service Center (Vietnam) — SSTC Technology JSC · Sole backend owner from requirements to delivery
+          R&amp;D and Service Center (Vietnam) — SSTC Technology JSC · Sole developer from requirements to handover
         </div>
         <div class="project-tech">
           Java 21 · Spring Boot 3 · Spring Data JPA · PostgreSQL 16 · Flyway ·
@@ -431,9 +440,9 @@
         </div>
         <ul class="project-list">
           <li>
-            Modeled warranty intake as a 24-state backend-owned engine that
-            collects product evidence, validates serial and coverage, creates a
-            traceable ticket and arranges pickup through a provider abstraction.
+            Modeled warranty operations as a 29-state backend-owned workflow that
+            collects product evidence, validates serial and coverage, coordinates
+            shipping, reconciles warehouse intake, supports inspection and manages returns.
           </li>
           <li>
             Restricted AI to intent, confirmation and entity extraction; kept
@@ -447,8 +456,8 @@
           </li>
           <li>
             Prevented duplicate work with client-message idempotency, optimistic
-            locking, unique constraints and atomic daily ticket sequences; 57
-            automated test methods cover unit, full-flow and concurrency scenarios.
+            locking, unique constraints and atomic daily ticket sequences; 800+
+            automated test methods cover unit, integration and workflow scenarios.
           </li>
         </ul>
       </div>
@@ -486,8 +495,8 @@
             Optimistic Locking via @Version).
           </li>
           <li>
-            Authored K6 load test script simulating 12,000 VUs spike traffic —
-            verified p95 &lt; 2s, error rate &lt; 1%.
+            Authored a K6 spike scenario targeting up to 12,000 virtual users
+            to exercise registration safeguards and concurrency conflict handling.
           </li>
         </ul>
       </div>
@@ -513,11 +522,11 @@
           </li>
           <li>
             Developed Bidder system: place bids (auto-bid with ceiling price),
-            Buy Now, watchlist, bid history, Q&A, rate sellers.
+            Buy Now, watchlist, bid history, Q&amp;A, rate sellers.
           </li>
           <li>
             Developed Seller system: list products (WYSIWYG + multi-image
-            Cloudinary upload), append-only descriptions, answer Q&A, block
+            Cloudinary upload), append-only descriptions, answer Q&amp;A, block
             bidders.
           </li>
           <li>
@@ -627,7 +636,7 @@
 
       <div class="project">
         <div class="project-header">
-          <span class="name">Coffee Shop POS & Management System</span>
+          <span class="name">Coffee Shop POS &amp; Management System</span>
           <span class="date">Jun – Aug 2025</span>
         </div>
         <div class="project-meta">

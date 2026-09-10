@@ -12,3 +12,7 @@ render-mobile.png
 .DS_Store
 Thumbs.db
 .vscode/
+
+# Personal Job Search Tracker (private tracker, do not commit)
+Job_Search_Tracker.xlsx
+*.xlsx
