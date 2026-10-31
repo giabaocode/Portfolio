@@ -76,3 +76,51 @@
 @media(prefers-reduced-motion:reduce){.worker-bar i,.work-archive summary b{transition:none}}
 
 @media(max-width:540px){.core-description{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap;border:0}}
+
+/* Keep the 3D composition separate from mobile reading surfaces. */
+.hero{isolation:auto}
+.scene-art{position:fixed;inset:0;z-index:-2;pointer-events:none;isolation:isolate}
+.scene-art .scene-stage,.scene-art .scene-fallback{position:absolute;inset:0}
+.scene-art .scene-stage{z-index:0}
+.scene-art .scene-fallback{z-index:-1}
+@media(max-width:800px), (max-width:1100px) and (pointer:coarse){
+ .hero{display:flex;flex-direction:column;height:auto;min-height:0;padding:125px 24px 40px}
+ .hero-kicker{order:0;color:#c0ccda;max-width:100%;font-size:8px}
+ .hero h1{order:1;font-size:clamp(51px,14vw,100px);margin-top:24px;color:#edf2f7}
+ .title-soft{background:none;color:#edf2f7;-webkit-text-fill-color:currentColor}
+ .scene-art{order:2;position:relative;inset:auto;z-index:0;flex:none;width:calc(100% + 48px);height:300px;margin:16px -24px 0;overflow:hidden;contain:layout paint}
+ .scene-art .scene-vignette{background:radial-gradient(ellipse,transparent 35%,#060a10 95%)}
+ .scene-art .fallback-core{left:calc(50% - 115px);top:-12px;transform:rotate(-10deg) scale(.7)}
+ .scene-art .fallback-orbit{left:calc(50% - 175px);top:-35px;width:350px;height:350px}
+ .object-note{display:none}
+ .explore-core{order:3;position:static;align-self:center;margin:14px 0 24px;font-size:11px;padding:12px 22px;min-height:44px;background:#112235;border-color:#516b86;backdrop-filter:none}
+ .hero-description{order:4;position:static;max-width:none;margin:0}
+ .hero-description .small-index{display:none}
+ .hero-description>p{font-size:15px;line-height:1.85;color:#c6d1dd;max-width:440px;margin:0}
+ .hero-description .underlined-link{font-size:12px;margin-top:22px;min-height:40px}
+ .core-description{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap;border:0}
+ .hero-bottom{order:5;position:static;margin-top:32px;padding-top:22px;gap:20px}
+ .hero-bottom>.mono{font-size:8px;color:#b1bfce}
+ .hero-bottom .secondary{font-size:7px;color:#96a8bc}
+ .scroll-cue{color:#b1bfce;font-size:7px}
+ .layers-section,.work-section,.about-section,.contact-section{background:#060a10}
+ .layers-section{min-height:0;padding:75px 24px;display:block}
+ .layers-section>.chapter-label{position:static;font-size:9px;color:#a0b3c7}
+ .layers-content{width:100%;padding-top:28px}
+ .layers-content h2{font-size:clamp(49px,9vw,75px)}
+ .section-description{font-size:15px;color:#b5c3d2}
+ .layer-list{max-width:none}
+ .layer-list h3{font-size:18px;color:#edf2f7}
+ .layer-list p{font-size:13px;color:#b5c3d2}
+ .layer-annotation{position:static;margin-top:35px;color:#a0b3c7;font-size:8px;max-width:none}
+ .layer-annotation>span{font-size:6px;color:#8da1b7}
+ .scene-label{display:none}
+ .scene-controls{justify-content:flex-end}
+ .scene-noise{display:none}
+}
+@media(max-width:350px){.hero{padding-inline:20px}.scene-art{width:calc(100% + 40px);margin-inline:-20px;height:270px}.hero-kicker{font-size:6.5px}.hero-description>p{font-size:14px}.hero h1{font-size:51px}}
+/* Reserve control space before WebGL is ready to avoid moving the introduction. */
+.scene-stage canvas{transition:opacity 450ms var(--ease)}
+.scene-art .scene-fallback{display:block;opacity:1;visibility:visible;transition:opacity 450ms var(--ease)}
+.ready-3d .scene-art .scene-fallback{display:block;opacity:0;visibility:hidden;transition:opacity 450ms var(--ease),visibility 0s 450ms}
+@media(max-width:800px), (max-width:1100px) and (pointer:coarse){.hero #explode[hidden]{display:flex!important;visibility:hidden}}

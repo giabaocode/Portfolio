@@ -16,12 +16,13 @@ Then open `http://127.0.0.1:4321`. The server exposes only the generated `dist/`
 
 ## Edit and build
 
-Requires Node.js 22+ and Python 3.10+. There is no npm install step. The required Three.js 0.187.0 module subset is vendored with its MIT license and provenance in `vendor/three/`. Python build dependencies are listed in `requirements-build.txt`.
+Requires Node.js 22+ and Python 3.10+. Run `npm ci` to install the pinned esbuild development dependency. The required Three.js 0.187.0 module subset is vendored with its MIT license and provenance in `vendor/three/`. Python build dependencies are listed in `requirements-build.txt`.
 
 ```sh
 python3 -m venv .venv
 source .venv/bin/activate
 python3 -m pip install -r requirements-build.txt
+npm ci
 npm run build
 npm run check
 npm test
@@ -39,7 +40,10 @@ Commit the generated root pages, `app.js`, résumé PDF and prepared assets alon
 | `data/profile.json` | Contact, education and core profile data |
 | `data/projects.json` | Eight projects: role, context, workflow, decisions, evidence and scope |
 | `scripts/build_portfolio.py`, `templates/` | Data-driven cinematic homepage, case studies and résumé HTML |
-| `cinematic.css`, `cinematic.js`, `js/cinematic-scene.js` | Homepage styling, independent controls and optional Three.js scene |
+| `cinematic.css`, `cinematic.js`, `js/cinematic-controller.js` | Homepage styling and lightweight worker controller |
+| `js/cinematic-scene.js`, `js/scene-worker.js`, `js/studio-environment.js` | OffscreenCanvas renderer and precomputed HDR reflection loading |
+| `scripts/build_scene.mjs` | Bundled/minified worker output, `js/cinematic-3d.min.js`, with a linked MIT notice |
+| `assets/3d/`, `scripts/bake_environment.*`, `scripts/prepare_environment.py` | Studio reflection assets and reproducible bake/quantization tools |
 | `vendor/three/` | Pinned local Three.js dependency closure, license and source integrity metadata |
 | `script.js`, `js/` | Interaction source; dialogs, search and simulation are separate modules |
 | `scripts/build_client.mjs` | Small dependency-free case-study bundle |
@@ -57,7 +61,9 @@ Existing role-specific application exporters and documents are separate from the
 
 - Cinematic dark homepage; matching ice-blue case-study palette with an optional light theme. Self-hosted fonts and licenses live in `assets/fonts/`.
 - The procedural metal sculpture changes composition while scrolling; Explore the layers separates and recombines its frames. It is illustrative, with no live telemetry.
-- Pause/Resume controls stop ambient 3D motion. Reduced motion starts paused. A hidden page stops rendering; renderer pixel ratio is capped.
+- Pause/Resume controls stop ambient 3D motion. Reduced motion starts paused. A hidden page stops rendering; renderer pixel ratio is capped. Rendering and shader compilation run in a worker. Browsers without worker WebGL support retain the CSS sculpture.
+- On compact screens the sculpture occupies a dedicated hero region. Headings and descriptions are outside its bounds, and later sections have opaque reading backgrounds. The worker stops when the artwork is offscreen, and mobile drawing is capped at 30 FPS.
+- Runtime RoomEnvironment/PMREM generation and the bloom multipass were removed. Reflection assets are baked once; mobile uses a smaller preset and simpler materials. Initialization yields between geometry batches and precompiles shaders asynchronously.
 - Static view (`?view=static`) and Save-Data skip loading the optional 3D scene. HTML navigation, project archive and case-study links work without JavaScript. No FPS or device-performance benchmark is claimed.
 - The concurrency playground compares five stale readers with and without a version check. It is a deterministic teaching model, not a live backend, load test or benchmark.
 - On case-study pages, search opens with the search button or Cmd/Ctrl+K. Arrow keys select, Enter opens and Escape closes. User input is rendered with text nodes.
@@ -69,7 +75,7 @@ Prepared screenshots remain in `assets/optimized/`. To regenerate after replacin
 
 ## Verification
 
-`npm run check` validates the actual `dist/` artifact, including one H1 per page, unique IDs, internal targets and fragments, images, font resources, JavaScript imports and import-map resolution, manifest icons and a one-page résumé with selectable text. It also rejects development/private directories and mail/tracker files in the artifact.
+`npm run check` validates the actual `dist/` artifact, including one H1 per page, unique IDs, internal targets and fragments, images, font resources, JavaScript imports and worker URLs, manifest icons and a one-page résumé with selectable text. It also rejects development/private directories and mail/tracker files in the artifact.
 
 The GitHub Actions workflow runs build, checks and model tests. It does not deploy or change repository settings. Browser QA is separate from these checks; the current local QA record is in `review/UPGRADE_QA.md` when present.
 
@@ -80,6 +86,7 @@ Publish **only `dist/`** to a static host. All asset and document links are rela
 To generate pages for another origin:
 
 ```sh
+node scripts/build_scene.mjs
 node scripts/build_client.mjs
 python3 scripts/build_portfolio.py --base-url https://your-domain.example
 python3 scripts/export_backend_cv.py

@@ -1,4 +1,5 @@
 import { initSimulation } from './js/simulation.js';
+import { initScene } from './js/cinematic-controller.js';
 
 // Content and navigation stay usable even if the optional 3D module cannot load.
 initSimulation();
@@ -19,7 +20,9 @@ if (staticView) {
   link.textContent = 'ENABLE 3D ↗';
 }
 if (!staticView && !navigator.connection?.saveData) {
-  import('./js/cinematic-scene.js').catch(() => {
-    document.querySelector('#scene').dataset.renderer = 'fallback';
+  // Render the page first; the worker owns all heavy 3D work.
+  requestAnimationFrame(() => {
+    if ('requestIdleCallback' in window) requestIdleCallback(initScene, { timeout: 350 });
+    else setTimeout(initScene, 0);
   });
 }

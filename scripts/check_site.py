@@ -4,6 +4,8 @@ from html.parser import HTMLParser
 from urllib.parse import urlsplit, unquote
 import re
 import json
+import gzip
+import struct
 
 ROOT = Path(__file__).resolve().parents[1]
 DIST = ROOT/'dist'
@@ -54,9 +56,10 @@ def main():
     imports = json.loads(import_maps[0])['imports'] if import_maps else {}
     for path in DIST.rglob('*.js'):
         refs = re.findall(r'(?:from\s+|import\s*\(\s*)[\'"]([^\'"]+)[\'"]', path.read_text())
+        refs += re.findall(r'new URL\(\s*[\'"]([^\'"]+)[\'"]', path.read_text())
         for ref in refs:
             if ref.startswith('.'):
-                target = path.parent/ref
+                target = path.parent/urlsplit(ref).path
             else:
                 mapped = imports.get(ref)
                 if mapped is None:
@@ -67,6 +70,16 @@ def main():
                 target = DIST/mapped
             if not target.resolve().is_relative_to(DIST.resolve()) or not target.is_file():
                 errors.append(f'Missing or non-public JS module: {ref}')
+    for size in (128, 256):
+        path = DIST/f'assets/3d/studio-{size}.bin.gz'
+        try:
+            payload = gzip.decompress(path.read_bytes())
+            levels = size.bit_length()-3
+            expected = 16 + sum((size >> lod)**2 * 6 * 8 for lod in range(levels))
+            if struct.unpack('<4I', payload[:16]) != (0x504d524d, 1, size, levels) or len(payload) != expected:
+                errors.append(f'Invalid precomputed reflection asset: {path.name}')
+        except (OSError, struct.error):
+            errors.append(f'Missing or corrupt reflection asset: {path.name}')
     manifest=json.loads((DIST/'site.webmanifest').read_text())
     for item in manifest.get('icons',[]):
         if not (DIST/item['src']).is_file(): errors.append(f'Missing manifest icon: {item["src"]}')

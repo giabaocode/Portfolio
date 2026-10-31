@@ -25,13 +25,15 @@ def main():
     (dest/'assets').mkdir()
     for name in ASSET_FILES:
         shutil.copy2(ROOT/'assets'/name, dest/'assets'/name)
-    for name in ['fonts', 'optimized']:
+    for name in ['fonts', 'optimized', '3d']:
         shutil.copytree(ROOT/'assets'/name, dest/'assets'/name)
     shutil.copytree(ROOT/'cases', dest/'cases')
     (dest/'js').mkdir()
-    for name in ['cinematic-scene.js', 'simulation.js']:
+    for name in ['cinematic-3d.min.js', 'cinematic-3d.min.js.LEGAL.txt', 'cinematic-controller.js', 'simulation.js']:
         shutil.copy2(ROOT/'js'/name, dest/'js'/name)
-    shutil.copytree(ROOT/'vendor/three', dest/'vendor/three')
+    (dest/'vendor/three').mkdir(parents=True)
+    for name in ['LICENSE', 'version.json']:
+        shutil.copy2(ROOT/'vendor/three'/name, dest/'vendor/three'/name)
     print('Public artifact:', dest)
 
 

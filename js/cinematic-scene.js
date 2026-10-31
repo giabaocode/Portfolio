@@ -1,78 +1,32 @@
 import * as THREE from 'three';
-import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
-import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
-import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
-import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
-import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
 
-// Original procedural sculpture. No external model, HDR texture or production telemetry.
-const canvas = document.querySelector('#scene');
-const explodeButton = document.querySelector('#explode');
-const description = document.querySelector('#core-description');
-const pauseButton = document.querySelector('#pause-motion');
-const reduced = matchMedia('(prefers-reduced-motion: reduce)');
-let expanded = false;
-let paused = reduced.matches;
+import { loadStudioEnvironment } from './studio-environment.js';
+
+export async function startScene({ canvas, state, onReady, onError }) {
+const yieldToBrowser = () => globalThis.scheduler?.yield ? scheduler.yield() : new Promise(resolve => setTimeout(resolve, 0));
+const compact = state.mobile;
 let requestFrame = () => {};
+const frame = globalThis.requestAnimationFrame?.bind(globalThis) || (callback => setTimeout(() => callback(performance.now()), 1000 / 30));
+const cancelFrame = globalThis.cancelAnimationFrame?.bind(globalThis) || clearTimeout;
 const clamp = (value, low = 0, high = 1) => Math.min(high, Math.max(low, value));
 const smooth = value => { value = clamp(value); return value * value * (3 - 2 * value); };
 const mix = (a, b, t) => a + (b - a) * t;
-
-function updatePause() {
-  pauseButton.setAttribute('aria-pressed', String(paused));
-  pauseButton.querySelector('.pause-symbol').textContent = paused ? '▷' : 'Ⅱ';
-  pauseButton.querySelector('.pause-text').textContent = paused ? 'Resume motion' : 'Pause motion';
-  document.body.classList.toggle('motion-paused', paused);
-}
-updatePause();
-explodeButton.addEventListener('click', () => {
-  expanded = !expanded;
-  explodeButton.setAttribute('aria-pressed', String(expanded));
-  explodeButton.children[1].textContent = expanded ? 'Bring it together' : 'Explore the layers';
-  description.textContent = expanded ? 'Input. Business rules. Data. Audit. One coherent system.' : 'An interactive architecture sculpture.';
-  document.body.classList.toggle('core-expanded', expanded);
-  requestFrame();
-});
-pauseButton.addEventListener('click', () => { paused = !paused; updatePause(); requestFrame(); });
-
-const offsets = { hero: 900, work: 2000, contact: 5000 };
-function readOffsets() {
-  offsets.hero = document.querySelector('.hero').offsetHeight;
-  offsets.work = document.querySelector('#work').offsetTop;
-  offsets.contact = document.querySelector('#contact').offsetTop;
-}
-readOffsets();
-document.fonts.ready.then(readOffsets);
-window.addEventListener('resize', readOffsets, { passive: true });
-window.addEventListener('scroll', () => {
-  const total = document.documentElement.scrollHeight - innerHeight;
-  document.querySelector('#scroll-progress').style.transform = `scaleY(${total ? scrollY / total : 0})`;
-  requestFrame();
-}, { passive: true });
-
 try {
   const scene = new THREE.Scene();
   scene.fog = new THREE.FogExp2(0x060a10, 0.037);
-  const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true, powerPreference: 'high-performance' });
+  const studio = await loadStudioEnvironment(compact ? 128 : 256);
+  await yieldToBrowser();
+  const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: !compact, powerPreference: 'default' });
   renderer.setClearColor(0x060a10, 0);
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 0.78;
   renderer.outputColorSpace = THREE.SRGBColorSpace;
-  const camera = new THREE.PerspectiveCamera(35, innerWidth / innerHeight, 0.1, 80);
+  const camera = new THREE.PerspectiveCamera(35, state.width / state.height, 0.1, 80);
   camera.position.set(0, 1.35, 9.2);
-  const pmrem = new THREE.PMREMGenerator(renderer);
-  const environment = new RoomEnvironment();
-  const environmentTarget = pmrem.fromScene(environment, 0.03);
-  scene.environment = environmentTarget.texture;
+  scene.environment = studio;
   scene.environmentIntensity = 0.38;
-  environment.dispose();
-  pmrem.dispose();
-  const composer = new EffectComposer(renderer);
-  composer.addPass(new RenderPass(scene, camera));
-  const bloom = new UnrealBloomPass(new THREE.Vector2(innerWidth, innerHeight), 0.28, 0.45, 1.1);
-  composer.addPass(bloom);
-  composer.addPass(new OutputPass());
+  await yieldToBrowser();
 
   scene.add(new THREE.AmbientLight(0x718aab, 0.16));
   const topLight = new THREE.DirectionalLight(0xe5f1ff, 1.65);
@@ -89,8 +43,9 @@ try {
   scene.add(sculpture);
   const body = new THREE.Group();
   sculpture.add(body);
-  const metal = new THREE.MeshPhysicalMaterial({ color: 0x43566b, metalness: 1, roughness: 0.2, clearcoat: 0.65, clearcoatRoughness: 0.16, envMapIntensity: 0.95 });
-  const darkMetal = new THREE.MeshPhysicalMaterial({ color: 0x0e1926, metalness: 0.9, roughness: 0.3, clearcoat: 1, envMapIntensity: 1.2 });
+  const MetalMaterial = compact ? THREE.MeshStandardMaterial : THREE.MeshPhysicalMaterial;
+  const metal = new MetalMaterial({ color: 0x43566b, metalness: 1, roughness: 0.2, ...(compact ? {} : { clearcoat: 0.65, clearcoatRoughness: 0.16 }), envMapIntensity: 0.95 });
+  const darkMetal = new MetalMaterial({ color: 0x0e1926, metalness: 0.9, roughness: 0.3, ...(compact ? {} : { clearcoat: 1 }), envMapIntensity: 1.2 });
   const edgeMaterial = new THREE.MeshStandardMaterial({ color: 0x6397bb, metalness: 0.4, roughness: 0.2, emissive: 0x153f68, emissiveIntensity: 0.75 });
   const innerMaterial = new THREE.MeshStandardMaterial({ color: 0x255d8d, metalness: 0.25, roughness: 0.18, emissive: 0x3b91df, emissiveIntensity: 1.9 });
   const paleMaterial = new THREE.MeshStandardMaterial({ color: 0x8dacc6, metalness: 0.97, roughness: 0.16, envMapIntensity: 1.1 });
@@ -111,27 +66,31 @@ try {
   const frameShape = roundedPath(new THREE.Shape(), 2.25, 1.86, 0.15);
   const aperture = roundedPath(new THREE.Path(), 1.38, 1.02, 0.13);
   frameShape.holes.push(aperture);
-  const frameGeometry = new THREE.ExtrudeGeometry(frameShape, { depth: 0.08, bevelEnabled: true, bevelSegments: 3, steps: 1, bevelSize: 0.035, bevelThickness: 0.035, curveSegments: 12 });
+  const frameGeometry = new THREE.ExtrudeGeometry(frameShape, { depth: 0.08, bevelEnabled: true, bevelSegments: compact ? 1 : 3, steps: 1, bevelSize: 0.035, bevelThickness: 0.035, curveSegments: compact ? 6 : 12 });
   frameGeometry.center();
   frameGeometry.rotateX(-Math.PI / 2);
+  await yieldToBrowser();
   const frames = [];
+  const insetGeometry = new RoundedBoxGeometry(1.92, 0.065, 0.015, 2, 0.006);
+  const lipGeometry = new RoundedBoxGeometry(2.2, 0.035, 1.81, 2, 0.014);
+  const portGeometry = new THREE.CylinderGeometry(0.036, 0.036, 0.022, 8);
   const strips = [];
   const frameCount = 9;
   for (let index = 0; index < frameCount; index++) {
     const frame = new THREE.Group();
     const shell = new THREE.Mesh(frameGeometry, index === 0 || index === frameCount - 1 ? paleMaterial : metal);
     frame.add(shell);
-    const inset = new THREE.Mesh(new RoundedBoxGeometry(1.92, 0.065, 0.015, 2, 0.006), edgeMaterial);
+    const inset = new THREE.Mesh(insetGeometry, edgeMaterial);
     inset.position.set(0, -0.025, 0.925);
     frame.add(inset);
-    const darkLip = new THREE.Mesh(new RoundedBoxGeometry(2.2, 0.035, 1.81, 2, 0.014), darkMetal);
+    const darkLip = new THREE.Mesh(lipGeometry, darkMetal);
     darkLip.position.y = -0.095;
     // The lip only covers the back edge: the central luminous column stays visible.
     darkLip.scale.z = 0.15;
     darkLip.position.z = -0.77;
     frame.add(darkLip);
     for (const x of [-0.98, 0.98]) {
-      const port = new THREE.Mesh(new THREE.CylinderGeometry(0.036, 0.036, 0.022, 12), darkMetal);
+      const port = new THREE.Mesh(portGeometry, darkMetal);
       port.position.set(x, 0.08, 0.68); frame.add(port);
     }
     const baseY = (index - (frameCount - 1) / 2) * 0.265;
@@ -139,10 +98,11 @@ try {
     frame.rotation.y = index * 0.035;
     frame.userData = { index, baseY };
     body.add(frame); frames.push(frame); strips.push(inset);
+    if (index % 3 === 2) await yieldToBrowser();
   }
   const core = new THREE.Mesh(new THREE.CylinderGeometry(0.23, 0.23, 2.35, 48), innerMaterial);
   core.rotation.z = 0.015; body.add(core);
-  const glass = new THREE.Mesh(new THREE.CylinderGeometry(0.36, 0.36, 2.55, 48, 1, true), new THREE.MeshPhysicalMaterial({ color: 0x7ec4f7, metalness: 0.1, roughness: 0.08, transparent: true, opacity: 0.2, side: THREE.DoubleSide, depthWrite: false, clearcoat: 1 }));
+  const glass = new THREE.Mesh(new THREE.CylinderGeometry(0.36, 0.36, 2.55, 48, 1, true), new THREE.MeshBasicMaterial({ color: 0x7ec4f7, transparent: true, opacity: 0.12, side: THREE.DoubleSide, depthWrite: false }));
   body.add(glass);
   const caps = [];
   for (const y of [-1.35, 1.35]) {
@@ -163,6 +123,7 @@ try {
   }
   body.add(tieRods);
 
+  await yieldToBrowser();
   const rings = new THREE.Group();
   sculpture.add(rings);
   function orbit(radius, tilt, color, opacity, y = 0) {
@@ -205,49 +166,46 @@ try {
   const dustGeometry = new THREE.BufferGeometry();dustGeometry.setAttribute('position', new THREE.BufferAttribute(dustPositions, 3));
   const dust = new THREE.Points(dustGeometry, new THREE.PointsMaterial({ color: 0x8aabc8, size: 0.013, transparent: true, opacity: 0.36, depthWrite: false }));scene.add(dust);
 
-  let width = innerWidth, height = innerHeight;
-  let mobile = width < 600;
+  await yieldToBrowser();
+  let width = state.width, height = state.height, mobile = state.mobile;
   function resize() {
-    width = innerWidth;height = innerHeight;mobile = width < 600;
-    renderer.setPixelRatio(Math.min(devicePixelRatio, mobile ? 1.25 : 1.5));
+    width = state.width; height = state.height; mobile = state.mobile;
+    renderer.setPixelRatio(state.pixelRatio);
     renderer.setSize(width, height, false);
     camera.aspect = width / height;
-    camera.fov = mobile ? 41 : 35;
+    camera.fov = mobile ? 36 : 35;
     camera.updateProjectionMatrix();
-    composer.setSize(width, height);
-    requestFrame();
   }
-  window.addEventListener('resize', resize, { passive: true });
-  const pointer = { x: 0, y: 0 };
-  window.addEventListener('pointermove', event => {
-    if (event.pointerType === 'touch' || paused || reduced.matches) return;
-    pointer.x = event.clientX / width * 2 - 1;
-    pointer.y = event.clientY / height * 2 - 1;
-    requestFrame();
-  }, { passive: true });
+  const pointer = { get x() { return state.pointerX; }, get y() { return state.pointerY; } };
   let time = 0, previous = performance.now(), animation = null, explosion = 0;
-  let rendered = false;
+  let rendered = false, lastRender = 0;
   const lookAt = new THREE.Vector3(0, 0.1, 0);
   const accent = new THREE.Color(0x3b91df);
   const targetAccent = new THREE.Color(0x3b91df);
   function draw(now) {
     animation = null;
+    if (!state.visible || state.hidden) return;
+    const { paused, expanded } = state;
+    if (rendered && !paused && now - lastRender < (mobile ? 1000 / 30 : 1000 / 60) - 1) {
+      animation = frame(draw); return;
+    }
+    lastRender = now;
     const delta = Math.max(0, Math.min((now - previous) / 1000, 0.05));previous = now;
-    if (!paused && !document.hidden) time += delta;
-    const y = scrollY;
-    const layer = smooth((y - offsets.hero * 0.38) / (offsets.hero * 0.8));
-    const work = smooth((y - offsets.work + height * 0.4) / (height * 0.75));
-    const contact = smooth((y - offsets.contact + height * 0.65) / height);
+    if (!paused && !state.hidden) time += delta;
+    const y = state.scroll;
+    const layer = mobile ? 0 : smooth((y - state.heroHeight * 0.38) / (state.heroHeight * 0.8));
+    const work = mobile ? 0 : smooth((y - state.workTop + state.viewportHeight * 0.4) / (state.viewportHeight * 0.75));
+    const contact = mobile ? 0 : smooth((y - state.contactTop + state.viewportHeight * 0.65) / state.viewportHeight);
     const shouldExplode = expanded ? 1 : layer * (1 - work) * 0.92;
-    const lerp = paused || reduced.matches ? 1 : 1 - Math.exp(-delta * 5.5);
+    const lerp = paused || state.reducedMotion ? 1 : 1 - Math.exp(-delta * 5.5);
     explosion = mix(explosion, shouldExplode, lerp);
     const float = paused ? 0 : Math.sin(time * 0.55) * 0.055;
-    const heroX = mobile ? 0.15 : 2.15;
+    const heroX = mobile ? 0 : 2.15;
     const layerX = mobile ? 0.05 : -2.45;
     sculpture.position.x = mix(mix(heroX, layerX, layer), mobile ? 1 : 3.8, work) * (1 - contact);
     sculpture.position.y = (mobile ? 0.1 : 0.08) + float + work * 0.5;
     sculpture.position.z = -work * 3.3 + contact * 1.4;
-    const targetScale = mix(mobile ? 0.79 : 1, 0.75, work) + contact * 0.15;
+    const targetScale = mix(mobile ? 0.92 : 1, 0.75, work) + contact * 0.15;
     sculpture.scale.setScalar(targetScale);
     body.rotation.y = -0.5 + time * 0.055 + pointer.x * (mobile ? 0 : 0.1) + layer * 0.7;
     body.rotation.z = -0.12 + Math.sin(time * 0.3) * 0.022;
@@ -278,57 +236,59 @@ try {
     accent.lerp(targetAccent, lerp);
     innerMaterial.emissive.copy(accent);
     edgeMaterial.emissive.copy(accent).multiplyScalar(0.3);
-    const baseCameraZ = mobile ? 8.8 : 9.2;
+    const baseCameraZ = mobile ? (expanded ? 9.0 : 6.7) : 9.2;
     camera.position.x = mix(camera.position.x, paused ? 0 : pointer.x * 0.16, lerp);
     camera.position.y = mix(camera.position.y, (mobile ? 0.65 : 1.35) + layer * 0.1 - pointer.y * 0.08, lerp);
     camera.position.z = mix(camera.position.z, baseCameraZ - layer * 0.35 + work * 0.4, lerp);
     // On phones the sculpture occupies the open space between the title and description.
     lookAt.set(0, mobile ? 0.08 + layer * 0.65 : 0.1, 0);
     camera.lookAt(lookAt);
-    composer.render();
+    renderer.render(scene, camera);
     if (!rendered) {
       rendered = true;
-      document.body.classList.add('ready-3d');
-      canvas.classList.add('ready');
-      canvas.dataset.renderer = 'webgl2';
-      explodeButton.hidden = pauseButton.hidden = false;
-      description.textContent = 'An interactive architecture sculpture.';
+      onReady({ drawCalls: renderer.info.render.calls, triangles: renderer.info.render.triangles });
     }
     const settling = Math.abs(explosion - shouldExplode) > 0.002;
-    if (!document.hidden && (!paused || settling)) animation = requestAnimationFrame(draw);
+    if (state.visible && !state.hidden && (!paused || settling)) animation = frame(draw);
   }
   requestFrame = () => {
-    if (animation === null && !document.hidden) { previous = performance.now(); animation = requestAnimationFrame(draw); }
+    if (animation === null && state.visible && !state.hidden) { previous = performance.now(); animation = frame(draw); }
   };
-  document.addEventListener('visibilitychange', () => {
-    if (document.hidden && animation !== null) { cancelAnimationFrame(animation);animation = null; }
-    else requestFrame();
-  });
+  const dispose = () => {
+    if (animation !== null) cancelFrame(animation);
+    studio.dispose(); renderer.dispose();
+    const geometries = new Set(), materials = new Set();
+    scene.traverse(object => {
+      if (object.geometry) geometries.add(object.geometry);
+      if (object.material) materials.add(object.material);
+    });
+    geometries.forEach(geometry => geometry.dispose());
+    materials.forEach(material => material.dispose());
+  };
   canvas.addEventListener('webglcontextlost', event => {
     event.preventDefault();
-    if (animation !== null) cancelAnimationFrame(animation);
+    if (animation !== null) cancelFrame(animation);
     animation = null;
-    canvas.classList.remove('ready');
-    document.body.classList.remove('ready-3d');
-    canvas.dataset.renderer = 'fallback';
-    explodeButton.hidden = pauseButton.hidden = true;
-    description.textContent = 'An illustration of the systems behind the interface.';
+    onError('context-lost');
   });
-  window.addEventListener('pagehide', event => {
-    if (event.persisted) {
-      if (animation !== null) cancelAnimationFrame(animation);
-      animation = null;
-      return;
-    }
-    if (animation !== null) cancelAnimationFrame(animation);
-    composer.dispose(); environmentTarget.dispose(); renderer.dispose();
-    scene.traverse(object => { object.geometry?.dispose(); });
-  });
-  window.addEventListener('pageshow', event => { if (event.persisted) requestFrame(); });
-  resize();requestFrame();
+  resize();
+  // Warm the visible shaders without synchronously waiting for GPU compilation.
+  await renderer.compileAsync(scene, camera);
+  await yieldToBrowser();
+  requestFrame();
+  return {
+    invalidate() {
+      if (state.hidden || !state.visible) {
+        if (animation !== null) cancelFrame(animation);
+        animation = null;
+        return;
+      }
+      if (width !== state.width || height !== state.height || mobile !== state.mobile) resize();
+      requestFrame();
+    },
+    dispose,
+  };
 } catch (error) {
-  canvas.dataset.renderer = 'fallback';
-  canvas.dataset.reason = error.name;
-  document.body.classList.add('fallback-active');
-  console.warn('3D scene unavailable; showing the static direction study.', error.message);
+  onError(error.name);
+}
 }

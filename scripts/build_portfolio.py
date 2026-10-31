@@ -44,9 +44,8 @@ def head(title, description, prefix='./', route='', base_url=None, cinematic=Fal
     schema = {'@context': 'https://schema.org', '@type': 'Person', 'name': PROFILE['name'],
               'jobTitle': PROFILE['role'], 'url': origin + '/', 'sameAs': [PROFILE['github']],
               'description': 'Java backend candidate focused on business workflows, PostgreSQL and transaction correctness.'}
-    presentation = f'''<link rel="stylesheet" href="{prefix}cinematic.css?v=5">
-<script type="importmap">{{"imports":{{"three":"{prefix}vendor/three/build/three.module.js","three/addons/":"{prefix}vendor/three/examples/jsm/"}}}}</script>
-<script type="module" src="{prefix}cinematic.js?v=5"></script>''' if cinematic else f'''<link rel="stylesheet" href="{prefix}styles.css?v=5"><script src="{prefix}theme.js?v=4"></script>'''+f'<script defer src="{prefix}app.js?v=4"></script>'
+    presentation = f'''<link rel="stylesheet" href="{prefix}cinematic.css?v=7">
+<script type="module" src="{prefix}cinematic.js?v=7"></script>''' if cinematic else f'''<link rel="stylesheet" href="{prefix}styles.css?v=5"><script src="{prefix}theme.js?v=4"></script>'''+f'<script defer src="{prefix}app.js?v=4"></script>'
     return f'''<!doctype html><html lang="en"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{e(title)}</title><meta name="description" content="{e(description)}">
