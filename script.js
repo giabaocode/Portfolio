@@ -1,7 +1,9 @@
+import { initSiteUI } from './js/site-ui.js?v=8';
 import { initDialogs } from './js/dialogs.js';
 import { initSearch } from './js/search.js';
 import { initSimulation } from './js/simulation.js';
 
+initSiteUI();
 const dialogs = initDialogs();
 initSearch(dialogs);
 initSimulation();
@@ -49,37 +51,6 @@ if ('IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: re
   // Keyboard navigation can move focus into a section before it intersects the screen.
   document.addEventListener('focusin', event => event.target.closest('.reveal')?.classList.add('is-visible'));
 }
-
-const header = document.querySelector('.site-header');
-let scrollScheduled = false;
-function updateHeader() { header?.classList.toggle('scrolled', window.scrollY > 12); }
-window.addEventListener('scroll', () => {
-  if (scrollScheduled) return;
-  scrollScheduled = true;
-  requestAnimationFrame(() => { scrollScheduled = false; updateHeader(); });
-}, { passive: true });
-updateHeader();
-
-let toastTimer;
-function toast(message) {
-  const element = document.querySelector('#toast');
-  if (!element) return;
-  clearTimeout(toastTimer);
-  element.textContent = message;
-  element.classList.add('visible');
-  toastTimer = setTimeout(() => element.classList.remove('visible'), 3500);
-}
-document.querySelectorAll('[data-copy-email]').forEach(button => button.addEventListener('click', async () => {
-  const email = JSON.parse(document.querySelector('#profile-data')?.textContent || '{"email":"pn.giabao9705@gmail.com"}').email;
-  try {
-    await navigator.clipboard.writeText(email);
-    toast('Email copied. Looking forward to hearing from you.');
-  } catch {
-    button.textContent = email;
-    button.style.userSelect = 'text';
-    toast('Select the email address to copy, or use the email link above.');
-  }
-}));
 
 // The default archive is compact; an explicit project hash can reveal a matching row.
 if (location.hash === '#more-work') {

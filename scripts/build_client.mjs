@@ -4,7 +4,7 @@ import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const files = ['js/dialogs.js', 'js/search.js', 'js/simulation.js', 'script.js'];
+const files = ['js/preferences.js', 'js/site-ui.js', 'js/dialogs.js', 'js/search.js', 'js/simulation.js', 'script.js'];
 const parts = [];
 for (const name of files) {
   const source = (await readFile(path.join(root, name), 'utf8'))

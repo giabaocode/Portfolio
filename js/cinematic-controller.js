@@ -1,3 +1,5 @@
+import { readPreference, writePreference } from './preferences.js?v=8';
+
 export function initScene() {
   const canvas = document.querySelector('#scene');
   const art = document.querySelector('.scene-art');
@@ -10,7 +12,7 @@ export function initScene() {
     canvas.dataset.renderer = 'fallback';
     return;
   }
-  const state = { expanded: false, paused: reduced.matches, reducedMotion: reduced.matches, pointerX: 0, pointerY: 0, visible: false };
+  const state = { expanded: false, paused: reduced.matches || readPreference('gia-bao-motion-paused') === 'true', reducedMotion: reduced.matches, pointerX: 0, pointerY: 0, visible: false };
   let worker, startupTimer, scheduled = false, failed = false;
   const events = new AbortController();
   function measure() {
@@ -19,6 +21,8 @@ export function initScene() {
       viewportHeight: innerHeight, mobile: compact.matches,
       pixelRatio: Math.min(devicePixelRatio, compact.matches ? 1 : 1.25),
       heroHeight: document.querySelector('.hero').offsetHeight,
+      approachTop: document.querySelector('#approach').offsetTop,
+      approachBottom: document.querySelector('#approach').offsetTop + document.querySelector('#approach').offsetHeight,
       workTop: document.querySelector('#work').offsetTop,
       contactTop: document.querySelector('#contact').offsetTop,
       scroll: scrollY, hidden: document.hidden,
@@ -41,6 +45,7 @@ export function initScene() {
     description.textContent = 'An illustration of the systems behind the interface.';
   }
   function updatePause() {
+    document.body.classList.toggle('motion-paused', state.paused);
     pause.setAttribute('aria-pressed', String(state.paused));
     pause.querySelector('.pause-symbol').textContent = state.paused ? '▷' : 'Ⅱ';
     pause.querySelector('.pause-text').textContent = state.paused ? 'Resume motion' : 'Pause motion';
@@ -49,7 +54,7 @@ export function initScene() {
     if (worker || failed || document.hidden) return;
     measure();
     try {
-      worker = new Worker(new URL('./cinematic-3d.min.js?v=7', import.meta.url), { type: 'module' });
+      worker = new Worker(new URL('./cinematic-3d.min.js?v=8', import.meta.url), { type: 'module' });
       startupTimer = setTimeout(fallback, 15000);
       worker.addEventListener('error', fallback);
       worker.addEventListener('message', event => {
@@ -78,7 +83,7 @@ export function initScene() {
     description.textContent = state.expanded ? 'Input. Business rules. Data. Audit. One coherent system.' : 'An interactive architecture sculpture.';
     send();
   }, { signal: events.signal });
-  pause.addEventListener('click', () => { state.paused = !state.paused; updatePause(); send(); }, { signal: events.signal });
+  pause.addEventListener('click', () => { state.paused = !state.paused; writePreference('gia-bao-motion-paused', state.paused); updatePause(); send(); }, { signal: events.signal });
   reduced.addEventListener('change', () => { state.reducedMotion = reduced.matches; state.paused = reduced.matches; updatePause(); send(); }, { signal: events.signal });
   const visibility = new IntersectionObserver(entries => {
     state.visible = entries[0].isIntersecting;
@@ -89,6 +94,9 @@ export function initScene() {
   const resize = new ResizeObserver(() => { measure(); schedule(); });
   resize.observe(art);
   document.fonts.ready.then(() => { measure(); send(); });
+  document.addEventListener('toggle', event => {
+    if (event.target.matches('.work-archive')) { measure(); schedule(); }
+  }, { capture: true, signal: events.signal });
   window.addEventListener('resize', () => { measure(); schedule(); }, { passive: true, signal: events.signal });
   window.addEventListener('scroll', () => {
     state.scroll = scrollY;

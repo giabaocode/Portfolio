@@ -4,7 +4,7 @@ import shutil
 import argparse
 
 ROOT = Path(__file__).resolve().parents[1]
-FILES = ['.nojekyll', 'index.html', 'cinematic.css', 'cinematic.js', 'styles.css', 'app.js', 'theme.js', 'favicon.ico', 'robots.txt', 'site.webmanifest', 'sitemap.xml']
+FILES = ['.nojekyll', 'index.html', 'cinematic.css', 'site-ui.css', 'cinematic.js', 'styles.css', 'app.js', 'theme.js', 'favicon.ico', 'robots.txt', 'site.webmanifest', 'sitemap.xml']
 ASSET_FILES = ['noise.svg', 'Resume.html', 'resume.css', 'resume.js', 'Pham_Ngoc_Gia_Bao_Java_Backend.pdf', 'favicon.svg', 'apple-touch-icon.png', 'android-chrome-192x192.png', 'android-chrome-512x512.png', 'og-preview.png']
 
 
@@ -29,7 +29,7 @@ def main():
         shutil.copytree(ROOT/'assets'/name, dest/'assets'/name)
     shutil.copytree(ROOT/'cases', dest/'cases')
     (dest/'js').mkdir()
-    for name in ['cinematic-3d.min.js', 'cinematic-3d.min.js.LEGAL.txt', 'cinematic-controller.js', 'simulation.js']:
+    for name in ['cinematic-3d.min.js', 'cinematic-3d.min.js.LEGAL.txt', 'cinematic-controller.js', 'simulation.js', 'site-ui.js', 'preferences.js']:
         shutil.copy2(ROOT/'js'/name, dest/'js'/name)
     (dest/'vendor/three').mkdir(parents=True)
     for name in ['LICENSE', 'version.json']:

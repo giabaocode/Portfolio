@@ -10,6 +10,7 @@ ROOT = Path(__file__).resolve().parents[1]
 PROFILE = json.loads((ROOT / 'data/profile.json').read_text())
 PROJECTS = json.loads((ROOT / 'data/projects.json').read_text())
 BY_ID = {p['id']: p for p in PROJECTS}
+HIGHLIGHTS = json.loads((ROOT/'data/project-highlights.json').read_text())
 
 
 def e(value):
@@ -44,8 +45,8 @@ def head(title, description, prefix='./', route='', base_url=None, cinematic=Fal
     schema = {'@context': 'https://schema.org', '@type': 'Person', 'name': PROFILE['name'],
               'jobTitle': PROFILE['role'], 'url': origin + '/', 'sameAs': [PROFILE['github']],
               'description': 'Java backend candidate focused on business workflows, PostgreSQL and transaction correctness.'}
-    presentation = f'''<link rel="stylesheet" href="{prefix}cinematic.css?v=7">
-<script type="module" src="{prefix}cinematic.js?v=7"></script>''' if cinematic else f'''<link rel="stylesheet" href="{prefix}styles.css?v=5"><script src="{prefix}theme.js?v=4"></script>'''+f'<script defer src="{prefix}app.js?v=4"></script>'
+    presentation = f'''<link rel="stylesheet" href="{prefix}cinematic.css?v=8">
+<script type="module" src="{prefix}cinematic.js?v=8"></script>''' if cinematic else f'''<link rel="stylesheet" href="{prefix}styles.css?v=8"><script src="{prefix}theme.js?v=4"></script>'''+f'<script defer src="{prefix}app.js?v=8"></script>'
     return f'''<!doctype html><html lang="en"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{e(title)}</title><meta name="description" content="{e(description)}">
@@ -58,6 +59,7 @@ def head(title, description, prefix='./', route='', base_url=None, cinematic=Fal
 <link rel="icon" href="{prefix}assets/favicon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="{prefix}assets/apple-touch-icon.png">
 <link rel="manifest" href="{prefix}site.webmanifest"><link rel="stylesheet" href="{prefix}assets/fonts/fonts.css">
 {presentation}
+<link rel="stylesheet" href="{prefix}site-ui.css?v=8">
 <script type="application/ld+json">{json.dumps(schema)}</script>
 </head>'''
 
@@ -65,13 +67,22 @@ def head(title, description, prefix='./', route='', base_url=None, cinematic=Fal
 def header(prefix='./', home=False):
     home_url = prefix + 'index.html'
     anchor = '' if home else home_url
-    return f'''<a class="skip-link" href="#main">Skip to content</a>{ICONS}
-<header class="site-header"><div class="nav-shell wrap">
-<a class="brand" href="{home_url}" aria-label="Gia Bao home"><span class="brand-mark">g<span>b</span><i>.</i></span><span class="brand-caption">GIA BAO<br><small>BACKEND DEVELOPER</small></span></a>
-<nav class="desktop-nav" aria-label="Primary navigation"><a href="{anchor}#work">Selected work</a><a href="{anchor}#approach">Approach</a><a href="{anchor}#about">About</a></nav>
-<div class="nav-actions"><button class="icon-button search-trigger" aria-label="Search projects and actions">{icon('search')}<kbd>⌘ K</kbd></button><button class="icon-button theme-toggle" aria-label="Switch to light theme">{icon('sun')}</button><a class="nav-resume" href="{prefix}assets/Resume.html">Résumé {icon()}</a><button class="icon-button menu-toggle" aria-label="Open navigation" aria-controls="mobile-menu" aria-expanded="false">{icon('menu')}</button></div>
-</div></header>
-<dialog class="mobile-menu" id="mobile-menu" aria-label="Navigation"><div class="menu-top"><span class="eyebrow">EXPLORE</span><button class="icon-button" data-close-dialog aria-label="Close navigation">{icon('close')}</button></div><nav><a href="{anchor}#work">Selected work <span>01</span></a><a href="{anchor}#approach">Approach <span>02</span></a><a href="{anchor}#about">About me <span>03</span></a><a href="{anchor}#contact">Let’s talk {icon()}</a><a class="menu-cv" href="{prefix}assets/Resume.html">View résumé {icon('file')}</a></nav><p class="mono">Ho Chi Minh City, Vietnam</p></dialog>'''
+    tools = '<button id="pause-motion" hidden type="button" aria-pressed="false"><span class="pause-symbol">Ⅱ</span><span class="pause-text">Pause motion</span></button>' if home else f'<button type="button" class="search-trigger">Search projects {icon("search")}</button><button type="button" class="theme-toggle">Switch theme {icon("sun")}</button>'
+    return f'''<a class="site-skip" href="#main">Skip to content</a><header class="site-nav" data-site-header><a class="site-brand" href="{home_url}" aria-label="Gia Bao home">GIA BAO<span class="brand-dot">.</span><small>JAVA BACKEND</small></a><nav class="site-links" aria-label="Primary navigation"><a href="{anchor}#work" data-section-link="work">Work</a><a href="{prefix}assets/Pham_Ngoc_Gia_Bao_Java_Backend.pdf" download>CV <span aria-hidden="true">↓</span><span class="sr-only"> — Download PDF</span></a><a href="{anchor}#contact" data-section-link="contact">Contact</a></nav><details class="site-menu"><summary aria-label="More navigation">More <span aria-hidden="true">+</span></summary><nav class="site-menu-panel" aria-label="More navigation"><a href="{anchor}#approach" data-section-link="approach">Approach</a><a href="{anchor}#playground" data-section-link="playground">Engineering playground</a><a href="{anchor}#about" data-section-link="about">About me</a><a href="{prefix}assets/Resume.html">Read résumé</a><a href="{PROFILE['github']}" target="_blank" rel="noopener noreferrer">GitHub ↗</a>{tools}<a data-view-link href="{home_url}?view=static#top">Static view</a></nav></details></header>'''
+
+
+def copy_feedback():
+    return f'''<div class="copy-feedback" role="status" aria-live="polite" id="copy-feedback"></div><div class="copy-fallback" hidden><label for="email-to-copy">Select and copy my email</label><input id="email-to-copy" readonly value="{e(PROFILE['email'])}" spellcheck="false"><button type="button" data-close-copy>Done</button></div>'''
+
+
+def highlight_list(pid):
+    p = HIGHLIGHTS[pid]
+    return '<dl class="project-highlights">' + ''.join(f'<div><dt>{label}</dt><dd>{e(p[key])}</dd></div>' for label,key in [('My role','ownership'),('Delivered','delivered'),('Key decision','decision')]) + '</dl>'
+
+
+def case_overview(pid):
+    p = HIGHLIGHTS[pid]
+    return '<section class="case-quick wrap" aria-labelledby="quick-title"><h2 id="quick-title">At a glance</h2><dl>' + ''.join(f'<div><dt>{label}</dt><dd>{e(p[key])}</dd></div>' for label,key in [('Problem','problem'),('My role','ownership'),('Delivered','delivered'),('Key decision','decision')]) + '</dl></section>'
 
 
 def overlays(prefix='./'):
@@ -85,7 +96,7 @@ def overlays(prefix='./'):
 
 
 def footer(prefix='./', compact=False):
-    return f'''<footer class="site-footer wrap"><a class="footer-brand" href="{prefix}index.html">gia bao<span>®</span></a><p>Thoughtful systems. Human outcomes.</p><div><a href="{PROFILE['github']}" target="_blank" rel="noopener noreferrer">GitHub {icon()}</a><span class="mono">© {__import__('datetime').date.today().year} GIA BAO</span></div></footer>{overlays(prefix)}'''
+    return f'''<footer class="site-footer wrap"><a class="footer-brand" href="{prefix}index.html">GIA BAO<span>.</span></a><p>Thoughtful systems. Human outcomes.</p><div><a href="{PROFILE['github']}" target="_blank" rel="noopener noreferrer">GitHub {icon()}</a><span class="mono">© {__import__('datetime').date.today().year} GIA BAO</span></div></footer>{overlays(prefix)}'''
 
 
 def picture(name, prefix='./', cls='', alt='', lazy=True):
@@ -103,9 +114,11 @@ def home(base_url=None):
     archive = f'<details class="work-archive" id="more-work"><summary><span>There’s more behind the work.</span><span class="mono">5 MORE PROJECTS <b>+</b></span></summary><div>{archive_rows}</div></details>'
     rows = ''.join(f'<div class="request-row" data-worker="{i}"><span class="worker-id mono">0{i+1}</span><span class="worker-name">Request {i+1}</span><span class="worker-bar"><i></i></span><span class="worker-status mono">READY</span></div>' for i in range(5))
     playground = (ROOT/'templates/playground.html').read_text().replace('{rows}', rows).replace('{icon()}', icon()).replace("{icon('right')}", icon('right'))
-    tokens = {'ARCHIVE': archive, 'PLAYGROUND': playground, 'EMAIL': e(PROFILE['email']),
+    tokens = {'ARCHIVE': archive, 'PLAYGROUND': playground, 'HEADER': header(home=True), 'COPY_FEEDBACK': copy_feedback(), 'EMAIL': e(PROFILE['email']),
               'GITHUB': e(PROFILE['github']), 'NAME_UPPER': e(PROFILE['name'].upper()),
               'ROLE_UPPER': e(PROFILE['role'].upper()), 'YEAR': str(__import__('datetime').date.today().year)}
+    tokens.update({'HIGHLIGHTS_' + pid.upper(): highlight_list(pid) for pid in ['sstc', 'unihub', 'lunfa']})
+    tokens.update({'INTRO_' + pid.upper(): e(HIGHLIGHTS[pid]['problem']) for pid in ['sstc', 'unihub', 'lunfa']})
     body = (ROOT/'templates/cinematic-home.html').read_text()
     for key, value in tokens.items():
         body = body.replace('{{' + key + '}}', value)
@@ -129,7 +142,7 @@ def case_page(p, next_p, base_url=None):
     if p['id']=='unihub':evidence_detail=f'<a class="button button-accent" href="{prefix}index.html#playground">Explore the concurrency model {icon("right")}</a>'
     lessons=''.join(f'<li>{e(x)}</li>' for x in p['lessons'])
     limitations=''.join(f'<li>{e(x)}</li>' for x in p['limitations'])
-    return head(f'{p["shortName"]} — A case study by Gia Bao',p['summary'],prefix,f'cases/{p["id"]}/',base_url)+f'''<body data-page="case">{header(prefix)}<main id="main"><section class="case-hero wrap"><a class="back-link mono" href="{prefix}index.html#work">← ALL WORK</a><p class="eyebrow">{e(p['category'])}</p><h1>{e(p['title'])}</h1><p class="case-subtitle serif">{e(p['subtitle'])}</p><div class="case-meta"><div><span class="eyebrow">MY ROLE</span><p>{e(p['role'])}</p></div><div><span class="eyebrow">WHEN</span><p>{e(p['date'])}</p></div><div><span class="eyebrow">BUILT WITH</span><div class="work-tags">{tags}</div></div></div></section><nav class="case-nav wrap" aria-label="Case study sections"><a href="#overview">Overview</a><a href="#workflow">Workflow</a><a href="#decisions">Engineering decisions</a><a href="#evidence">Evidence &amp; scope</a></nav><section class="case-overview wrap section-space" id="overview"><p class="eyebrow">THE CONTEXT</p><div><h2>{e(p['shortName'])}<span class="serif"> / the problem</span></h2><p class="case-lead">{e(p['context'])}</p><p>{e(p['summary'])}</p></div></section><div class="case-gallery wrap">{media}</div><section class="case-content-grid wrap section-space" id="workflow"><div class="case-aside"><p class="eyebrow">THE WORKFLOW</p><h2>Follow the<br><span class="serif">business rule.</span></h2><p>A simplified path through the system. Each step has an explicit responsibility.</p></div><ol class="workflow-timeline">{flow}</ol></section><section class="case-decisions wrap section-space" id="decisions"><div class="section-heading"><div><p class="eyebrow">ENGINEERING DECISIONS</p><h2>The interesting<br><span class="serif">part of the work.</span></h2></div><p>The constraints, the trade-offs,<br>and how I approached them.</p></div><div class="decisions-list">{decision_html}</div></section><section class="case-evidence wrap section-space" id="evidence"><p class="eyebrow">EVIDENCE &amp; SCOPE</p><h2>What was delivered.<br><span class="serif">What it means.</span></h2><p class="case-lead">{e(p['evidence'])}</p>{evidence_detail}<div class="evidence-links">{links}</div><div class="scope-grid"><div><h3>What I take from this project</h3><ul>{lessons}</ul></div><div><h3>Scope &amp; limitations</h3><ul>{limitations}</ul></div></div></section><a class="next-project wrap" href="../{next_p['id']}/index.html"><span class="eyebrow">NEXT CASE STUDY</span><div><h2>{e(next_p['shortName'])}<span class="serif"> / keep exploring</span></h2>{icon()}</div></a><div class="case-contact wrap"><p>Have a similar problem to solve?</p><a class="text-link" href="mailto:{PROFILE['email']}">Let’s talk {icon()}</a></div></main>{footer(prefix)}</body></html>'''
+    return head(f'{p["shortName"]} — A case study by Gia Bao',p['summary'],prefix,f'cases/{p["id"]}/',base_url)+f'''<body data-page="case">{ICONS}{header(prefix)}<main id="main"><section class="case-hero wrap"><a class="back-link mono" href="{prefix}index.html#work">← ALL WORK</a><p class="eyebrow">{e(p['category'])}</p><h1><span class="case-project-label">{e(p["shortName"])}</span>{e(p["title"])}</h1><p class="case-subtitle serif">{e(p['subtitle'])}</p></section>{case_overview(p["id"])}<div class="case-meta wrap"><div><span class="eyebrow">WHEN</span><p>{e(p['date'])}</p></div><div><span class="eyebrow">BUILT WITH</span><div class="work-tags">{tags}</div></div></div><nav class="case-nav wrap" aria-label="Case study sections"><a href="#overview">Overview</a><a href="#workflow">Workflow</a><a href="#decisions">Engineering decisions</a><a href="#evidence">Evidence &amp; scope</a></nav><section class="case-overview wrap section-space" id="overview"><p class="eyebrow">THE CONTEXT</p><div><h2>{e(p['shortName'])}<span class="serif"> / the problem</span></h2><p class="case-lead">{e(p['context'])}</p><p>{e(p['summary'])}</p></div></section><div class="case-gallery wrap">{media}</div><section class="case-content-grid wrap section-space" id="workflow"><div class="case-aside"><p class="eyebrow">THE WORKFLOW</p><h2>Follow the<br><span class="serif">business rule.</span></h2><p>A simplified path through the system. Each step has an explicit responsibility.</p></div><ol class="workflow-timeline">{flow}</ol></section><section class="case-decisions wrap section-space" id="decisions"><div class="section-heading"><div><p class="eyebrow">ENGINEERING DECISIONS</p><h2>The interesting<br><span class="serif">part of the work.</span></h2></div><p>The constraints, the trade-offs,<br>and how I approached them.</p></div><div class="decisions-list">{decision_html}</div></section><section class="case-evidence wrap section-space" id="evidence"><p class="eyebrow">EVIDENCE &amp; SCOPE</p><h2>What was delivered.<br><span class="serif">What it means.</span></h2><p class="case-lead">{e(p['evidence'])}</p>{evidence_detail}<div class="evidence-links">{links}</div><div class="scope-grid"><div><h3>What I take from this project</h3><ul>{lessons}</ul></div><div><h3>Scope &amp; limitations</h3><ul>{limitations}</ul></div></div></section><a class="next-project wrap" href="../{next_p['id']}/index.html"><span class="eyebrow">NEXT CASE STUDY</span><div><h2>{e(next_p['shortName'])}<span class="serif"> / keep exploring</span></h2>{icon()}</div></a><div class="case-contact wrap"><p>Interested in working together?</p><a class="text-link" href="mailto:{PROFILE['email']}">Let’s talk {icon()}</a><button type="button" class="copy-email" data-copy-email="{PROFILE['email']}"><span data-copy-label>Copy email</span></button><a class="text-link" href="{prefix}assets/Pham_Ngoc_Gia_Bao_Java_Backend.pdf" download>Download CV ↓</a></div>{copy_feedback()}</main>{footer(prefix)}</body></html>'''
 
 
 def resume_page():

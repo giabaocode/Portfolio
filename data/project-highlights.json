@@ -1,0 +1,58 @@
+{
+  "sstc": {
+    "title": "Warranty operations",
+    "problem": "A warranty process spanning customer intake, shipping, inspection and returns.",
+    "ownership": "Backend Developer Intern; sole developer from requirements and data design to testing and handover.",
+    "delivered": "A 29-state workflow and 57 schema migrations, with complete source handover.",
+    "decision": "Backend-owned business rules; AI is limited to language extraction."
+  },
+  "unihub": {
+    "title": "Workshop platform",
+    "problem": "Registration, asynchronous payments and check-in with unreliable venue Wi-Fi.",
+    "ownership": "Admin panel, offline QR check-in, Redis and database design in a team of two.",
+    "delivered": "Workshop administration and an offline-capable check-in flow.",
+    "decision": "Handle competing registrations explicitly; scan offline and sync on reconnect."
+  },
+  "lunfa": {
+    "title": "AI writing tutor",
+    "problem": "Help Chinese learners correct their own sentences without giving away the answer.",
+    "ownership": "Freelance full-stack developer in a team of two, from requirements through deployment.",
+    "delivered": "A completed writing tutor delivered to a university research group.",
+    "decision": "Structured AI responses with layered malformed-output recovery and safe fallbacks."
+  },
+  "coffee": {
+    "title": "Coffee-shop management",
+    "problem": "Connect staff ordering, role-specific operations and management reporting.",
+    "ownership": "POS/order module, system UI/UX and requirements analysis in a team of four.",
+    "delivered": "A coffee-shop management product deployed for use at a GUTA shop.",
+    "decision": "Model the POS and order journey around the staff workflow."
+  },
+  "auction": {
+    "title": "Online marketplace",
+    "problem": "Keep concurrent bids, anti-sniping and post-auction handoff coherent.",
+    "ownership": "Bidder/seller flows, database, UI/UX, chat and order tracking in a team of two.",
+    "delivered": "A marketplace with 17 relational tables and 50+ documented endpoints.",
+    "decision": "Use PostgreSQL row-level locking around competing bid updates."
+  },
+  "homestay": {
+    "title": "Rental registration",
+    "problem": "Track residents from inquiry and viewing to deposit, contract and move-out.",
+    "ownership": "Registration module, Prisma schema, UI/UX and requirements analysis in a team of four.",
+    "delivered": "Bed-level availability and a six-state registration workflow.",
+    "decision": "Track allocation at bed level and make registration transitions explicit."
+  },
+  "petcare": {
+    "title": "Veterinary clinic system",
+    "problem": "Connect bookings, examinations, prescriptions and billing across staff roles.",
+    "ownership": "Sole frontend/backend implementer in a team of four; teammates handled design.",
+    "delivered": "A five-role clinic application with nine route groups.",
+    "decision": "Use parameterized SQL and transactions for related data updates."
+  },
+  "melodix": {
+    "title": "Android music app",
+    "problem": "Support discovery, artist workflows and online/offline listening.",
+    "ownership": "Artist, detail/search/share/profile flows, UI/UX and database co-design in a team of four.",
+    "delivered": "Java Android flows using MVVM and a shared Supabase backend.",
+    "decision": "Separate UI state, data access and playback responsibilities."
+  }
+}

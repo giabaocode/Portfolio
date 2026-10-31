@@ -39,6 +39,8 @@ Commit the generated root pages, `app.js`, résumé PDF and prepared assets alon
 | `CONTENT_FACTS.md` | Authoritative claims, role titles and wording constraints |
 | `data/profile.json` | Contact, education and core profile data |
 | `data/projects.json` | Eight projects: role, context, workflow, decisions, evidence and scope |
+| `data/project-highlights.json` | Shared problem, ownership, delivery and key-decision summaries |
+| `site-ui.css`, `js/site-ui.js`, `js/preferences.js` | Shared fixed navigation, copy-email feedback and motion/view preferences |
 | `scripts/build_portfolio.py`, `templates/` | Data-driven cinematic homepage, case studies and résumé HTML |
 | `cinematic.css`, `cinematic.js`, `js/cinematic-controller.js` | Homepage styling and lightweight worker controller |
 | `js/cinematic-scene.js`, `js/scene-worker.js`, `js/studio-environment.js` | OffscreenCanvas renderer and precomputed HDR reflection loading |
@@ -60,6 +62,9 @@ Existing role-specific application exporters and documents are separate from the
 ## Design and interaction
 
 - Cinematic dark homepage; matching ice-blue case-study palette with an optional light theme. Self-hosted fonts and licenses live in `assets/fonts/`.
+- The homepage leads with a readable role and availability, View projects / Download CV, then selected work before approach/playground. Featured projects and case studies share concise ownership/delivery/decision summaries.
+- Navigation keeps Work, CV and Contact reachable while scrolling. The More menu includes additional sections and viewing controls. Copy email has visible feedback and a selectable-text fallback.
+- Pause and static/3D preferences are stored locally with guarded storage access. Reduced motion continues to start paused.
 - The procedural metal sculpture changes composition while scrolling; Explore the layers separates and recombines its frames. It is illustrative, with no live telemetry.
 - Pause/Resume controls stop ambient 3D motion. Reduced motion starts paused. A hidden page stops rendering; renderer pixel ratio is capped. Rendering and shader compilation run in a worker. Browsers without worker WebGL support retain the CSS sculpture.
 - On compact screens the sculpture occupies a dedicated hero region. Headings and descriptions are outside its bounds, and later sections have opaque reading backgrounds. The worker stops when the artwork is offscreen, and mobile drawing is capped at 30 FPS.
@@ -77,7 +82,7 @@ Prepared screenshots remain in `assets/optimized/`. To regenerate after replacin
 
 `npm run check` validates the actual `dist/` artifact, including one H1 per page, unique IDs, internal targets and fragments, images, font resources, JavaScript imports and worker URLs, manifest icons and a one-page résumé with selectable text. It also rejects development/private directories and mail/tracker files in the artifact.
 
-The GitHub Actions workflow runs build, checks and model tests. It does not deploy or change repository settings. Browser QA is separate from these checks; the current local QA record is in `review/UPGRADE_QA.md` when present.
+The GitHub Actions workflow runs build, checks and model tests. It does not deploy or change repository settings. Browser QA is separate from these checks; the current local QA record is in `review/UX_POLISH_QA.md` when present.
 
 ## Publication
 

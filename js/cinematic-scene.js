@@ -193,8 +193,8 @@ try {
     const delta = Math.max(0, Math.min((now - previous) / 1000, 0.05));previous = now;
     if (!paused && !state.hidden) time += delta;
     const y = state.scroll;
-    const layer = mobile ? 0 : smooth((y - state.heroHeight * 0.38) / (state.heroHeight * 0.8));
-    const work = mobile ? 0 : smooth((y - state.workTop + state.viewportHeight * 0.4) / (state.viewportHeight * 0.75));
+    const layer = mobile ? 0 : smooth((y - state.approachTop + state.viewportHeight * 0.4) / (state.viewportHeight * 0.75)) * (1 - smooth((y - state.approachBottom + state.viewportHeight * 0.5) / (state.viewportHeight * 0.7)));
+    const work = mobile ? 0 : smooth((y - state.workTop + state.viewportHeight * 0.4) / (state.viewportHeight * 0.75)) * (1 - layer);
     const contact = mobile ? 0 : smooth((y - state.contactTop + state.viewportHeight * 0.65) / state.viewportHeight);
     const shouldExplode = expanded ? 1 : layer * (1 - work) * 0.92;
     const lerp = paused || state.reducedMotion ? 1 : 1 - Math.exp(-delta * 5.5);

@@ -3825,3 +3825,36 @@ dialog[open] {
     font-size:10px
   }
 }
+
+/* Shared identity and concise case-study reading layer. */
+:root{--subtle:#9bafc5}
+:root[data-theme=light]{--subtle:#526456}
+body{font-size:16px}
+html{scroll-padding-top:96px}
+.case-hero{padding-top:130px}
+.case-hero .back-link{font-size:13px;min-height:44px;display:inline-flex;align-items:center;margin-bottom:24px}
+.case-hero>.eyebrow,.case-meta .eyebrow{font-size:12px}
+.case-hero h1{font-size:clamp(40px,5.2vw,70px);max-width:1080px}
+.case-project-label{display:block;font-size:15px;line-height:1.5;letter-spacing:.07em;color:var(--accent);margin-bottom:12px}
+.case-subtitle{font-size:clamp(24px,2.5vw,34px)}
+.case-meta{grid-template-columns:.45fr 1.55fr;gap:45px;padding-block:25px;margin-top:28px}
+.case-meta p{font-size:15px}.case-meta .work-tags span{font-size:12px;line-height:1.6;padding:5px 9px}
+.case-quick{padding-top:24px;padding-bottom:32px}
+.case-quick h2{font-size:14px;letter-spacing:.08em;text-transform:uppercase;line-height:1.5;margin-bottom:20px;color:var(--muted)}
+.case-quick dl{display:grid;grid-template-columns:1fr 1fr;gap:0 35px;margin:0}
+.case-quick dl>div{border-top:1px solid var(--line);padding:18px 0;display:grid;grid-template-columns:95px 1fr;gap:20px}
+.case-quick dt{font-size:13px;color:var(--text)}
+.case-quick dd{font-size:15px;line-height:1.85;color:var(--muted);margin:0}
+.case-nav{gap:12px}
+.case-nav a{font-size:14px;min-height:44px;display:inline-flex;align-items:center;padding:8px 12px}
+.case-overview>.eyebrow,.case-aside>.eyebrow,.case-evidence>.eyebrow,.case-decisions .eyebrow{font-size:12px}
+.case-contact{flex-wrap:wrap;align-items:center;font-size:15px;gap:20px}
+.case-contact .text-link{min-height:44px;display:inline-flex;align-items:center;font-size:14px}
+.case-contact>p{margin-right:auto}
+.case-evidence .evidence-note,.private-note{font-size:14px}
+.site-footer .footer-brand{font-family:var(--sans);font-size:22px;letter-spacing:-.05em;font-weight:600}
+.site-footer .footer-brand>span{font-size:22px;color:var(--accent);vertical-align:baseline}
+@media(max-width:800px){.case-hero{padding-top:110px}.case-hero h1{font-size:clamp(38px,7vw,60px)}.case-quick dl{grid-template-columns:1fr}.case-quick dl>div{grid-template-columns:88px 1fr;gap:15px}.case-meta{grid-template-columns:1fr;gap:22px}.case-meta p{font-size:15px}.case-quick dd{font-size:15px}.case-quick dt{font-size:12px}.case-nav{gap:2px}.case-nav a{font-size:13px;padding-inline:8px}.case-contact{gap:14px}.case-contact>p{width:100%}}
+.case-overview p:not(.case-lead),.case-aside>p:last-child,.workflow-timeline p,.decision-body p,.scope-grid li{font-size:15px;line-height:1.9}
+.case-shot figcaption,.handover-metrics span,.decision-body .eyebrow,.workflow-timeline li>.mono,.decision summary>.mono{font-size:12px}
+.search-result>.mono{font-size:11px}

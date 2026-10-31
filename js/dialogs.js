@@ -8,6 +8,13 @@ export function initDialogs() {
     document.querySelector('.menu-toggle')?.setAttribute('aria-expanded', String(Boolean(document.querySelector('#mobile-menu[open]'))));
   };
   const close = dialog => { if (dialog?.open) dialog.close(); };
+  document.addEventListener('keydown', event => {
+    if (event.key !== 'Escape') return;
+    const active = dialogs.find(dialog => dialog.open);
+    if (!active) return;
+    event.preventDefault();
+    close(active);
+  });
   const open = (dialog, trigger = document.activeElement) => {
     if (!dialog || dialog.open) return;
     dialogs.filter(other => other.open).forEach(close);
