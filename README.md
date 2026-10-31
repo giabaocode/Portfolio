@@ -1,53 +1,92 @@
-# Gia Bao — Java Backend Portfolio
+# Gia Bao — Thoughtful Backend Engineering
 
-Static portfolio for Pham Ngoc Gia Bao, built with plain HTML, CSS and
-JavaScript.
+A static portfolio for Pham Ngoc Gia Bao, focused on Java backend internship and fresher opportunities. The design pairs an editorial homepage with eight case studies, an interactive architecture illustration, a concurrency teaching model, and one shared backend résumé in HTML and PDF.
 
-## Positioning
+## View
 
-The site is designed primarily for recruiters hiring Java Backend Intern or
-Fresher candidates. It leads with Spring Boot, PostgreSQL and workflow
-reliability, then supports that positioning with source-backed evidence and eight case
-studies. Freelance delivery remains supporting evidence of end-to-end ownership.
+Open `index.html` in a browser. The browser bundle, fonts, screenshots and case-study links work without a frontend installation or a server.
 
-## Run
+For a local HTTP preview, build once and run:
 
-Open `index.html` directly in a browser — no build step.
-
-For a local server (so relative asset paths resolve cleanly):
-
-```
-python -m http.server 4321 --directory .
-# → http://localhost:4321
+```sh
+npm run dev
 ```
 
-## Files
+Then open `http://127.0.0.1:4321`. The server exposes only the generated `dist/` artifact on loopback.
 
-- `index.html` — structure (projects are injected by `script.js`)
-- `styles.css` — design tokens, responsive layout and dark/light themes
-- `script.js` — `PROJECTS` data (each project's state machine lives here), node
-  interactions, featured/supporting project visibility, theme toggle, filters,
-  navigation and contact helpers
-- `assets/` — resume, role-specific CVs, shared `cv-role.css`, project assets and favicon
-- `robots.txt` — crawler access rules
-- `CONTENT_FACTS.md` — canonical claims and wording shared by the site and resumes
+## Edit and build
 
-## Editing content
+Requires Node.js 22+ and Python 3.10+. There are no npm dependencies. Python build dependencies are listed in `requirements-build.txt`.
 
-All project content is the `PROJECTS` array at the top of `script.js`. Each entry:
-`flow` is the list of states; a state with `challenge` + `fix` gets an amber dot
-and shows the problem/solution when clicked.
+```sh
+python3 -m venv .venv
+source .venv/bin/activate
+python3 -m pip install -r requirements-build.txt
+npm run build
+npm run check
+npm test
+```
 
-## Notes
+The build regenerates `app.js`, the homepage, the eight case-study pages, the HTML/PDF backend résumé and `dist/`. The PDF uses fonts bundled with ReportLab, so it does not depend on macOS font paths.
 
-- Education shows an expected 2027 graduation and GPA 3.46/4.0.
-- The SSTC warranty operations case study was engineered by Gia Bao as the sole
-  developer during a Backend Developer Internship. Public material describes the
-  complete source handover but does not expose the company database or production data.
-- Test wording distinguishes implementation count from execution evidence: the final
-  source contains 800+ automated test methods; the latest documented complete Maven
-  verification passed 805 tests.
-- Coffee Shop links to its team repository. Other public projects link to Gia
-  Bao's GitHub profile until project-specific repository URLs are available.
-- Deploy: upload the contents of this `portfolio/` folder to any static host
-  (Vercel / Netlify / GitHub Pages).
+Commit the generated root pages, `app.js`, résumé PDF and prepared assets alongside their source. Rebuild after editing content. Do not hand-edit generated HTML or `app.js`.
+
+## Source map
+
+| Source | Purpose |
+|---|---|
+| `CONTENT_FACTS.md` | Authoritative claims, role titles and wording constraints |
+| `data/profile.json` | Contact, education and core profile data |
+| `data/projects.json` | Eight projects: role, context, workflow, decisions, evidence and scope |
+| `scripts/build_portfolio.py` | Static page and résumé HTML templates |
+| `script.js`, `js/` | Interaction source; dialogs, search and simulation are separate modules |
+| `scripts/build_client.mjs` | Small dependency-free bundle for direct local-file viewing |
+| `theme.js` | Theme initialization before paint, with storage fallback |
+| `styles.css` | Design tokens, layout, motion, responsive and print styles |
+| `scripts/export_backend_cv.py` | Text-selectable one-page PDF from the same résumé HTML |
+| `scripts/prepare_assets.py` | Responsive WebP copies and brand asset preparation |
+| `scripts/package_portfolio.py` | Explicit public-file allowlist for `dist/` |
+| `scripts/check_site.py` | Internal links/fragments, resources, PDF and artifact-boundary checks |
+| `tests/simulation.test.js` | Invariants and failure contrast in the concurrency teaching model |
+
+Existing role-specific application exporters and documents are separate from the website build. They are not included in the public artifact.
+
+## Design and interaction
+
+- Dark and light themes; self-hosted Manrope and Instrument Serif fonts with licenses in `assets/fonts/`.
+- Three hero scenarios illustrate a normal request, duplicate delivery and an AI timeout.
+- The concurrency playground compares five stale readers with and without a version check. It is a deterministic teaching model, not a live backend, load test or benchmark.
+- Search opens with the search button or Cmd/Ctrl+K. Arrow keys select, Enter opens and Escape closes. User input is rendered with text nodes.
+- Native dialogs handle focus containment; all closing paths share scroll cleanup.
+- Core project content is rendered as HTML. Navigation, case studies, the project archive and decision accordions work without JavaScript.
+- Reduced-motion preferences disable decorative animation and remove artificial simulation delays.
+
+Prepared screenshots remain in `assets/optimized/`. To regenerate after replacing screenshot sources, run `npm run assets`. The full original screenshots remain unchanged in `assets/photo_prod/`.
+
+## Verification
+
+`npm run check` validates the actual `dist/` artifact, including one H1 per page, unique IDs, internal targets and fragments, images, font resources, JavaScript imports, manifest icons and a one-page résumé with selectable text. It also rejects development/private directories and mail/tracker files in the artifact.
+
+The GitHub Actions workflow runs build, checks and model tests. It does not deploy or change repository settings. Browser QA is separate from these checks; the current local QA record is in `review/UPGRADE_QA.md` when present.
+
+## Publication
+
+Publish **only `dist/`** to a static host. All asset and document links are relative and work under a subpath such as `/Portfolio/`. The default canonical origin is `https://giabaocode.github.io/Portfolio`.
+
+To generate pages for another origin:
+
+```sh
+node scripts/build_client.mjs
+python3 scripts/build_portfolio.py --base-url https://your-domain.example
+python3 scripts/export_backend_cv.py
+python3 scripts/package_portfolio.py
+python3 scripts/check_site.py
+```
+
+Do not upload the working directory. `SSTC/` is a read-only private reference project; `output/`, `tmp/`, mail exports, the job tracker, and QA artifacts are not website content.
+
+## Evidence rules
+
+Keep the official SSTC role as Backend Developer Intern. Its 29 states, 57 migrations, 800+ implemented test methods and recorded 805-test verification refer to final handover records, not current CI or live runtime telemetry. The local SSTC reference is an older snapshot and is excluded from publication.
+
+UniHub's 12,000 virtual users describe an authored K6 scenario; do not turn that into a measured throughput, latency, error-rate or zero-overselling claim without the corresponding report. Revalidate current product availability before presenting it as current use. Never publish company source, data or private documents without authorization.

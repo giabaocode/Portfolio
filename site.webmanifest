@@ -1,5 +1,5 @@
 {
-  "name": "Pham Ngoc Gia Bao — Java Backend Developer",
+  "name": "Gia Bao \u2014 Thoughtful Backend Engineering",
   "short_name": "Gia Bao",
   "icons": [
     {
@@ -13,8 +13,8 @@
       "type": "image/png"
     }
   ],
-  "theme_color": "#0a0f14",
-  "background_color": "#0a0f14",
-  "display": "standalone",
+  "theme_color": "#101211",
+  "background_color": "#101211",
+  "display": "browser",
   "start_url": "./index.html"
 }

@@ -1,0 +1,12 @@
+{
+  "name": "gia-bao-portfolio",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build_client.mjs && python3 scripts/build_portfolio.py && python3 scripts/export_backend_cv.py && python3 scripts/package_portfolio.py",
+    "assets": "python3 scripts/prepare_assets.py",
+    "check": "python3 scripts/check_site.py",
+    "test": "node --test tests/simulation.test.js",
+    "dev": "python3 scripts/serve_portfolio.py"
+  }
+}

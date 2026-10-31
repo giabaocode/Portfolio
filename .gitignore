@@ -16,3 +16,17 @@ Thumbs.db
 # Personal Job Search Tracker (private tracker, do not commit)
 Job_Search_Tracker.xlsx
 *.xlsx
+
+# Generated public output and isolated Sites publication checkout
+/dist/
+/.sites/
+/node_modules/
+__pycache__/
+*.pyc
+
+# Local applications, mail exports and QA artifacts
+/output/
+/tmp/
+/review/
+/.venv/
+*.eml

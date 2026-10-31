@@ -1,0 +1,28 @@
+{
+  "name": "Pham Ngoc Gia Bao",
+  "short_name": "Gia Bao",
+  "role": "Java Backend Developer",
+  "target": "Java Backend Intern / Fresher",
+  "email": "pn.giabao9705@gmail.com",
+  "phone": "+84 907 506 049",
+  "city": "Ho Chi Minh City, Vietnam",
+  "github": "https://github.com/giabaocode",
+  "site_url": "https://giabaocode.github.io/Portfolio",
+  "education": {
+    "school": "University of Science - VNU HCMC",
+    "degree": "B.Sc. Information Technology",
+    "period": "Sep 2023 - Oct 2027 (expected)",
+    "gpa": "3.46 / 4.0"
+  },
+  "skills": [
+    "Java 21",
+    "Spring Boot",
+    "PostgreSQL",
+    "Flyway",
+    "Testcontainers",
+    "Redis",
+    "Resilience4j",
+    "Docker"
+  ],
+  "availability": "Open to internship and fresher opportunities. Schedule to be discussed; Friday mornings unavailable."
+}

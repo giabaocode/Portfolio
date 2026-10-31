@@ -1,0 +1,34 @@
+[
+  {
+    "id": "lunfa",
+    "name": "Lunfa"
+  },
+  {
+    "id": "sstc",
+    "name": "SSTC"
+  },
+  {
+    "id": "unihub",
+    "name": "UniHub"
+  },
+  {
+    "id": "auction",
+    "name": "Online Auction"
+  },
+  {
+    "id": "coffee",
+    "name": "Coffee Shop"
+  },
+  {
+    "id": "homestay",
+    "name": "HomestayDorm"
+  },
+  {
+    "id": "petcare",
+    "name": "PetCareX"
+  },
+  {
+    "id": "melodix",
+    "name": "Melodix"
+  }
+]
