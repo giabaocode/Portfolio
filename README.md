@@ -1,10 +1,10 @@
-# Gia Bao — Thoughtful Backend Engineering
+# Gia Bao — Behind the Interface
 
-A static portfolio for Pham Ngoc Gia Bao, focused on Java backend internship and fresher opportunities. The design pairs an editorial homepage with eight case studies, an interactive architecture illustration, a concurrency teaching model, and one shared backend résumé in HTML and PDF.
+A static portfolio for Pham Ngoc Gia Bao, focused on Java backend internship and fresher opportunities. The cinematic homepage uses an original procedural WebGL2 system sculpture, scroll-driven composition and explorable layers. It retains eight case studies, the concurrency teaching model, and the shared backend résumé in HTML and PDF.
 
 ## View
 
-Open `index.html` in a browser. The browser bundle, fonts, screenshots and case-study links work without a frontend installation or a server.
+Use the HTTP preview below for the full 3D experience. Opening `index.html` through `file://` still shows HTML content and a CSS sculpture, but browsers restrict ES modules on local files.
 
 For a local HTTP preview, build once and run:
 
@@ -16,7 +16,7 @@ Then open `http://127.0.0.1:4321`. The server exposes only the generated `dist/`
 
 ## Edit and build
 
-Requires Node.js 22+ and Python 3.10+. There are no npm dependencies. Python build dependencies are listed in `requirements-build.txt`.
+Requires Node.js 22+ and Python 3.10+. There is no npm install step. The required Three.js 0.187.0 module subset is vendored with its MIT license and provenance in `vendor/three/`. Python build dependencies are listed in `requirements-build.txt`.
 
 ```sh
 python3 -m venv .venv
@@ -38,9 +38,11 @@ Commit the generated root pages, `app.js`, résumé PDF and prepared assets alon
 | `CONTENT_FACTS.md` | Authoritative claims, role titles and wording constraints |
 | `data/profile.json` | Contact, education and core profile data |
 | `data/projects.json` | Eight projects: role, context, workflow, decisions, evidence and scope |
-| `scripts/build_portfolio.py` | Static page and résumé HTML templates |
+| `scripts/build_portfolio.py`, `templates/` | Data-driven cinematic homepage, case studies and résumé HTML |
+| `cinematic.css`, `cinematic.js`, `js/cinematic-scene.js` | Homepage styling, independent controls and optional Three.js scene |
+| `vendor/three/` | Pinned local Three.js dependency closure, license and source integrity metadata |
 | `script.js`, `js/` | Interaction source; dialogs, search and simulation are separate modules |
-| `scripts/build_client.mjs` | Small dependency-free bundle for direct local-file viewing |
+| `scripts/build_client.mjs` | Small dependency-free case-study bundle |
 | `theme.js` | Theme initialization before paint, with storage fallback |
 | `styles.css` | Design tokens, layout, motion, responsive and print styles |
 | `scripts/export_backend_cv.py` | Text-selectable one-page PDF from the same résumé HTML |
@@ -53,10 +55,12 @@ Existing role-specific application exporters and documents are separate from the
 
 ## Design and interaction
 
-- Dark and light themes; self-hosted Manrope and Instrument Serif fonts with licenses in `assets/fonts/`.
-- Three hero scenarios illustrate a normal request, duplicate delivery and an AI timeout.
+- Cinematic dark homepage; matching ice-blue case-study palette with an optional light theme. Self-hosted fonts and licenses live in `assets/fonts/`.
+- The procedural metal sculpture changes composition while scrolling; Explore the layers separates and recombines its frames. It is illustrative, with no live telemetry.
+- Pause/Resume controls stop ambient 3D motion. Reduced motion starts paused. A hidden page stops rendering; renderer pixel ratio is capped.
+- Static view (`?view=static`) and Save-Data skip loading the optional 3D scene. HTML navigation, project archive and case-study links work without JavaScript. No FPS or device-performance benchmark is claimed.
 - The concurrency playground compares five stale readers with and without a version check. It is a deterministic teaching model, not a live backend, load test or benchmark.
-- Search opens with the search button or Cmd/Ctrl+K. Arrow keys select, Enter opens and Escape closes. User input is rendered with text nodes.
+- On case-study pages, search opens with the search button or Cmd/Ctrl+K. Arrow keys select, Enter opens and Escape closes. User input is rendered with text nodes.
 - Native dialogs handle focus containment; all closing paths share scroll cleanup.
 - Core project content is rendered as HTML. Navigation, case studies, the project archive and decision accordions work without JavaScript.
 - Reduced-motion preferences disable decorative animation and remove artificial simulation delays.
@@ -65,7 +69,7 @@ Prepared screenshots remain in `assets/optimized/`. To regenerate after replacin
 
 ## Verification
 
-`npm run check` validates the actual `dist/` artifact, including one H1 per page, unique IDs, internal targets and fragments, images, font resources, JavaScript imports, manifest icons and a one-page résumé with selectable text. It also rejects development/private directories and mail/tracker files in the artifact.
+`npm run check` validates the actual `dist/` artifact, including one H1 per page, unique IDs, internal targets and fragments, images, font resources, JavaScript imports and import-map resolution, manifest icons and a one-page résumé with selectable text. It also rejects development/private directories and mail/tracker files in the artifact.
 
 The GitHub Actions workflow runs build, checks and model tests. It does not deploy or change repository settings. Browser QA is separate from these checks; the current local QA record is in `review/UPGRADE_QA.md` when present.
 

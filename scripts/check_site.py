@@ -50,9 +50,23 @@ def main():
         for ref in re.findall(r'url\([\'"]?([^\)\'\"]+)',path.read_text()):
             if ref.startswith(('data:','http:','https:','#')): continue
             if not (path.parent/ref).is_file(): errors.append(f'Missing CSS asset: {ref}')
+    import_maps = re.findall(r'<script type="importmap">(.*?)</script>', (DIST/'index.html').read_text(), re.S)
+    imports = json.loads(import_maps[0])['imports'] if import_maps else {}
     for path in DIST.rglob('*.js'):
-        for ref in re.findall(r'from\s+[\'"]([^\'"]+)[\'"]',path.read_text()):
-            if ref.startswith('.') and not (path.parent/ref).is_file(): errors.append(f'Missing JS module: {ref}')
+        refs = re.findall(r'(?:from\s+|import\s*\(\s*)[\'"]([^\'"]+)[\'"]', path.read_text())
+        for ref in refs:
+            if ref.startswith('.'):
+                target = path.parent/ref
+            else:
+                mapped = imports.get(ref)
+                if mapped is None:
+                    prefix = next((key for key in imports if key.endswith('/') and ref.startswith(key)), None)
+                    mapped = imports[prefix] + ref[len(prefix):] if prefix else None
+                if mapped is None:
+                    errors.append(f'Unresolved JS import: {ref}');continue
+                target = DIST/mapped
+            if not target.resolve().is_relative_to(DIST.resolve()) or not target.is_file():
+                errors.append(f'Missing or non-public JS module: {ref}')
     manifest=json.loads((DIST/'site.webmanifest').read_text())
     for item in manifest.get('icons',[]):
         if not (DIST/item['src']).is_file(): errors.append(f'Missing manifest icon: {item["src"]}')

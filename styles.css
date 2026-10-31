@@ -1,19 +1,19 @@
 /* Gia Bao / Engineering Studio — design system */
 :root {
   color-scheme:dark;
-  --bg:#101211;
-  --surface:#171a18;
-  --surface-2:#202520;
-  --text:#f0f0e7;
-  --muted:#a7afa7;
-  --subtle:#788278;
-  --line:#303730;
-  --accent:#d1f87b;
-  --accent-ink:#18220c;
+  --bg:#060a10;
+  --surface:#0d1520;
+  --surface-2:#182536;
+  --text:#edf2f7;
+  --muted:#a0afbf;
+  --subtle:#71869b;
+  --line:#2b3c50;
+  --accent:#a0d9ff;
+  --accent-ink:#081524;
   --paper:#e9eade;
   --paper-ink:#222b24;
-  --model-top:#242d26;
-  --model-bottom:#171d19;
+  --model-top:#24354a;
+  --model-bottom:#101c2a;
   --ease:cubic-bezier(.2,.7,.2,1);
   --sans:'Manrope',Arial,Helvetica,sans-serif;
   --serif:'Instrument Serif',Georgia,serif;

@@ -4,8 +4,8 @@ import shutil
 import argparse
 
 ROOT = Path(__file__).resolve().parents[1]
-FILES = ['index.html', 'styles.css', 'app.js', 'theme.js', 'favicon.ico', 'robots.txt', 'site.webmanifest', 'sitemap.xml']
-ASSET_FILES = ['Resume.html', 'resume.css', 'resume.js', 'Pham_Ngoc_Gia_Bao_Java_Backend.pdf', 'favicon.svg', 'apple-touch-icon.png', 'android-chrome-192x192.png', 'android-chrome-512x512.png', 'og-preview.png']
+FILES = ['.nojekyll', 'index.html', 'cinematic.css', 'cinematic.js', 'styles.css', 'app.js', 'theme.js', 'favicon.ico', 'robots.txt', 'site.webmanifest', 'sitemap.xml']
+ASSET_FILES = ['noise.svg', 'Resume.html', 'resume.css', 'resume.js', 'Pham_Ngoc_Gia_Bao_Java_Backend.pdf', 'favicon.svg', 'apple-touch-icon.png', 'android-chrome-192x192.png', 'android-chrome-512x512.png', 'og-preview.png']
 
 
 def main():
@@ -28,6 +28,10 @@ def main():
     for name in ['fonts', 'optimized']:
         shutil.copytree(ROOT/'assets'/name, dest/'assets'/name)
     shutil.copytree(ROOT/'cases', dest/'cases')
+    (dest/'js').mkdir()
+    for name in ['cinematic-scene.js', 'simulation.js']:
+        shutil.copy2(ROOT/'js'/name, dest/'js'/name)
+    shutil.copytree(ROOT/'vendor/three', dest/'vendor/three')
     print('Public artifact:', dest)
 
 
