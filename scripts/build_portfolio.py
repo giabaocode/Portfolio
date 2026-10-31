@@ -99,9 +99,23 @@ def footer(prefix='./', compact=False):
     return f'''<footer class="site-footer wrap"><a class="footer-brand" href="{prefix}index.html">GIA BAO<span>.</span></a><p>Thoughtful systems. Human outcomes.</p><div><a href="{PROFILE['github']}" target="_blank" rel="noopener noreferrer">GitHub {icon()}</a><span class="mono">© {__import__('datetime').date.today().year} GIA BAO</span></div></footer>{overlays(prefix)}'''
 
 
-def picture(name, prefix='./', cls='', alt='', lazy=True):
-    ratio = (3248, 1944) if name.startswith('lunfa') else (1440, 900)
-    return f'<img class="{cls}" src="{prefix}assets/optimized/{name}-800.webp" srcset="{prefix}assets/optimized/{name}-800.webp 800w, {prefix}assets/optimized/{name}-1600.webp 1600w" sizes="(max-width: 700px) 100vw, 55vw" width="{ratio[0]}" height="{ratio[1]}" alt="{e(alt)}" {"loading=lazy" if lazy else "fetchpriority=high"} decoding="async">'
+def picture(name, prefix='./', cls='', alt='', lazy=True, dimensions=None, sizes='(max-width: 700px) 100vw, 55vw'):
+    ratio = dimensions or ((3248, 1944) if name.startswith('lunfa') else (1440, 900))
+    source_width = ratio[0] if dimensions else 1600
+    variants = f'{prefix}assets/optimized/{name}-800.webp {min(800, source_width)}w'
+    if source_width > 800:
+        variants += f', {prefix}assets/optimized/{name}-1600.webp {min(1600, source_width)}w'
+    return f'<img class="{cls}" src="{prefix}assets/optimized/{name}-800.webp" srcset="{variants}" sizes="{e(sizes)}" width="{ratio[0]}" height="{ratio[1]}" alt="{e(alt)}" {"loading=lazy" if lazy else "fetchpriority=high"} decoding="async">'
+
+
+def case_media(m, prefix):
+    name = Path(m['src']).stem
+    layout = m.get('layout', '')
+    cls = 'case-shot' + (f' case-shot-{layout}' if layout in ('wide', 'portrait') else '')
+    dimensions = (m['width'], m['height']) if 'width' in m and 'height' in m else None
+    sizes = '90vw' if layout == 'wide' else '280px' if layout == 'portrait' else '(max-width: 700px) 100vw, 55vw'
+    title = f'<strong>{e(m["title"])}</strong> ' if m.get('title') else ''
+    return f'<figure class="{cls}"><a href="{prefix}assets/optimized/{name}.webp" data-lightbox aria-label="{e("Enlarge image: "+m["alt"])}">{picture(name,prefix,alt=m["alt"],dimensions=dimensions,sizes=sizes)}</a><figcaption>{title}{e(m["caption"])}</figcaption></figure>'
 
 
 def unihub_art():
@@ -131,8 +145,8 @@ def case_page(p, next_p, base_url=None):
     decisions = [n for n in p['flow'] if n.get('challenge')]
     decision_html = ''.join(f'''<details class="decision"{' open' if i == 0 else ''}><summary><span class="mono">{i+1:02d}</span><h3>{e(n['challenge'])}</h3><span class="decision-plus">+</span></summary><div class="decision-body"><span class="eyebrow">THE DECISION</span><p>{e(n['fix'])}</p></div></details>''' for i,n in enumerate(decisions))
     flow = ''.join(f'<li><span class="mono">{i+1:02d}</span><div><h3>{e(n["label"].title())}</h3><p>{e(n["desc"])}</p></div></li>' for i,n in enumerate(p['flow']))
-    media = ''.join(f'<figure class="case-shot"><a href="{prefix}assets/optimized/{Path(m["src"]).stem}.webp" data-lightbox aria-label="{e("Enlarge image: "+m["alt"])}">{picture(Path(m["src"]).stem,prefix,alt=m["alt"])}</a><figcaption>{e(m["caption"])}</figcaption></figure>' for m in p.get('media',[]))
-    if p['id']=='unihub':media=f'<div class="case-illustration">{unihub_art()}</div>'
+    media = ''.join(case_media(m, prefix) for m in p.get('media',[]))
+    if p['id']=='unihub' and not media:media=f'<div class="case-illustration">{unihub_art()}</div>'
     if not media:media=f'<div class="case-concept"><span class="mono">ENGINEERING FOCUS / ILLUSTRATION</span><div>{"".join(f"<span>{e(f)}</span>" for f in p["focus"])}</div>{icon("code")}</div>'
     links = ''.join(f'<a class="button button-outline" href="{e(l["href"])}" target="_blank" rel="noopener noreferrer">{e(l["label"].replace(" →", ""))} {icon()}</a>' for l in p['links'] if not l.get('isAction'))
     if p['id']=='sstc':links='<p class="private-note">Company project. The source repository is private; company data is excluded.</p>'

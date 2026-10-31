@@ -263,8 +263,8 @@
     "name": "UniHub Workshop — event lifecycle platform",
     "context": "A university event platform needed registration, payment and door check-in to remain dependable during traffic spikes and unreliable venue Wi-Fi.",
     "role": "Team of 2 · admin panel, offline check-in, Redis, rate limiting, UI/UX and database design",
-    "evidenceLabel": "Performance test design",
-    "evidence": "Authored a K6 spike scenario targeting up to 12,000 virtual users; the portfolio does not present it as a live benchmark.",
+    "evidenceLabel": "Local runtime verification",
+    "evidence": "The Spring Boot backend and React frontend were built and run against an isolated PostgreSQL database. These screenshots show the actual interface with synthetic data; login, attendee search and manual check-in were verified through the browser.",
     "tagline": "Digitizes a university's 'skills & career week': student registers → pays by QR → gets an emailed QR ticket → staff scans it at the door, even with no WiFi. Built to survive a real traffic spike.",
     "tags": [
       "backend",
@@ -289,8 +289,8 @@
         "isAction": true
       },
       {
-        "label": "GitHub profile →",
-        "href": "https://github.com/giabaocode"
+        "label": "View source →",
+        "href": "https://github.com/giabaocode/UniHub_Workshop"
       }
     ],
     "flow": [
@@ -314,7 +314,7 @@
         "label": "OFFLINE CHECK-IN",
         "desc": "Staff scan tickets at the venue through a PWA.",
         "challenge": "The auditorium WiFi drops in the middle of the event.",
-        "fix": "A service worker caches the app shell; scans are stored in IndexedDB offline and batch-synced automatically when the connection returns."
+        "fix": "A service worker caches the app shell. The frontend stores cached workshop/attendee lists and pending check-ins in localStorage, then retries queued updates when the browser returns online."
       },
       {
         "label": "ATTENDED",
@@ -337,7 +337,41 @@
     ],
     "limitations": [
       "The interactive model is an illustration in the browser, not a connection to the project backend.",
-      "A K6 scenario targeting up to 12,000 virtual users was authored. No measured latency, throughput or error-rate result is claimed here."
+      "A K6 scenario targeting up to 12,000 virtual users was authored. No measured latency, throughput or error-rate result is claimed here.",
+      "Camera scanning, offline-to-online reconciliation and live payment/email integrations were not exercised in this local capture. Redis used an in-memory fallback in this environment."
+    ],
+    "media": [
+      {
+        "src": "unihub-admin.jpg",
+        "alt": "UniHub admin dashboard showing three workshops and thirteen synthetic tickets",
+        "caption": "01 / Admin overview — workshop capacity, registration counts and event management. Local demo with synthetic data; the revenue figure is sample data.",
+        "layout": "wide",
+        "width": 1440,
+        "height": 900
+      },
+      {
+        "src": "unihub-attendees.jpg",
+        "alt": "UniHub attendee management with five checked-in demo attendees and three remaining",
+        "caption": "02 / Attendee management — ticket lookup and attendance status. A manual check-in was verified through this interface. Local demo with synthetic data.",
+        "width": 1440,
+        "height": 900
+      },
+      {
+        "src": "unihub-tickets.jpg",
+        "alt": "Student ticket wallet with two QR-coded workshop tickets",
+        "caption": "03 / Student tickets — event details, confirmation status and QR codes rendered by the app. Local demo with synthetic data.",
+        "width": 1440,
+        "height": 900
+      },
+      {
+        "src": "unihub-checkin-mobile.jpg",
+        "alt": "UniHub mobile staff check-in screen with a workshop selected and online status",
+        "caption": "A focused staff workspace: select the event, then open the QR scanner. Local demo with synthetic data.",
+        "layout": "portrait",
+        "title": "At the door, on mobile.",
+        "width": 390,
+        "height": 844
+      }
     ]
   },
   {

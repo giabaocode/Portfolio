@@ -8,16 +8,24 @@ ASSETS = ROOT / 'assets'
 DEST = ASSETS / 'optimized'
 
 
-def main():
+def prepare_screenshots(names):
     DEST.mkdir(exist_ok=True)
-    names = ['sstc-chat', 'sstc-intake', 'sstc-inspection', 'sstc-lookup', 'lunfa-chat', 'lunfa-login']
     for name in names:
-        source = Image.open(ASSETS / 'photo_prod' / (name + '.png')).convert('RGB')
+        source_path = ASSETS / 'photo_prod' / (name + '.png')
+        if not source_path.exists():
+            source_path = source_path.with_suffix('.jpg')
+        source = Image.open(source_path).convert('RGB')
         for width in [800, 1600, 2000]:
             image = source.copy()
             image.thumbnail((width, 3000), Image.Resampling.LANCZOS)
             suffix = f'-{width}' if width != 2000 else ''
             image.save(DEST / f'{name}{suffix}.webp', quality=86, method=6)
+
+
+def main():
+    names = ['sstc-chat', 'sstc-intake', 'sstc-inspection', 'sstc-lookup', 'lunfa-chat', 'lunfa-login',
+             'unihub-admin', 'unihub-attendees', 'unihub-tickets', 'unihub-checkin-mobile']
+    prepare_screenshots(names)
     (ASSETS / 'favicon.svg').write_text('''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="15" fill="#a0d9ff"/><text x="8" y="43" fill="#081524" font-family="Arial,Helvetica,sans-serif" font-weight="700" font-size="35" letter-spacing="-4">gb.</text></svg>''')
     font_root = Path(reportlab.__file__).parent/'fonts'
     font_path = str(font_root/'Vera.ttf')

@@ -1814,6 +1814,42 @@ dialog::backdrop {
   line-height:1.8;
   margin-top:13px
 }
+.case-shot-wide,.case-shot-portrait {
+  grid-column:1/-1
+}
+.case-shot-portrait {
+  display:grid;
+  grid-template-columns:minmax(0,280px) minmax(0,460px);
+  align-items:center;
+  justify-content:center;
+  gap:clamp(28px,6vw,90px);
+  padding:40px 24px;
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:7px
+}
+.case-shot-portrait img {
+  aspect-ratio:auto;
+  height:auto
+}
+.case-shot.case-shot-portrait figcaption {
+  font-size:14px;
+  margin:0
+}
+.case-shot-portrait figcaption strong {
+  display:block;
+  font-size:clamp(24px,3vw,36px);
+  line-height:1.2;
+  letter-spacing:-.04em;
+  color:var(--text);
+  margin-bottom:20px
+}
+@media(max-width:540px) {
+  .case-shot-portrait {
+    grid-template-columns:minmax(0,280px);
+    padding:24px 18px
+  }
+}
 .case-content-grid {
   display:grid;
   grid-template-columns:1fr 1.5fr;
