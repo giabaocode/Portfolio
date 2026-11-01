@@ -379,8 +379,8 @@
     "name": "Online Auction Platform",
     "context": "A marketplace needed concurrent bidding, anti-sniping and the buyer–seller handoff after an auction to behave as one coherent system.",
     "role": "Team of 2 · requirements, UI/UX, database design, bidder/seller systems, chat and order tracking",
-    "evidenceLabel": "Scope delivered",
-    "evidence": "17-table relational schema · 50+ documented endpoints · 6 route groups · 3 user roles.",
+    "evidenceLabel": "Local runtime verification",
+    "evidence": "The Express/TypeScript backend and React frontend were built and run against an isolated PostgreSQL database. Bidder, seller and admin login, manual bidding and seller search were verified through the browser. The source documentation describes a 17-table relational model.",
     "tagline": "A full marketplace: bidders bid, sellers list, admins govern. Auto-bid, Buy Now, anti-sniping, a 4-step post-auction payment flow, buyer–seller chat and reputation — all kept correct under concurrent bids.",
     "tags": [
       "backend",
@@ -399,8 +399,8 @@
     ],
     "links": [
       {
-        "label": "GitHub profile →",
-        "href": "https://github.com/giabaocode"
+        "label": "View source →",
+        "href": "https://github.com/giabaocode/ptudw-final-project/tree/fix_final"
       }
     ],
     "flow": [
@@ -418,11 +418,11 @@
         "label": "ANTI-SNIPE",
         "desc": "Guards against last-second sniping.",
         "challenge": "Snipers bid in the final seconds to deny others a counter-bid.",
-        "fix": "If time-remaining < 5 minutes when a bid lands, end_at is pushed +10 minutes — the snipe strategy stops working."
+        "fix": "In the branch that assigns a new leading bidder, a bid received with less than five minutes remaining extends end_at by ten minutes. Time-boundary behavior and the other auto-bid branches require separate tests."
       },
       {
         "label": "WON",
-        "desc": "Auction closes. A node-cron job runs every minute to detect ended auctions and fire 6 kinds of notification email."
+        "desc": "A node-cron job checks ended auctions every minute and notifies the winner and seller."
       },
       {
         "label": "PAID → SHIPPED",
@@ -451,7 +451,39 @@
     ],
     "limitations": [
       "Email calls were dispatched outside the request wait path; this alone does not guarantee delivery after a process failure.",
-      "A durable queue or transactional outbox is a possible next step when delivery guarantees are required."
+      "A durable queue or transactional outbox is a possible next step when delivery guarantees are required.",
+      "Screenshots show a local demo with synthetic accounts, products, bids and order data. The demo schema was bootstrapped from the repository documentation and SQL queries; no production database or production metrics are shown.",
+      "Cloudinary uploads, email delivery, OAuth and the payment/shipping workflow were not exercised. Concurrent bidding and anti-sniping boundaries were not runtime-tested in this capture."
+    ],
+    "media": [
+      {
+        "src": "auction-marketplace.jpg",
+        "alt": "AuctionBay marketplace with sample product listings, prices and auction countdowns",
+        "caption": "01 / Marketplace — discover auctions by category, time remaining and current price. Captured before the test bid. Local demo with synthetic data.",
+        "width": 1440,
+        "height": 900
+      },
+      {
+        "src": "auction-bidding.jpg",
+        "alt": "Auction detail showing Minh Anh Demo leading at 24500000 after a successful test bid",
+        "caption": "02 / Bidding — a submitted ceiling of 25,000,000 changed the current price from 23,500,000 to 24,500,000 and updated the leading bidder. Local demo with synthetic data.",
+        "width": 1440,
+        "height": 900
+      },
+      {
+        "src": "auction-seller.jpg",
+        "alt": "Seller dashboard with eight active sample products and current bidding status",
+        "caption": "03 / Seller workspace — active listings, bid counts and the current leading bidder. Product search was verified through this interface. Local demo with synthetic data.",
+        "width": 1440,
+        "height": 900
+      },
+      {
+        "src": "auction-admin.jpg",
+        "alt": "AuctionBay admin console with synthetic users, roles and one seller upgrade request",
+        "caption": "04 / Administration — user roles and seller upgrade requests. The displayed accounts are synthetic; approval and deletion actions were not exercised. Local demo with synthetic data.",
+        "width": 1440,
+        "height": 900
+      }
     ]
   },
   {
