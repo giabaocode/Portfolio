@@ -602,9 +602,9 @@
     "name": "HomestayDorm — rental operations",
     "context": "A multi-branch rental workflow needed to track each resident from initial inquiry through viewing, deposit, contract and move-out.",
     "role": "Team of 4 · registration module, Prisma schema, UI/UX and requirements analysis",
-    "evidenceLabel": "Scope delivered",
-    "evidence": "15+ data models · bed-level availability · 6-state registration workflow.",
-    "tagline": "Runs a dorm/rental business down to the individual bed: intake → consult → viewing → deposit → contract → move-out & reconciliation. Multi-branch, 3 roles, built fullstack on Next.js Server Actions (no separate REST API).",
+    "evidenceLabel": "Local registration verification",
+    "evidence": "The Next.js build and TypeScript checks passed. In the running app, rental criteria narrowed six branch rooms to one; a registration with room 101 was saved, found by search and moved from CONSULTING to WAITLIST. PostgreSQL confirmed the criteria, creator, room relation and waitlist note.",
+    "tagline": "A multi-branch rental workspace covering room/bed availability, intake, viewing, deposits, contracts and move-out. Built within one Next.js application using Prisma, Server Actions and selected Route Handlers.",
     "tags": [
       "backend",
       "ba"
@@ -621,14 +621,18 @@
     ],
     "links": [
       {
-        "label": "GitHub profile →",
-        "href": "https://github.com/giabaocode"
+        "label": "View source →",
+        "href": "https://github.com/NotTodaySirr/HomestayDorm"
+      },
+      {
+        "label": "Capture notes →",
+        "href": "https://github.com/giabaocode/Portfolio/blob/main/assets/photo_prod/HOMESTAY_CAPTURE.md"
       }
     ],
     "flow": [
       {
-        "label": "DRAFT → CONSULT",
-        "desc": "The registration ticket I owned: a 6-state machine (DRAFT → CONSULTING → WAITING_VIEW → WAITLIST → COMPLETED / CANCELLED).",
+        "label": "INTAKE → CONSULT",
+        "desc": "The current intake creates a CONSULTING ticket with rental criteria and shortlisted rooms. The UI also exposes WAITING_VIEW, WAITLIST, COMPLETED and CANCELLED states; CONSULTING → WAITLIST was exercised in this capture.",
         "challenge": "Manage availability at bed granularity, not just per room.",
         "fix": "Modeled Room → Bed (1-to-N), each bed with its own status (AVAILABLE / OCCUPIED / DEPOSITED / MAINTENANCE) and price — so a room can be rented whole or shared."
       },
@@ -665,7 +669,39 @@
     ],
     "limitations": [
       "Team of four. My scope was the registration module, Prisma schema, UI/UX and requirements analysis.",
-      "This case study describes project implementation, not measured commercial operation."
+      "This case study describes project implementation, not measured commercial operation.",
+      "Screenshots use an isolated local database with synthetic accounts, customers, room/bed states and appointments. Names, phone numbers and email addresses shown are demo data.",
+      "Login, room filtering, registration creation/search and CONSULTING → WAITLIST were exercised. Appointment rows were seeded; no appointment email, deposit/payment, contract signing or move-out flow was executed. Contract price snapshots were inspected in source, not runtime-tested here."
+    ],
+    "media": [
+      {
+        "src": "homestay-beds.jpg",
+        "alt": "HomestayDorm intake workspace with branch room inventory and expanded available occupied and deposited bed states",
+        "caption": "01 / Bed-level inventory — expand room 101 to inspect individual bed states beside the intake form. Local demo with synthetic data.",
+        "width": 1440,
+        "height": 900
+      },
+      {
+        "src": "homestay-registration.jpg",
+        "alt": "Registration form filtered to one matching room for two male residents with a two million VND budget",
+        "caption": "02 / Rental criteria and shortlist — two residents and a 2,000,000 VND budget narrow the results to room 101, then link that room to the registration. Local demo with synthetic data.",
+        "width": 1440,
+        "height": 900
+      },
+      {
+        "src": "homestay-tickets.jpg",
+        "alt": "HomestayDorm registration list showing the newly created demo ticket moved into WAITLIST",
+        "caption": "03 / Registration queue — the new ticket was saved, found by search and moved from CONSULTING to WAITLIST through the UI. Its room relation and note were confirmed in PostgreSQL. Local demo with synthetic data.",
+        "width": 1440,
+        "height": 900
+      },
+      {
+        "src": "homestay-appointments.jpg",
+        "alt": "HomestayDorm viewing appointment list showing three seeded demo appointments with room and assignee details",
+        "caption": "04 / Viewing schedule — seeded appointments show room, assignee and viewing status. Appointment creation and email delivery were not exercised. Local demo with synthetic data.",
+        "width": 1440,
+        "height": 900
+      }
     ]
   },
   {

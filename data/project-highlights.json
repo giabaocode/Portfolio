@@ -38,7 +38,7 @@
     "title": "Rental registration",
     "problem": "Track residents from inquiry and viewing to deposit, contract and move-out.",
     "ownership": "Registration module, Prisma schema, UI/UX and requirements analysis in a team of four.",
-    "delivered": "Bed-level availability and a six-state registration workflow.",
+    "delivered": "Bed-level availability and a registration, viewing and deposit workflow.",
     "decision": "Track allocation at bed level and make registration transitions explicit."
   },
   "petcare": {
