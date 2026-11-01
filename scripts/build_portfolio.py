@@ -46,11 +46,11 @@ def head(title, description, prefix='./', route='', base_url=None, cinematic=Fal
               'jobTitle': PROFILE['role'], 'url': origin + '/', 'sameAs': [PROFILE['github']],
               'description': 'Java backend candidate focused on business workflows, PostgreSQL and transaction correctness.'}
     presentation = f'''<link rel="stylesheet" href="{prefix}cinematic.css?v=8">
-<script type="module" src="{prefix}cinematic.js?v=8"></script>''' if cinematic else f'''<link rel="stylesheet" href="{prefix}styles.css?v=8"><script src="{prefix}theme.js?v=4"></script>'''+f'<script defer src="{prefix}app.js?v=8"></script>'
-    return f'''<!doctype html><html lang="en"><head>
+<script type="module" src="{prefix}cinematic.js?v=8"></script>''' if cinematic else f'''<link rel="stylesheet" href="{prefix}styles.css?v=8"><script src="{prefix}theme.js?v=5"></script>'''+f'<script defer src="{prefix}app.js?v=9"></script>'
+    return f'''<!doctype html><html lang="en" data-theme="dark"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{e(title)}</title><meta name="description" content="{e(description)}">
-<meta name="theme-color" content="#060a10"><meta name="color-scheme" content="{"dark" if cinematic else "dark light"}">
+<meta name="theme-color" content="#060a10"><meta name="color-scheme" content="dark">
 <link rel="canonical" href="{e(url)}"><meta property="og:type" content="website">
 <meta property="og:title" content="{e(title)}"><meta property="og:description" content="{e(description)}">
 <meta property="og:url" content="{e(url)}"><meta property="og:image" content="{origin}/assets/og-preview.png">
@@ -67,7 +67,7 @@ def head(title, description, prefix='./', route='', base_url=None, cinematic=Fal
 def header(prefix='./', home=False):
     home_url = prefix + 'index.html'
     anchor = '' if home else home_url
-    tools = '<button id="pause-motion" hidden type="button" aria-pressed="false"><span class="pause-symbol">Ⅱ</span><span class="pause-text">Pause motion</span></button>' if home else f'<button type="button" class="search-trigger">Search projects {icon("search")}</button><button type="button" class="theme-toggle">Switch theme {icon("sun")}</button>'
+    tools = '<button id="pause-motion" hidden type="button" aria-pressed="false"><span class="pause-symbol">Ⅱ</span><span class="pause-text">Pause motion</span></button>' if home else f'<button type="button" class="search-trigger">Search projects {icon("search")}</button>'
     return f'''<a class="site-skip" href="#main">Skip to content</a><header class="site-nav" data-site-header><a class="site-brand" href="{home_url}" aria-label="Gia Bao home">GIA BAO<span class="brand-dot">.</span><small>JAVA BACKEND</small></a><nav class="site-links" aria-label="Primary navigation"><a href="{anchor}#work" data-section-link="work">Work</a><a href="{prefix}assets/Pham_Ngoc_Gia_Bao_Java_Backend.pdf" download>CV <span aria-hidden="true">↓</span><span class="sr-only"> — Download PDF</span></a><a href="{anchor}#contact" data-section-link="contact">Contact</a></nav><details class="site-menu"><summary aria-label="More navigation">More <span aria-hidden="true">+</span></summary><nav class="site-menu-panel" aria-label="More navigation"><a href="{anchor}#approach" data-section-link="approach">Approach</a><a href="{anchor}#playground" data-section-link="playground">Engineering playground</a><a href="{anchor}#about" data-section-link="about">About me</a><a href="{prefix}assets/Resume.html">Read résumé</a><a href="{PROFILE['github']}" target="_blank" rel="noopener noreferrer">GitHub ↗</a>{tools}<a data-view-link href="{home_url}?view=static#top">Static view</a></nav></details></header>'''
 
 

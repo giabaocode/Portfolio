@@ -343,19 +343,6 @@ const dialogs = initDialogs();
 initSearch(dialogs);
 initSimulation();
 
-// Theme is progressive enhancement, never a dependency for the rest of the page.
-const root = document.documentElement;
-const themeButtons = [...document.querySelectorAll('.theme-toggle')];
-function updateThemeLabels() {
-  themeButtons.forEach(button => button.setAttribute('aria-label', `Switch to ${root.dataset.theme === 'light' ? 'dark' : 'light'} theme`));
-}
-updateThemeLabels();
-themeButtons.forEach(button => button.addEventListener('click', () => {
-  root.dataset.theme = root.dataset.theme === 'light' ? 'dark' : 'light';
-  try { localStorage.setItem('gia-bao-theme', root.dataset.theme); } catch {}
-  updateThemeLabels();
-}));
-
 // Each scenario illustrates a design decision; there is no implied live telemetry.
 const scenarios = {
   request: 'Validate the request. Apply the rules. Commit a traceable result.',
