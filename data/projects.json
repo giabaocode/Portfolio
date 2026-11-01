@@ -806,6 +806,10 @@
       {
         "label": "GitHub profile →",
         "href": "https://github.com/giabaocode"
+      },
+      {
+        "label": "Screenshot source notes →",
+        "href": "https://github.com/giabaocode/Portfolio/blob/main/assets/photo_prod/MELODIX_SCREENSHOTS.md"
       }
     ],
     "flow": [
@@ -848,7 +852,65 @@
     ],
     "limitations": [
       "Foreground services support background playback but do not guarantee the app can never be stopped.",
-      "My scope covered the artist module, detail/search/share/profile flows, UI/UX and database co-design."
+      "My scope covered the artist module, detail/search/share/profile flows, UI/UX and database co-design.",
+      "Screenshots were extracted from the supplied project report. They document the submitted interface; the Android app was not rerun for this portfolio update."
+    ],
+    "mediaIntro": "Screens from the project report: three artist tools, followed by discovery and playback. Select a screen to enlarge.",
+    "media": [
+      {
+        "src": "assets/photo_prod/melodix-artist-studio.png",
+        "alt": "Artist Studio showing uploaded tracks with Released and Pending Review statuses.",
+        "caption": "My scope · Artist module. A single list makes each track’s release status visible alongside its management menu.",
+        "title": "Artist Studio",
+        "layout": "phone",
+        "width": 925,
+        "height": 2048
+      },
+      {
+        "src": "assets/photo_prod/melodix-release.png",
+        "alt": "New Release form with cover, title, genre, audio and optional lyric file.",
+        "caption": "My scope · Artist module. The upload form brings artwork, metadata, audio and optional LRC lyrics into one release flow.",
+        "title": "Prepare a release",
+        "layout": "phone",
+        "width": 698,
+        "height": 2048
+      },
+      {
+        "src": "assets/photo_prod/melodix-album.png",
+        "alt": "Artist album detail with an album review status and individual track release statuses.",
+        "caption": "My scope · Artist module. Album details keep the album’s review state and each track’s status visible together.",
+        "title": "Manage an album",
+        "layout": "phone",
+        "width": 925,
+        "height": 2048
+      },
+      {
+        "src": "assets/photo_prod/melodix-artist.png",
+        "alt": "Artist profile with Follow, popular tracks and a persistent mini player.",
+        "caption": "My scope · Detail flows. Artist information, follow action and popular tracks share a screen with the mini player.",
+        "title": "Explore an artist",
+        "layout": "phone",
+        "width": 925,
+        "height": 2048
+      },
+      {
+        "src": "assets/photo_prod/melodix-search.png",
+        "alt": "Search results for so with the Playlist category filter selected.",
+        "caption": "My scope · Search flow. Category filters narrow discovery across songs, artists, albums and playlists.",
+        "title": "Find the right result",
+        "layout": "phone",
+        "width": 925,
+        "height": 2048
+      },
+      {
+        "src": "assets/photo_prod/melodix-player.png",
+        "alt": "Now Playing screen with artwork, playback controls, share action and a lyrics section.",
+        "caption": "Product context · The report illustrates this player as a shared-link destination; playback is a team feature.",
+        "title": "Back to the music",
+        "layout": "phone",
+        "width": 925,
+        "height": 2048
+      }
     ]
   }
 ]
