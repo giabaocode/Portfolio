@@ -493,8 +493,8 @@
     "name": "Coffee Shop POS & Management",
     "context": "A real coffee shop needed staff ordering, role-specific operations and management reporting in one daily-use system.",
     "role": "Team of 4 · owned the POS/order module, system UI/UX and requirements analysis",
-    "evidenceLabel": "Real-world use",
-    "evidence": "Deployed for daily use at a GUTA coffee shop; no current usage metrics are claimed.",
+    "evidenceLabel": "Local POS verification",
+    "evidence": "The local POS flow was exercised from menu selection and item notes through cash checkout. PostgreSQL confirmed a 70,000 VND order, two lines, three drinks and the saved note. Screenshots use synthetic data; the separate reporting UI includes documented local API/number-format fixes.",
     "tagline": "A role-based system for a real coffee shop (GUTA): staff take orders on a POS, managers watch revenue analytics, HR runs shift scheduling. Admin / Manager / Staff each get their own surface.",
     "tags": [
       "ba",
@@ -513,6 +513,10 @@
       {
         "label": "Source code →",
         "href": "https://github.com/tdthien106/Coffee_shop"
+      },
+      {
+        "label": "Capture notes →",
+        "href": "https://github.com/giabaocode/Portfolio/blob/main/assets/photo_prod/COFFEE_CAPTURE.md"
       }
     ],
     "flow": [
@@ -526,17 +530,17 @@
       },
       {
         "label": "CHECKOUT",
-        "desc": "A 3-step checkout: Summary → Transfer → Success.",
+        "desc": "Review items, quantities and notes, then choose cash or transfer. The cash path was exercised in this capture.",
         "challenge": "Circular foreign keys: orders.payment_id → payment and payment.order_id → orders.",
-        "fix": "DEFERRABLE INITIALLY DEFERRED constraints let both rows be inserted inside the same transaction without a chicken-and-egg failure."
+        "fix": "The schema declares DEFERRABLE INITIALLY DEFERRED foreign keys between orders and payment. The current checkout controller creates the order, lines and payment in separate steps; wrapping the full operation in a shared database transaction remains a hardening task."
       },
       {
         "label": "SUCCESS",
-        "desc": "Order completed and persisted; receipt issued."
+        "desc": "The UI shows a success screen; the tested order, payment, quantities and note were confirmed in PostgreSQL."
       },
       {
         "label": "DASHBOARD",
-        "desc": "Managers see revenue-by-hour, peak hours and period-over-period comparisons.",
+        "desc": "Managers access revenue summaries, hourly activity and product breakdowns. This reporting screen is team-product context.",
         "challenge": "Heavy analytics queries on the manager dashboard, plus keeping staff out of it.",
         "fix": "CTEs build the revenue aggregates, Promise.all() runs 9 analytics queries in parallel, and values are cast ::int/::bigint in SQL to avoid string/number bugs in JS. RBAC: a RequireAuth guard on the client + an authorize(...roles) middleware factory on the server."
       }
@@ -548,7 +552,7 @@
     "summary": "Owned the POS and order module, requirements analysis and system UI for a coffee-shop management product.",
     "focus": [
       "POS ownership",
-      "Atomic checkout",
+      "Checkout persistence",
       "Role-based interfaces"
     ],
     "lessons": [
@@ -557,7 +561,40 @@
     ],
     "limitations": [
       "Team of four. My ownership was the POS/order module, system UI/UX and requirements analysis.",
-      "The project was deployed for use at a GUTA coffee shop; no current usage analytics or uptime claim is made."
+      "The project was deployed for use at a GUTA coffee shop; no current usage analytics or uptime claim is made.",
+      "These screenshots show a local demo with synthetic menu, accounts, orders and reporting data. Report figures illustrate the interface and are not business results or validated financial analytics.",
+      "Reporting needed local fixes to send the existing JWT and handle PostgreSQL numeric strings. These are recorded with the capture assets and have not been pushed to the source repository.",
+      "End-to-end checkout atomicity and checkout-endpoint authorization are hardening tasks in this source version. Bank transfer was not exercised."
+    ],
+    "media": [
+      {
+        "src": "coffee-pos.jpg",
+        "alt": "Coffee Shop POS with drink categories, menu cards and a cart containing three demo drinks",
+        "caption": "01 / Staff POS — browse drinks and adjust the cart. Local demo with synthetic data; this is the POS/order module I owned.",
+        "width": 1440,
+        "height": 900
+      },
+      {
+        "src": "coffee-notes.jpg",
+        "alt": "Coffee Shop item notes dialog with preset tags and a free-text takeaway request",
+        "caption": "02 / Item notes — preset requests and free text follow the drink into checkout. The saved note was verified in PostgreSQL. Local demo with synthetic data.",
+        "width": 1440,
+        "height": 900
+      },
+      {
+        "src": "coffee-checkout.jpg",
+        "alt": "Coffee Shop checkout summary showing two milk coffees and one black coffee totaling 70000 VND",
+        "caption": "03 / Checkout review — quantities, notes and a 70,000 VND total. The equivalent cash checkout was persisted successfully. Local demo with synthetic data.",
+        "width": 1440,
+        "height": 900
+      },
+      {
+        "src": "coffee-dashboard.jpg",
+        "alt": "Coffee Shop manager reporting interface with sample revenue charts and product breakdown",
+        "caption": "04 / Team reporting UI — charts and product breakdown rendered from the demo API after documented local integration fixes. Figures are synthetic and are not validated business metrics.",
+        "width": 1440,
+        "height": 900
+      }
     ]
   },
   {

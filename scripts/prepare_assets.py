@@ -25,7 +25,8 @@ def prepare_screenshots(names):
 def main():
     names = ['sstc-chat', 'sstc-intake', 'sstc-inspection', 'sstc-lookup', 'lunfa-chat', 'lunfa-login',
              'unihub-admin', 'unihub-attendees', 'unihub-tickets', 'unihub-checkin-mobile',
-             'auction-marketplace', 'auction-bidding', 'auction-seller', 'auction-admin']
+             'auction-marketplace', 'auction-bidding', 'auction-seller', 'auction-admin',
+             'coffee-pos', 'coffee-notes', 'coffee-checkout', 'coffee-dashboard']
     prepare_screenshots(names)
     (ASSETS / 'favicon.svg').write_text('''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="15" fill="#a0d9ff"/><text x="8" y="43" fill="#081524" font-family="Arial,Helvetica,sans-serif" font-weight="700" font-size="35" letter-spacing="-4">gb.</text></svg>''')
     font_root = Path(reportlab.__file__).parent/'fonts'
